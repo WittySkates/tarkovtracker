@@ -1,6 +1,11 @@
-const _ = require("lodash");
-const axios = require("axios");
-const cheerio = require("cheerio");
+import firebase from "firebase";
+import _ from "lodash";
+import axios from "axios";
+import cheerio from "cheerio";
+import config from "../../config/firebase.js";
+
+firebase.initializeApp(config);
+var database = firebase.database();
 
 const getUrls = async () => {
   try {
@@ -15,7 +20,7 @@ const getUrls = async () => {
       _.set(res, title, {});
     });
 
-    Object.keys(res).forEach((trader) => {
+    Object.keys(res).forEach(trader => {
       const path = `.${trader}-content > tbody > tr`;
       let title = "";
 
@@ -72,13 +77,6 @@ const getUrls = async () => {
   }
 };
 
-const get = async () => {
-  let feed = await getUrls();
-  console.log(feed.Therapist.Quests);
-};
-get();
-// getUrls().then((data) => console.log(data.Prapor.Quests));
-
 const getPrior = async (res, trader, title, link) => {
   try {
     const { data } = await axios.get(link);
@@ -105,3 +103,10 @@ const getPrior = async (res, trader, title, link) => {
     throw error;
   }
 };
+
+const push = async () => {
+  let data = await getUrls();
+  database.ref().child("traderTree").set(data);
+  firebase.app().delete();
+};
+push();
