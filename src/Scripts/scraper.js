@@ -9,7 +9,7 @@ const getUrls = async () => {
     );
     const $ = cheerio.load(data);
     const res = {};
-
+    let promises = [];
     $(".dealer-toggle").each((_idx, el) => {
       const title = $(el).attr("title");
       _.set(res, title, {});
@@ -29,25 +29,14 @@ const getUrls = async () => {
           switch (_idx) {
             case 0:
               title = text;
-              _.set(res, `${trader}.Quests.${title}`, {});
               const link =
                 "https://escapefromtarkov.fandom.com/" +
                 $(el).children().attr("href");
+              _.set(res, `${trader}.Quests.${title}`, {});
+              _.set(res, `${trader}.Quests.${title}.Link`, link);
 
-              // axios.get(link).then((response) => {
-              //   const $ = cheerio.load(response);
-
-              //   $(".va-infobox-content").each((_idx, el) => {
-              //     if (
-              //       $(el)
-              //         .text()
-              //         .match(/(Previous:)(.*)/gs)
-              //     ) {
-              //       const prior = $(el).text().replace("Previous:", "");
-              //       _.set(res, `${trader}.Quests.${title}.Prior`, prior);
-              //     }
-              //   });
-              // });
+              const prior = getPrior(res, trader, title, link);
+              promises.push(prior);
 
               break;
             case 1:
@@ -76,6 +65,7 @@ const getUrls = async () => {
         });
       });
     });
+    await Promise.all(promises);
     return res;
   } catch (error) {
     throw error;
@@ -84,77 +74,34 @@ const getUrls = async () => {
 
 const get = async () => {
   let feed = await getUrls();
-  console.log(feed.Prapor.Quests["The Bosses gathering"]);
+  console.log(feed.Therapist.Quests);
 };
 get();
+// getUrls().then((data) => console.log(data.Prapor.Quests));
 
 const getPrior = async (res, trader, title, link) => {
   try {
     const { data } = await axios.get(link);
     const $ = cheerio.load(data);
-
+    let prior = "";
     $(".va-infobox-content").each((_idx, el) => {
       if (
         $(el)
           .text()
           .match(/(Previous:)(.*)/gs)
       ) {
-        const prior = $(el).text().replace("Previous:", "");
+        const prior = [];
+        const lisPr = $(el).children();
+        $(lisPr).each((_idx, el) => {
+          if ($(el).is("a")) {
+            prior.push($(el).text().replace("Previous:", ""));
+          }
+        });
         _.set(res, `${trader}.Quests.${title}.Prior`, prior);
       }
     });
+    return prior;
   } catch (error) {
     throw error;
   }
 };
-
-// async function getPrior(res, trader, title, link) {
-//   try {
-//     const { data } = await axios.get(link);
-//     const $ = cheerio.load(data);
-
-//     $(".va-infobox-content").each((_idx, el) => {
-//       if (
-//         $(el)
-//           .text()
-//           .match(/(Previous:)(.*)/gs)
-//       ) {
-//         const prior = $(el).text().replace("Previous:", "");
-//         _.set(res, `${trader}.Quests.${title}.Prior`, prior);
-//       }
-//     });
-//   } catch (error) {
-//     throw error;
-//   }
-// }
-
-// const getData = async () => {
-// 	try {
-// 		const { data } = await axios.get(
-// 			'https://escapefromtarkov.fandom.com/wiki/Gunsmith_-_Part_2'
-// 		);
-// 		const $ = cheerio.load(data);
-// 		const res = {title:[], requirements:[], objectives:[], prior:[]};
-
-//         $('#firstHeading').each((_idx, el) => {
-// 			const title = $(el).text()
-// 			res.title.push(title)
-// 		});
-
-// 		$('#Requirements').parent().next().each((_idx, el) => {
-// 			const requirement = $(el).text()
-// 			res.requirements.push(requirement)
-// 		});
-
-// 		$('#Objectives').parent().next().each((_idx, el) => {
-// 			const objective = $(el).text()
-// 			res.objectives.push(objective)
-// 		});
-
-// 		return res;
-// 	}
-//     catch (error) {
-// 		throw error;
-// 	}
-// };
-// getData().then((data) => console.log(data));
