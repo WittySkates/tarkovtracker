@@ -20,32 +20,58 @@ const getUrls = async () => {
       let title = "";
 
       $(path).each((_idx, el) => {
-        const children = $(el).children();
-        $(children).each((_idx, el) => {
+        if (_idx === 0 || _idx === 1) {
+          return;
+        }
+        const tds = $(el).children();
+        $(tds).each((_idx, el) => {
           const text = $(el).text().replace(/\n+/g, "");
           switch (_idx) {
             case 0:
               title = text;
               _.set(res, `${trader}.Quests.${title}`, {});
+              const link =
+                "https://escapefromtarkov.fandom.com/" +
+                $(el).children().attr("href");
+
+              // axios.get(link).then((response) => {
+              //   const $ = cheerio.load(response);
+
+              //   $(".va-infobox-content").each((_idx, el) => {
+              //     if (
+              //       $(el)
+              //         .text()
+              //         .match(/(Previous:)(.*)/gs)
+              //     ) {
+              //       const prior = $(el).text().replace("Previous:", "");
+              //       _.set(res, `${trader}.Quests.${title}.Prior`, prior);
+              //     }
+              //   });
+              // });
+
               break;
             case 1:
-              _.set(res, `${trader}.Quests.${title}.type`, text);
+              _.set(res, `${trader}.Quests.${title}.Type`, text);
               break;
             case 2:
               const objectives = [];
-              $(el).each((_idx, el) => {
+              const lisOb = $(el).children().children();
+              $(lisOb).each((_idx, el) => {
                 objectives.push($(el).text().replace(/\n+/g, ""));
               });
-              _.set(res, `${trader}.Quests.${title}.Objective`, objectives);
+              _.set(res, `${trader}.Quests.${title}.Objectives`, objectives);
               break;
             case 3:
               const rewards = [];
-              $(el).each((_idx, el) => {
+              const lisRe = $(el).children().children();
+              $(lisRe).each((_idx, el) => {
                 rewards.push($(el).text().replace(/\n+/g, ""));
               });
               _.set(res, `${trader}.Quests.${title}.Rewards`, rewards);
+              _.set(res, `${trader}.Quests.${title}.isCompleted`, false);
               break;
             default:
+              break;
           }
         });
       });
@@ -58,9 +84,49 @@ const getUrls = async () => {
 
 const get = async () => {
   let feed = await getUrls();
-  console.log(feed);
+  console.log(feed.Prapor.Quests["The Bosses gathering"]);
 };
 get();
+
+const getPrior = async (res, trader, title, link) => {
+  try {
+    const { data } = await axios.get(link);
+    const $ = cheerio.load(data);
+
+    $(".va-infobox-content").each((_idx, el) => {
+      if (
+        $(el)
+          .text()
+          .match(/(Previous:)(.*)/gs)
+      ) {
+        const prior = $(el).text().replace("Previous:", "");
+        _.set(res, `${trader}.Quests.${title}.Prior`, prior);
+      }
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+// async function getPrior(res, trader, title, link) {
+//   try {
+//     const { data } = await axios.get(link);
+//     const $ = cheerio.load(data);
+
+//     $(".va-infobox-content").each((_idx, el) => {
+//       if (
+//         $(el)
+//           .text()
+//           .match(/(Previous:)(.*)/gs)
+//       ) {
+//         const prior = $(el).text().replace("Previous:", "");
+//         _.set(res, `${trader}.Quests.${title}.Prior`, prior);
+//       }
+//     });
+//   } catch (error) {
+//     throw error;
+//   }
+// }
 
 // const getData = async () => {
 // 	try {
