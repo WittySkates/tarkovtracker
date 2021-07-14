@@ -94,7 +94,7 @@ const getPrior = async (res, trader, title, link) => {
         const lisPr = $(el).children();
         $(lisPr).each((_idx, el) => {
           if ($(el).is("a")) {
-            prior.push($(el).text().replace("Previous:", ""));
+            prior.push($(el).text());
           }
         });
         _.set(res, `${trader}.Quests.${title}.Prior`, prior);
