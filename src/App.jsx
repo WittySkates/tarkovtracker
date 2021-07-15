@@ -48,7 +48,7 @@ function App() {
   if (user) {
     return (
       <div>
-        <h1>Welcome to My Awesome App</h1>
+        <h1>Testing</h1>
         <div id="firebaseui-auth-container"></div>
         <SignOut />
       </div>
