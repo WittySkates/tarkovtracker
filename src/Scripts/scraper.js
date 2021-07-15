@@ -2,10 +2,10 @@ import firebase from "firebase";
 import _ from "lodash";
 import axios from "axios";
 import cheerio from "cheerio";
-import config from "../../config/firebase.js";
+import config from "../config";
 
 firebase.initializeApp(config);
-var database = firebase.database();
+const database = firebase.database();
 
 const getUrls = async () => {
   try {
@@ -20,7 +20,7 @@ const getUrls = async () => {
       _.set(res, title, {});
     });
 
-    Object.keys(res).forEach(trader => {
+    Object.keys(res).forEach((trader) => {
       const path = `.${trader}-content > tbody > tr`;
       let title = "";
 
