@@ -1,4 +1,4 @@
 import Auth from "./Auth";
-import Nav from "./Nav";
+import TopNav from "./TopNav";
 
-export { Auth, Nav };
+export { Auth, TopNav };
