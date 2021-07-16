@@ -2,10 +2,37 @@ import firebase from "firebase";
 import _ from "lodash";
 import axios from "axios";
 import cheerio from "cheerio";
-import config from "../config";
+import config from "../config.js";
 
 firebase.initializeApp(config);
 const database = firebase.database();
+
+const getPrior = async (res, trader, title, link) => {
+  try {
+    const { data } = await axios.get(link);
+    const $ = cheerio.load(data);
+    let prior = "";
+    $(".va-infobox-content").each((_idx, el) => {
+      if (
+        $(el)
+          .text()
+          .match(/(Previous:)(.*)/gs)
+      ) {
+        const prior = [];
+        const lisPr = $(el).children();
+        $(lisPr).each((_idx, el) => {
+          if ($(el).is("a")) {
+            prior.push($(el).text());
+          }
+        });
+        _.set(res, `${trader}.Quests.${title}.Prior`, prior);
+      }
+    });
+    return prior;
+  } catch (error) {
+    throw error;
+  }
+};
 
 const getUrls = async () => {
   try {
@@ -16,14 +43,14 @@ const getUrls = async () => {
     const res = {};
     let promises = [];
     $(".dealer-toggle").each((_idx, el) => {
+      const image = $(el).children().attr("src");
       const title = $(el).attr("title");
-      _.set(res, title, {});
+      _.set(res, title, { image });
     });
 
     Object.keys(res).forEach((trader) => {
       const path = `.${trader}-content > tbody > tr`;
       let title = "";
-
       $(path).each((_idx, el) => {
         if (_idx === 0 || _idx === 1) {
           return;
@@ -77,36 +104,12 @@ const getUrls = async () => {
   }
 };
 
-const getPrior = async (res, trader, title, link) => {
-  try {
-    const { data } = await axios.get(link);
-    const $ = cheerio.load(data);
-    let prior = "";
-    $(".va-infobox-content").each((_idx, el) => {
-      if (
-        $(el)
-          .text()
-          .match(/(Previous:)(.*)/gs)
-      ) {
-        const prior = [];
-        const lisPr = $(el).children();
-        $(lisPr).each((_idx, el) => {
-          if ($(el).is("a")) {
-            prior.push($(el).text());
-          }
-        });
-        _.set(res, `${trader}.Quests.${title}.Prior`, prior);
-      }
-    });
-    return prior;
-  } catch (error) {
-    throw error;
-  }
-};
-
 const push = async () => {
   let data = await getUrls();
+  var timeout = 8000;
   database.ref().child("traderTree").set(data);
-  firebase.app().delete();
+  setTimeout(() => {
+    firebase.app().delete();
+  }, timeout);
 };
 push();
