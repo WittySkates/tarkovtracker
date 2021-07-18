@@ -43,12 +43,16 @@ const getUrls = async () => {
     const res = {};
     let promises = [];
     $(".dealer-toggle").each((_idx, el) => {
-      const image = $(el).children().attr("src");
+      let image = $(el).children().attr("src");
+      image = image.replace(/(.*.png\/)(.*)/, (match, link) => {
+        console.log(match, link);
+        return link;
+      });
       const title = $(el).attr("title");
       _.set(res, title, { image });
     });
 
-    Object.keys(res).forEach((trader) => {
+    Object.keys(res).forEach(trader => {
       const path = `.${trader}-content > tbody > tr`;
       let title = "";
       $(path).each((_idx, el) => {
