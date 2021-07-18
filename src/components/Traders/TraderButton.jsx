@@ -1,29 +1,23 @@
 /** @module Trader */
 
-import React from "react";
-import firebase from "firebase/app";
-import "firebase/database";
-import "./styles/trader.scss";
+import React, { useContext } from "react";
 
-const TraderButton = ({ traderName, onClick }) => {
-  const database = firebase.database();
-  let traderImage = database
-    .ref("traderTree/Fence/image")
-    .get()
-    .then(snapshot => {
-      if (snapshot.exists()) {
-        console.log(snapshot.val());
-      } else {
-        console.log("No trader image");
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    });
+import Spinner from "react-bootstrap/Spinner";
 
+import TarkovContext from "../../tarkovContext";
+
+import "./styles/traderbutton.scss";
+
+const TraderButton = ({ traderName, imageLink, onClick }) => {
+  const { values } = useContext(TarkovContext);
+  // console.log(values);
   return (
     <div className="trader-icon" onClick={onClick}>
-      <img src={traderImage} alt="Fence" />
+      {imageLink ? (
+        <img src={imageLink} alt={traderName} />
+      ) : (
+        <Spinner className="loading-spinner" animation="border" />
+      )}
     </div>
   );
 };

@@ -1,21 +1,28 @@
 /** @module Auth */
-
+// Bullshit
 import React from "react";
-import "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
-import Button from "react-bootstrap/Button";
-import "bootstrap/dist/css/bootstrap.min.css";
+import _ from "lodash";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
 import config from "../config";
+
+// Components
+import Button from "react-bootstrap/Button";
+
+// Hooks / Context
+import { useAuthState } from "react-firebase-hooks/auth";
+import useTarkovContext from "../hooks/useTarkovContext";
+
+// CSS
+import "bootstrap/dist/css/bootstrap.min.css";
 
 firebase.initializeApp(config);
 const auth = firebase.auth();
 const database = firebase.database();
 const provider = new firebase.auth.GoogleAuthProvider();
 
-const SignIn = () => {
+const SignIn = (setValue) => {
   auth
     .signInWithPopup(provider)
     .then((result) => {
@@ -25,7 +32,9 @@ const SignIn = () => {
       let token = credential.accessToken;
       // The signed-in user info.
       let user = result.user;
-      database.ref("users/" + user.uid).set({
+      setValue("user", user);
+
+      database.ref("users/" + user.uid).update({
         uid: user.uid,
         name: user.displayName,
         email: user.email,
@@ -40,10 +49,24 @@ const SignIn = () => {
       // The firebase.auth.AuthCredential type that was used.
       let credential = error.credential;
     });
+  database
+    .ref("traderTree")
+    .get()
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        setValue("traderNames", Object.keys(snapshot.val()));
+      } else {
+        console.log("traderTree does not exist in the database");
+      }
+    })
+    .catch((error) => {
+      console.log("Erroring getting traderTree" + error);
+    });
 };
 
 const Auth = () => {
   const [user, loading, error] = useAuthState(auth);
+  const { setValue } = useTarkovContext();
 
   if (error) {
     console.log(error);
@@ -63,7 +86,13 @@ const Auth = () => {
   if (user) {
     return (
       <>
-        <Button variant="outline-danger" onClick={() => auth.signOut()}>
+        <Button
+          variant="outline-danger"
+          onClick={() => {
+            setValue("user", null);
+            auth.signOut();
+          }}
+        >
           Sign Out
         </Button>
       </>
@@ -71,7 +100,7 @@ const Auth = () => {
   }
   return (
     <>
-      <Button variant="primary" onClick={SignIn}>
+      <Button variant="primary" onClick={() => SignIn(setValue)}>
         Sign In With Google
       </Button>
     </>
@@ -80,18 +109,16 @@ const Auth = () => {
 
 export default Auth;
 
-// import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-// <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
-// const uiConfig = {
-//   signInFlow: "popup",
-//   signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
-//   callbacks: {
-//     signInSuccessWithAuthResult: ({ user }) => {
-//       database.ref("users/" + user.uid).update({
-//         uid: user.uid,
-//         name: user.displayName,
-//         email: user.email,
-//       });
-//     },
-//   },
-// };
+// const traderTree = await database
+//   .ref("traderTree")
+//   .get()
+//   .then((snapshot) => {
+//     if (snapshot.exists()) {
+//       return snapshot.val();
+//     } else {
+//       return null;
+//     }
+//   })
+//   .catch((error) => {
+//     console.log("Erroring getting trader tree" + error);
+//   });

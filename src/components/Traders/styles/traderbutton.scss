@@ -1,0 +1,47 @@
+@import "../../../app.scss";
+
+.trader-icon {
+  @media only screen and (min-width: 768px) {
+    min-width: 100px;
+    width: 10vw;
+    max-width: 140px;
+    min-height: 100px;
+    height: 10vw;
+    max-height: 140px;
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    vertical-align: middle;
+    background-color: #242424;
+    img {
+      box-sizing: border-box;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 20px;
+    }
+  }
+  @media only screen and (max-width: 768px) {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    vertical-align: middle;
+    background-color: #242424;
+    img {
+      box-sizing: border-box;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 20px;
+    }
+  }
+}
+
+.loading-spinner {
+  margin: auto;
+  color: $tarkov-brown;
+}

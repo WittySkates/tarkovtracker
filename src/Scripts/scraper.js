@@ -44,7 +44,7 @@ const getUrls = async () => {
     let promises = [];
     $(".dealer-toggle").each((_idx, el) => {
       let image = $(el).children().attr("src");
-      image = image.replace(/(.*.png\/)(.*)/, (match, link) => {
+      image = image.replace(/(.*.png)(.*)/, (match, link) => {
         console.log(match, link);
         return link;
       });
@@ -52,7 +52,7 @@ const getUrls = async () => {
       _.set(res, title, { image });
     });
 
-    Object.keys(res).forEach(trader => {
+    Object.keys(res).forEach((trader) => {
       const path = `.${trader}-content > tbody > tr`;
       let title = "";
       $(path).each((_idx, el) => {
@@ -93,7 +93,7 @@ const getUrls = async () => {
                 rewards.push($(el).text().replace(/\n+/g, ""));
               });
               _.set(res, `${trader}.Quests.${title}.Rewards`, rewards);
-              _.set(res, `${trader}.Quests.${title}.isCompleted`, false);
+              // _.set(res, `${trader}.Quests.${title}.isCompleted`, false);
               break;
             default:
               break;

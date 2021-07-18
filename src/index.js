@@ -3,11 +3,14 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App.jsx";
 import reportWebVitals from "./reportWebVitals";
+import { TarkovProvider } from "./tarkovContext.js";
+
+const defaultValues = {};
 
 ReactDOM.render(
-  <React.StrictMode>
+  <TarkovProvider values={defaultValues}>
     <App />
-  </React.StrictMode>,
+  </TarkovProvider>,
   document.getElementById("root")
 );
 
