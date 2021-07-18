@@ -1,3 +1,11 @@
+/** @module scraper */
+
+// const firebase = require("firebase");
+// const _ = require("lodash");
+// const axios = require("axios");
+// const cheerio = require("cheerio");
+// const config = require("../config.js");
+
 import firebase from "firebase";
 import _ from "lodash";
 import axios from "axios";
@@ -7,18 +15,18 @@ import config from "../config.js";
 firebase.initializeApp(config);
 const database = firebase.database();
 
-const getPrior = async (res, trader, title, link) => {
+const getPriorNext = async (res, trader, title, link) => {
   try {
     const { data } = await axios.get(link);
     const $ = cheerio.load(data);
-    let prior = "";
+    const prior = [];
+    const next = [];
     $(".va-infobox-content").each((_idx, el) => {
       if (
         $(el)
           .text()
           .match(/(Previous:)(.*)/gs)
       ) {
-        const prior = [];
         const lisPr = $(el).children();
         $(lisPr).each((_idx, el) => {
           if ($(el).is("a")) {
@@ -27,8 +35,21 @@ const getPrior = async (res, trader, title, link) => {
         });
         _.set(res, `${trader}.Quests.${title}.Prior`, prior);
       }
+      if (
+        $(el)
+          .text()
+          .match(/(Leads to:)(.*)/gs)
+      ) {
+        const li = $(el).children();
+        $(li).each((_idx, el) => {
+          if ($(el).is("a")) {
+            next.push($(el).text());
+          }
+        });
+        _.set(res, `${trader}.Quests.${title}.Next`, next);
+      }
     });
-    return prior;
+    return;
   } catch (error) {
     throw error;
   }
@@ -45,14 +66,13 @@ const getUrls = async () => {
     $(".dealer-toggle").each((_idx, el) => {
       let image = $(el).children().attr("src");
       image = image.replace(/(.*.png)(.*)/, (match, link) => {
-        console.log(match, link);
         return link;
       });
       const title = $(el).attr("title");
       _.set(res, title, { image });
     });
 
-    Object.keys(res).forEach((trader) => {
+    Object.keys(res).forEach(trader => {
       const path = `.${trader}-content > tbody > tr`;
       let title = "";
       $(path).each((_idx, el) => {
@@ -71,8 +91,8 @@ const getUrls = async () => {
               _.set(res, `${trader}.Quests.${title}`, {});
               _.set(res, `${trader}.Quests.${title}.Link`, link);
 
-              const prior = getPrior(res, trader, title, link);
-              promises.push(prior);
+              const prom = getPriorNext(res, trader, title, link);
+              promises.push(prom);
 
               break;
             case 1:
