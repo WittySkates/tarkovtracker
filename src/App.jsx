@@ -9,10 +9,27 @@ import Traderbar from "./components/Traders/Traderbar";
 
 import "./App.css";
 // import 'bootstrap/dist/css/bootstrap.min.css';
+const database = firebase.database();
+
+const testingTree = async () => {
+  const traderQuests = await database
+    .ref("traderQuests")
+    .get()
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        return snapshot.val();
+      } else {
+        return null;
+      }
+    })
+    .catch((error) => {
+      console.log("Erroring getting trader tree" + error);
+    });
+  //console.log(traderTree);
+};
 
 function App() {
-  const database = firebase.database();
-
+  testingTree();
   const trader = {
     traderName: "Prapor",
     imageLink:

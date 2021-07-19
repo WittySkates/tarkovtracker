@@ -1,11 +1,4 @@
 /** @module scraper */
-
-// const firebase = require("firebase");
-// const _ = require("lodash");
-// const axios = require("axios");
-// const cheerio = require("cheerio");
-// const config = require("../config.js");
-
 import firebase from "firebase";
 import _ from "lodash";
 import axios from "axios";
@@ -72,7 +65,7 @@ const getUrls = async () => {
       _.set(res, title, { image });
     });
 
-    Object.keys(res).forEach(trader => {
+    Object.keys(res).forEach((trader) => {
       const path = `.${trader}-content > tbody > tr`;
       let title = "";
       $(path).each((_idx, el) => {
@@ -89,6 +82,7 @@ const getUrls = async () => {
                 "https://escapefromtarkov.fandom.com/" +
                 $(el).children().attr("href");
               _.set(res, `${trader}.Quests.${title}`, {});
+              _.set(res, `${trader}.Quests.${title}.Name`, title);
               _.set(res, `${trader}.Quests.${title}.Link`, link);
 
               const prom = getPriorNext(res, trader, title, link);
@@ -128,12 +122,64 @@ const getUrls = async () => {
   }
 };
 
+const findRoot = (quests, quest, prevQuest) => {
+  if (typeof quest == "undefined") {
+    return prevQuest.Name;
+  } else if (quest.Prior.length === 0) {
+    return quest.Name;
+  } else {
+    return findRoot(quests, quests[quest.Prior], quest);
+  }
+};
+
+const generateTraderTree = (traderTree) => {
+  const roots = {};
+  const traders = Object.keys(traderTree);
+  traders.forEach((trader) => {
+    const root = findRoot(
+      traderTree[trader].Quests,
+      traderTree[trader].Quests[Object.keys(traderTree[trader].Quests)[0]]
+    );
+    _.set(roots, trader, root);
+  });
+  console.log(roots);
+
+  // Resulting tree should resemble the below json
+  const tmp = {
+    Jaeger: {
+      trees: {
+        "Tarkov shooter 1": {
+          children: {
+            "Tarkov shooter 2": { children: { "Tarkov shooter 3": {} } },
+          },
+        },
+        "Acq uaintance": {
+          children: {
+            "Surv-thrifty": {
+              children: {
+                "Surv-zhivchik": {
+                  children: { "Surv-WoundedBeast": { children: {} } },
+                },
+              },
+            },
+            "surv-dangerous": { children: {} },
+          },
+        },
+      },
+    },
+  };
+};
+
 const push = async () => {
-  let data = await getUrls();
-  var timeout = 8000;
-  database.ref().child("traderTree").set(data);
-  setTimeout(() => {
-    firebase.app().delete();
-  }, timeout);
+  const traderQuests = await getUrls();
+  const traderTree = generateTraderTree(traderQuests);
+
+  // var timeout = 8000;
+  // database.ref().child("traderQuests").set(traderQuests);
+  // // database.ref().child("traderTree").set(traderTree);
+
+  // setTimeout(() => {
+  //   firebase.app().delete();
+  // }, timeout);
 };
 push();
