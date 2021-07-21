@@ -122,24 +122,34 @@ const getUrls = async () => {
   }
 };
 
-const findRoot = (quests, quest, prevQuest) => {
-  if (typeof quest == "undefined") {
-    return prevQuest.Name;
-  } else if (quest.Prior.length === 0) {
-    return quest.Name;
-  } else {
-    return findRoot(quests, quests[quest.Prior], quest);
+const findRoot = (quests) => {
+  const roots = [];
+  for (const [name, quest] of Object.entries(quests)) {
+    if (quest.Prior === undefined || quest.Prior.length === 0) {
+      roots.push(name);
+    } else {
+      let hasPrior = false;
+
+      quest.Prior.forEach((prior) => {
+        if (typeof quests[prior] != "undefined") {
+          hasPrior = true;
+        }
+      });
+      if (!hasPrior) {
+        roots.push(name);
+      }
+    }
   }
+  return roots;
 };
 
-const generateTraderTree = (traderTree) => {
+const getTree = (traderQuesrs, roots) => {};
+
+const generateTraderTree = (traderQuests) => {
   const roots = {};
-  const traders = Object.keys(traderTree);
+  const traders = Object.keys(traderQuests);
   traders.forEach((trader) => {
-    const root = findRoot(
-      traderTree[trader].Quests,
-      traderTree[trader].Quests[Object.keys(traderTree[trader].Quests)[0]]
-    );
+    const root = findRoot(traderQuests[trader].Quests);
     _.set(roots, trader, root);
   });
   console.log(roots);
