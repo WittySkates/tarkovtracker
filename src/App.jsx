@@ -43,14 +43,7 @@ function App() {
       <TopNav />
       <Traderbar trader={trader} />
       <TraderButton {...trader} />
-      {data && (
-        <Tree
-          data={data}
-          collapsible
-          orientation="vertical"
-          style={{ height: "100vh" }}
-        />
-      )}
+      {data && <Tree data={data} collapsible style={{ height: "100vh" }} />}
     </>
   );
 }
