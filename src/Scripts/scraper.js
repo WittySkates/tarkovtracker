@@ -57,7 +57,7 @@ const getUrls = async () => {
     const res = {};
     let promises = [];
     $(".dealer-toggle").each((_idx, el) => {
-      let image = $(el).children().attr("src");
+      let image = $(el).children().attr("data-src");
       image = image.replace(/(.*.png)(.*)/, (match, link) => {
         return link;
       });
@@ -65,7 +65,7 @@ const getUrls = async () => {
       _.set(res, title, { image });
     });
 
-    Object.keys(res).forEach((trader) => {
+    Object.keys(res).forEach(trader => {
       const path = `.${trader}-content > tbody > tr`;
       let title = "";
       $(path).each((_idx, el) => {
@@ -122,64 +122,62 @@ const getUrls = async () => {
   }
 };
 
-const findRoot = (quests, quest, prevQuest) => {
-  if (typeof quest == "undefined") {
-    return prevQuest.Name;
-  } else if (quest.Prior.length === 0) {
-    return quest.Name;
-  } else {
-    return findRoot(quests, quests[quest.Prior], quest);
+const findRoots = quests => {
+  const roots = [];
+  for (const [name, quest] of Object.entries(quests)) {
+    if (quest.Prior === undefined || quest.Prior.length === 0) {
+      roots.push(name);
+    } else {
+      let hasPrior = false;
+
+      quest.Prior.forEach(prior => {
+        if (typeof quests[prior] != "undefined") {
+          hasPrior = true;
+        }
+      });
+      if (!hasPrior) {
+        roots.push(name);
+      }
+    }
   }
+  return roots;
 };
 
-const generateTraderTree = (traderTree) => {
-  const roots = {};
-  const traders = Object.keys(traderTree);
-  traders.forEach((trader) => {
-    const root = findRoot(
-      traderTree[trader].Quests,
-      traderTree[trader].Quests[Object.keys(traderTree[trader].Quests)[0]]
-    );
-    _.set(roots, trader, root);
+// () -> () -> () -> () -> ***
+const getTree = (tree, roots, quests) => {
+  _.forEach(roots, questName => {
+    if (!quests[questName]?.Next) {
+      return;
+    }
+    const entry = { name: questName, children: [] };
+    getTree(entry.children, quests[questName].Next, quests);
+    tree.push(entry);
   });
-  console.log(roots);
+};
 
-  // Resulting tree should resemble the below json
-  const tmp = {
-    Jaeger: {
-      trees: {
-        "Tarkov shooter 1": {
-          children: {
-            "Tarkov shooter 2": { children: { "Tarkov shooter 3": {} } },
-          },
-        },
-        "Acq uaintance": {
-          children: {
-            "Surv-thrifty": {
-              children: {
-                "Surv-zhivchik": {
-                  children: { "Surv-WoundedBeast": { children: {} } },
-                },
-              },
-            },
-            "surv-dangerous": { children: {} },
-          },
-        },
-      },
-    },
-  };
+const generateTraderTree = traderQuests => {
+  const allTraderTrees = [];
+  const traders = Object.keys(traderQuests);
+  traders.forEach(trader => {
+    const roots = findRoots(traderQuests[trader].Quests);
+    const tree = [];
+    getTree(tree, roots, traderQuests[trader].Quests);
+    allTraderTrees.push({ name: trader, children: tree });
+    // _.set(allTraderTrees, trader, tree);
+  });
+  return allTraderTrees;
 };
 
 const push = async () => {
   const traderQuests = await getUrls();
   const traderTree = generateTraderTree(traderQuests);
+  const traderTreeString = JSON.stringify(traderTree);
+  var timeout = 8000;
+  database.ref().child("traderQuests").set(traderQuests);
+  database.ref().child("traderTree").set(traderTreeString);
 
-  // var timeout = 8000;
-  // database.ref().child("traderQuests").set(traderQuests);
-  // // database.ref().child("traderTree").set(traderTree);
-
-  // setTimeout(() => {
-  //   firebase.app().delete();
-  // }, timeout);
+  setTimeout(() => {
+    firebase.app().delete();
+  }, timeout);
 };
 push();
