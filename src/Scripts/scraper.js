@@ -149,10 +149,25 @@ const getTree = (tree, roots, quests) => {
     if (!quests[questName]?.Next) {
       return;
     }
-    const entry = { name: questName, children: [] };
+    const entry = {
+      name: questName,
+      attributes: {
+        Objectives: quests[questName].Objectives,
+        Rewards: quests[questName].Rewards,
+        type: quests[questName].Type,
+      },
+      children: [],
+    };
     getTree(entry.children, quests[questName].Next, quests);
     tree.push(entry);
   });
+};
+
+const removeDuplicatesHelper = (tree, visisted) => {};
+
+const removeDuplicates = tree => {
+  const visited = [];
+  removeDuplicatesHelper(tree, visited);
 };
 
 const generateTraderTree = traderQuests => {

@@ -1,7 +1,7 @@
+/* eslint-disable no-unused-vars */
 /** @module Auth */
-// Bullshit
+
 import React from "react";
-import _ from "lodash";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
@@ -22,10 +22,10 @@ const auth = firebase.auth();
 const database = firebase.database();
 const provider = new firebase.auth.GoogleAuthProvider();
 
-const SignIn = (setValue) => {
+const SignIn = setValue => {
   auth
     .signInWithPopup(provider)
-    .then((result) => {
+    .then(result => {
       /** @type {firebase.auth.OAuthCredential} */
       let credential = result.credential;
       // This gives you a Google Access Token. You can use it to access the Google API.
@@ -40,7 +40,7 @@ const SignIn = (setValue) => {
         email: user.email,
       });
     })
-    .catch((error) => {
+    .catch(error => {
       // Handle Errors here.
       let errorCode = error.code;
       let errorMessage = error.message;
@@ -52,14 +52,14 @@ const SignIn = (setValue) => {
   database
     .ref("traderTree")
     .get()
-    .then((snapshot) => {
+    .then(snapshot => {
       if (snapshot.exists()) {
         setValue("traderNames", Object.keys(snapshot.val()));
       } else {
         console.log("traderTree does not exist in the database");
       }
     })
-    .catch((error) => {
+    .catch(error => {
       console.log("Erroring getting traderTree" + error);
     });
 };

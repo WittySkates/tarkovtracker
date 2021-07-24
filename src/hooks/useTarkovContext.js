@@ -1,6 +1,6 @@
 /** @module useTarkovContext */
 
-import React, { useContext } from "react";
+import { useContext } from "react";
 import TarkovContext from "../tarkovContext";
 
 const useTarkovContext = () => {

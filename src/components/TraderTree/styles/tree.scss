@@ -1,0 +1,48 @@
+@import "../../../colors.scss";
+
+.tree-container {
+  height: 100vh;
+}
+.node__root > circle {
+  fill: $tarkov-brown;
+}
+
+.node__branch > circle {
+  fill: $tarkov-brown;
+}
+
+.node__leaf > circle {
+  fill: $tarkov-brown;
+  /* Let's also make the radius of leaf nodes larger */
+  // r: 40;
+}
+
+//Node Stuff
+.node-container {
+  height: 100px;
+  border: 1px solid black;
+  align-items: center;
+  background-color: $tarkov-brown;
+  border-radius: 20px;
+  text-align: center;
+  font-size: 30px;
+  position: relative;
+  margin-right: 10px;
+  margin-left: 10px;
+  color: white;
+}
+
+.collapse-button {
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  right: 0%;
+  border-radius: 20px;
+  background-color: transparent;
+  border: transparent;
+  color: white;
+}
+.rd3t-link {
+  stroke: white !important;
+  stroke-width: 2px;
+}

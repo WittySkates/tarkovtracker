@@ -1,16 +1,11 @@
-/** @module Trader */
+/** @module TraderButton */
 
 import React from "react";
-
 import Spinner from "react-bootstrap/Spinner";
 
-import useTarkovContext from "../../hooks/useTarkovContext";
-
-import "./styles/traderbutton.scss";
+import "./styles/traderbar.scss";
 
 const TraderButton = ({ traderName, imageLink, onClick }) => {
-  const { values } = useTarkovContext();
-  // console.log(values);
   return (
     <div className="trader-icon" onClick={onClick}>
       {imageLink ? (
