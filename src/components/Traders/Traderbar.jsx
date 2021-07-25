@@ -7,12 +7,20 @@ import TraderButton from "./TraderButton";
 import "./styles/traderbar.scss";
 
 const Traderbar = props => {
-  const { traderNames } = props;
+  const { traderNames, traderQuests, setCurrentTrader } = props;
   return (
     <div className="traderbar">
-      What happened to the dark background
       {traderNames &&
-        traderNames.map(name => <TraderButton traderName={name} />)}
+        traderNames.map((name, index) => (
+          <TraderButton
+            key={name}
+            index={index}
+            traderName={name}
+            onClick={() => setCurrentTrader(index)}
+            imageLink={traderQuests[name]?.image}
+            tabIndex={index}
+          />
+        ))}
     </div>
   );
 };

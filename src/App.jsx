@@ -2,28 +2,30 @@ import React, { useState, useEffect } from "react";
 import _ from "lodash";
 import firebase from "firebase/app";
 import "firebase/database";
-import { TopNav, TraderTree, TraderButton, Traderbar } from "./components";
+import { TopNav, TraderTree, Traderbar } from "./components";
 
 import "./App.scss";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 const database = firebase.database();
 
 const App = () => {
-  const [data, setData] = useState("");
+  const [traderTrees, setTraderTrees] = useState("");
   const [traderNames, setTraderNames] = useState([]);
-  const trader = {
-    traderName: "Prapor",
-    imageLink:
-      "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/6/6b/Prapor_Portrait.png",
-  };
+  const [traderQuests, setTraderQuests] = useState({});
+  const [currentTrader, setCurrentTrader] = useState(0);
+
   useEffect(() => {
     (async () => {
-      const traderTree = await database
+      await database
         .ref("traderTree")
         .get()
         .then(snapshot => {
           if (snapshot.exists()) {
-            return snapshot.val();
+            const tree = JSON.parse(snapshot.val());
+            setTraderTrees(tree);
+            setTraderNames(
+              _.reduce(tree, (acc, entry) => [...acc, entry.name], [])
+            );
           } else {
             return null;
           }
@@ -31,17 +33,31 @@ const App = () => {
         .catch(error => {
           console.log("Erroring getting trader tree" + error);
         });
-      setData(JSON.parse(traderTree));
-      setTraderNames(_.reduce(data, (acc, entry) => [...acc, entry.name], []));
+      await database
+        .ref("traderQuests")
+        .get()
+        .then(snapshot => {
+          if (snapshot.exists()) {
+            setTraderQuests(snapshot.val());
+          } else {
+            return null;
+          }
+        })
+        .catch(error => {
+          console.log("Erroring getting trader quests" + error);
+        });
     })();
   }, []);
 
   return (
     <>
       <TopNav />
-      <Traderbar traderNames={traderNames} />
-      <TraderButton {...trader} />
-      <TraderTree data={data} />
+      <Traderbar
+        traderNames={traderNames}
+        traderQuests={traderQuests}
+        setCurrentTrader={setCurrentTrader}
+      />
+      <TraderTree data={traderTrees[currentTrader]} />
     </>
   );
 };

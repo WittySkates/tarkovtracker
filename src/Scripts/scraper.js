@@ -163,13 +163,6 @@ const getTree = (tree, roots, quests) => {
   });
 };
 
-const removeDuplicatesHelper = (tree, visisted) => {};
-
-const removeDuplicates = tree => {
-  const visited = [];
-  removeDuplicatesHelper(tree, visited);
-};
-
 const generateTraderTree = traderQuests => {
   const allTraderTrees = [];
   const traders = Object.keys(traderQuests);

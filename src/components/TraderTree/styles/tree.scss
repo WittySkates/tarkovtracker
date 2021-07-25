@@ -1,28 +1,52 @@
 @import "../../../colors.scss";
 
 .tree-container {
-  height: 100vh;
+  height: 100%;
 }
+
 .node__root > circle {
-  fill: $tarkov-brown;
+  // fill: $tarkov-brown;
 }
 
 .node__branch > circle {
-  fill: $tarkov-brown;
+  // fill: $tarkov-brown;
 }
 
 .node__leaf > circle {
-  fill: $tarkov-brown;
+  // fill: $tarkov-brown;
   /* Let's also make the radius of leaf nodes larger */
   // r: 40;
 }
 
 //Node Stuff
-.node-container {
-  height: 100px;
-  border: 1px solid black;
-  align-items: center;
+.Prapor {
   background-color: $tarkov-brown;
+}
+.Therapist {
+  background-color: $tarkov-brown;
+}
+.Skier {
+  background-color: $tarkov-brown;
+}
+.Peacekeeper {
+  background-color: $tarkov-brown;
+}
+.Mechanic {
+  background-color: $tarkov-brown;
+}
+.Ragman {
+  background-color: $tarkov-brown;
+}
+.Jaeger {
+  background-color: $tarkov-brown;
+}
+.Fence {
+  background-color: $tarkov-brown;
+}
+
+.node-container {
+  height: 200px;
+  align-items: center;
   border-radius: 20px;
   text-align: center;
   font-size: 30px;
@@ -30,17 +54,21 @@
   margin-right: 10px;
   margin-left: 10px;
   color: white;
+  padding: 10px;
 }
 
 .collapse-button {
-  width: 100%;
+  // width: 100%;
+  // right: 0%;
+  // height: 30px;
   position: absolute;
-  bottom: 0px;
-  right: 0%;
-  border-radius: 20px;
-  background-color: transparent;
-  border: transparent;
-  color: white;
+  // background-color: blue;
+  // color: blue;
+  // bottom: -15px;
+  // right: 45%;
+  // border-radius: 500px;
+  // border: transparent;
+  // color: white;
 }
 .rd3t-link {
   stroke: white !important;

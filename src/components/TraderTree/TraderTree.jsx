@@ -10,33 +10,33 @@ const TraderTree = props => {
   const [translate, containerRef] = useCenteredTree();
 
   const { data } = props;
-  const nodeSize = { x: 300, y: 200 };
+  const nodeSize = { x: 400, y: 375 };
   const foreignObjectProps = {
     width: nodeSize.x,
     height: nodeSize.y,
-    x: -150,
-    y: -50,
+    x: -200,
+    y: -100,
   };
+
   return (
-    <>
+    <div className="tree-container" ref={containerRef}>
       {data && (
-        <div className="tree-container" ref={containerRef}>
-          <Tree
-            data={data}
-            translate={translate}
-            renderCustomNodeElement={props =>
-              Node({ ...props, foreignObjectProps })
-            }
-            nodeSize={nodeSize}
-            orientation="vertical"
-            rootNodeClassName="node__root"
-            branchNodeClassName="node__branch"
-            leafNodeClassName="node__leaf"
-            pathFunc="step"
-          />
-        </div>
+        <Tree
+          data={data}
+          translate={translate}
+          renderCustomNodeElement={nodeProps =>
+            Node({ ...nodeProps, foreignObjectProps, traderName: data.name })
+          }
+          nodeSize={nodeSize}
+          orientation="vertical"
+          rootNodeClassName="node__root"
+          branchNodeClassName="node__branch"
+          leafNodeClassName="node__leaf"
+          pathFunc="step"
+          zoom="0.4"
+        />
       )}
-    </>
+    </div>
   );
 };
 
