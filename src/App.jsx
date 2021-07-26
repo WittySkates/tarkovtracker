@@ -55,6 +55,7 @@ const App = () => {
       <Traderbar
         traderNames={traderNames}
         traderQuests={traderQuests}
+        currentTrader={currentTrader}
         setCurrentTrader={setCurrentTrader}
       />
       <TraderTree data={traderTrees[currentTrader]} />

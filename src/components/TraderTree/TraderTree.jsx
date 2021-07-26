@@ -4,11 +4,11 @@ import React from "react";
 import Tree from "react-d3-tree";
 import Node from "./Node";
 import { useCenteredTree } from "./helpers";
+
 import "./styles/tree.scss";
 
 const TraderTree = props => {
   const [translate, containerRef] = useCenteredTree();
-
   const { data } = props;
   const nodeSize = { x: 400, y: 375 };
   const foreignObjectProps = {
@@ -22,6 +22,7 @@ const TraderTree = props => {
     <div className="tree-container" ref={containerRef}>
       {data && (
         <Tree
+          key={data.name}
           data={data}
           translate={translate}
           renderCustomNodeElement={nodeProps =>
@@ -33,7 +34,7 @@ const TraderTree = props => {
           branchNodeClassName="node__branch"
           leafNodeClassName="node__leaf"
           pathFunc="step"
-          zoom="0.4"
+          zoom="0.3"
         />
       )}
     </div>
