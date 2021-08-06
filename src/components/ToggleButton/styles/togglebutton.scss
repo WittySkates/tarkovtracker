@@ -1,0 +1,17 @@
+@import "../../../colors.scss";
+
+.toggle-button {
+  height: 40px;
+  width: 80px;
+  padding: 0px;
+  border-radius: 30px;
+  background-color: rgb(214, 214, 214);
+  border: none;
+  border-radius: 150px 150px 0 0;
+  svg {
+    height: 30px;
+    width: 30px;
+    position: relative;
+    bottom: 10px;
+  }
+}

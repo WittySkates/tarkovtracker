@@ -53,22 +53,14 @@
   position: relative;
   margin-right: 10px;
   margin-left: 10px;
-  color: white;
+  color: rgb(235, 235, 235);
   padding: 10px;
 }
 
-.collapse-button {
-  // width: 100%;
-  // right: 0%;
-  // height: 30px;
+.toggle-button {
   position: absolute;
-  // background-color: blue;
-  // color: blue;
-  // bottom: -15px;
-  // right: 45%;
-  // border-radius: 500px;
-  // border: transparent;
-  // color: white;
+  top: 80%;
+  left: 39.6%;
 }
 .rd3t-link {
   stroke: white !important;

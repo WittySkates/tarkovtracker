@@ -25,9 +25,13 @@ const TraderTree = props => {
           key={data.name}
           data={data}
           translate={translate}
-          renderCustomNodeElement={nodeProps =>
-            Node({ ...nodeProps, foreignObjectProps, traderName: data.name })
-          }
+          renderCustomNodeElement={nodeProps => (
+            <Node
+              {...nodeProps}
+              foreignObjectProps={foreignObjectProps}
+              traderName={data.name}
+            />
+          )}
           nodeSize={nodeSize}
           orientation="vertical"
           rootNodeClassName="node__root"
@@ -35,6 +39,7 @@ const TraderTree = props => {
           leafNodeClassName="node__leaf"
           pathFunc="step"
           zoom="0.3"
+          enableLegacyTransitions="True"
         />
       )}
     </div>

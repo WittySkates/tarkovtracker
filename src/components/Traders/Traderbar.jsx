@@ -1,7 +1,6 @@
 /** @module Traderbar */
 
 import React from "react";
-import _ from "lodash";
 import TraderButton from "./TraderButton";
 
 import "./styles/traderbar.scss";

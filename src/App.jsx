@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import _ from "lodash";
 import firebase from "firebase/app";
 import "firebase/database";
-import { TopNav, TraderTree, Traderbar } from "./components";
+import { TopNav, TraderTree, Traderbar, ToggleButton } from "./components";
 
 import "./App.scss";
 // import 'bootstrap/dist/css/bootstrap.min.css';
