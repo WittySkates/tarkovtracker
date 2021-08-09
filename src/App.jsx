@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import _ from "lodash";
 import firebase from "firebase/app";
 import "firebase/database";
-import { TopNav, TraderTree, Traderbar, ToggleButton } from "./components";
-
+import { TopNav, TraderTree, Traderbar } from "./components";
 import "./App.scss";
-// import 'bootstrap/dist/css/bootstrap.min.css';
+
 const database = firebase.database();
 
 const App = () => {
+  const weekInMS = 604800000;
   const [traderTrees, setTraderTrees] = useState("");
   const [traderNames, setTraderNames] = useState([]);
   const [traderQuests, setTraderQuests] = useState({});
@@ -16,36 +16,49 @@ const App = () => {
 
   useEffect(() => {
     (async () => {
-      await database
-        .ref("traderTree")
-        .get()
-        .then(snapshot => {
-          if (snapshot.exists()) {
-            const tree = JSON.parse(snapshot.val());
-            setTraderTrees(tree);
-            setTraderNames(
-              _.reduce(tree, (acc, entry) => [...acc, entry.name], [])
-            );
-          } else {
-            return null;
-          }
-        })
-        .catch(error => {
-          console.log("Erroring getting trader tree" + error);
-        });
-      await database
-        .ref("traderQuests")
-        .get()
-        .then(snapshot => {
-          if (snapshot.exists()) {
-            setTraderQuests(snapshot.val());
-          } else {
-            return null;
-          }
-        })
-        .catch(error => {
-          console.log("Erroring getting trader quests" + error);
-        });
+      if (
+        !localStorage.getItem("tarkov-tree") ||
+        !localStorage.getItem("tarkov-traderQuests") ||
+        Date.now() - Number(localStorage.getItem("tarkov-time")) > weekInMS
+      ) {
+        localStorage.setItem("tarkov-time", Date.now().toString(10));
+        await database
+          .ref("traderTree")
+          .get()
+          .then(snapshot => {
+            if (snapshot.exists()) {
+              localStorage.setItem("tarkov-tree", snapshot.val());
+            } else {
+              return null;
+            }
+          })
+          .catch(error => {
+            console.log("Erroring getting trader tree" + error);
+          });
+        await database
+          .ref("traderQuests")
+          .get()
+          .then(snapshot => {
+            if (snapshot.exists()) {
+              localStorage.setItem(
+                "tarkov-traderQuests",
+                JSON.stringify(snapshot.val())
+              );
+            } else {
+              return null;
+            }
+          })
+          .catch(error => {
+            console.log("Erroring getting trader quests" + error);
+          });
+      }
+      const traderQuests = JSON.parse(
+        localStorage.getItem("tarkov-traderQuests")
+      );
+      const trees = JSON.parse(localStorage.getItem("tarkov-tree"));
+      setTraderTrees(trees);
+      setTraderNames(_.reduce(trees, (acc, entry) => [...acc, entry.name], []));
+      setTraderQuests(traderQuests);
     })();
   }, []);
 
