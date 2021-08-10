@@ -15,10 +15,7 @@ const TopNav = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#quest-tree">Quest Tree</Nav.Link>
-            <Nav.Link href="#ammo">Ammo Chart</Nav.Link>
-          </Nav>
+          <Nav className="me-auto"></Nav>
           <Nav style={{ paddingRight: "10px" }}>
             <Auth />
           </Nav>

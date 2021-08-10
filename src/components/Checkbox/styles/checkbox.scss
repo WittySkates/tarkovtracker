@@ -4,4 +4,9 @@
   stroke: none;
   fill: none;
   stroke-width: 0;
+  & svg {
+    width: 60px;
+    height: 60px;
+    border-radius: 20px;
+  }
 }

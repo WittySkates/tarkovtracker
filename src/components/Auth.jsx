@@ -16,58 +16,56 @@ import useTarkovContext from "../hooks/useTarkovContext";
 
 // CSS
 import "bootstrap/dist/css/bootstrap.min.css";
-
 firebase.initializeApp(config);
-const auth = firebase.auth();
-const database = firebase.database();
-const provider = new firebase.auth.GoogleAuthProvider();
-
-const SignIn = setValue => {
-  auth
-    .signInWithPopup(provider)
-    .then(result => {
-      /** @type {firebase.auth.OAuthCredential} */
-      let credential = result.credential;
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      let token = credential.accessToken;
-      // The signed-in user info.
-      let user = result.user;
-      setValue("user", user);
-
-      database.ref("users/" + user.uid).update({
-        uid: user.uid,
-        name: user.displayName,
-        email: user.email,
-      });
-    })
-    .catch(error => {
-      // Handle Errors here.
-      let errorCode = error.code;
-      let errorMessage = error.message;
-      // The email of the user's account used.
-      let email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      let credential = error.credential;
-    });
-  database
-    .ref("traderTree")
-    .get()
-    .then(snapshot => {
-      if (snapshot.exists()) {
-        setValue("traderNames", Object.keys(snapshot.val()));
-      } else {
-        console.log("traderTree does not exist in the database");
-      }
-    })
-    .catch(error => {
-      console.log("Erroring getting traderTree" + error);
-    });
-};
 
 const Auth = () => {
+  const auth = firebase.auth();
+  const database = firebase.database();
+  const provider = new firebase.auth.GoogleAuthProvider();
   const [user, loading, error] = useAuthState(auth);
   const { setValue } = useTarkovContext();
 
+  const SignIn = setValue => {
+    auth
+      .signInWithPopup(provider)
+      .then(result => {
+        /** @type {firebase.auth.OAuthCredential} */
+        let credential = result.credential;
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        let token = credential.accessToken;
+        // The signed-in user info.
+        let user = result.user;
+        setValue("user", user);
+
+        database.ref("users/" + user.uid).update({
+          uid: user.uid,
+          name: user.displayName,
+          email: user.email,
+        });
+      })
+      .catch(error => {
+        // Handle Errors here.
+        let errorCode = error.code;
+        let errorMessage = error.message;
+        // The email of the user's account used.
+        let email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        let credential = error.credential;
+      });
+    database
+      .ref("traderTree")
+      .get()
+      .then(snapshot => {
+        if (snapshot.exists()) {
+          setValue("traderNames", Object.keys(snapshot.val()));
+        } else {
+          console.log("traderTree does not exist in the database");
+        }
+      })
+      .catch(error => {
+        console.log("Erroring getting traderTree" + error);
+      });
+  };
   if (error) {
     console.log(error);
     return (
@@ -108,17 +106,3 @@ const Auth = () => {
 };
 
 export default Auth;
-
-// const traderTree = await database
-//   .ref("traderTree")
-//   .get()
-//   .then((snapshot) => {
-//     if (snapshot.exists()) {
-//       return snapshot.val();
-//     } else {
-//       return null;
-//     }
-//   })
-//   .catch((error) => {
-//     console.log("Erroring getting trader tree" + error);
-//   });

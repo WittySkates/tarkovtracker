@@ -155,6 +155,7 @@ const getTree = (tree, roots, quests) => {
         Objectives: quests[questName].Objectives,
         Rewards: quests[questName].Rewards,
         type: quests[questName].Type,
+        link: quests[questName].Link,
       },
       children: [],
     };

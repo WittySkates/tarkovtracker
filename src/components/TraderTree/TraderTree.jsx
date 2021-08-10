@@ -1,6 +1,9 @@
 /** @module TraderTree */
 
 import React from "react";
+import firebase from "firebase/app";
+import "firebase/database";
+import "firebase/auth";
 import Tree from "react-d3-tree";
 import Node from "./Node";
 import { useCenteredTree } from "./helpers";
@@ -15,8 +18,11 @@ const TraderTree = props => {
     width: nodeSize.x,
     height: nodeSize.y,
     x: -200,
-    y: -100,
+    y: -115,
   };
+
+  const database = firebase.database();
+  const uid = firebase.auth()?.currentUser?.uid;
 
   return (
     <div className="tree-container" ref={containerRef}>
@@ -30,6 +36,8 @@ const TraderTree = props => {
               {...nodeProps}
               foreignObjectProps={foreignObjectProps}
               traderName={data.name}
+              database={database}
+              uid={uid}
             />
           )}
           nodeSize={nodeSize}
@@ -38,7 +46,7 @@ const TraderTree = props => {
           branchNodeClassName="node__branch"
           leafNodeClassName="node__leaf"
           pathFunc="step"
-          zoom="0.3"
+          zoom="0.4"
           enableLegacyTransitions="True"
         />
       )}

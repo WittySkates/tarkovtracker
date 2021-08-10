@@ -5,6 +5,7 @@ import Traderbar from "./Traders/Traderbar";
 import TraderTree from "./TraderTree/TraderTree";
 import ToggleButton from "./ToggleButton/ToggleButton";
 import Checkbox from "./Checkbox/Checkbox";
+import * as Icons from "./Icons/Icons";
 
 export {
   Auth,
@@ -14,4 +15,5 @@ export {
   TraderTree,
   ToggleButton,
   Checkbox,
+  Icons,
 };
