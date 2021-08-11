@@ -5,8 +5,9 @@ import "./styles/tree.scss";
 import ToggleButton from "../ToggleButton/ToggleButton";
 import Checkbox from "../Checkbox/Checkbox";
 import { HyperLinkIcon } from "../Icons/Icons";
+import { getAllPreviousQuests } from "./utils/treeUtils";
 
-const Node = props => {
+const Node = (props) => {
   const {
     nodeDatum,
     toggleNode,
@@ -22,7 +23,7 @@ const Node = props => {
   );
 
   useEffect(() => {
-    nodeRef.on("value", snapshot => {
+    nodeRef.on("value", (snapshot) => {
       const data = snapshot.val();
       if (data !== null && data !== undefined) setIsChecked(data);
     });
@@ -30,8 +31,11 @@ const Node = props => {
 
   const updateDatabase = () => {
     if (uid) {
-      const prev = [];
+      const priors = {};
+      getAllPreviousQuests(nodeDatum.name, traderName, priors);
+      // console.log(priors);
       if (!isChecked) {
+        database.ref(`users/${uid}/completedQuests`).update(priors);
       }
       database.ref(`users/${uid}/completedQuests`).update({
         [nodeDatum.name]: !isChecked,
