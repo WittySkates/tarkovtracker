@@ -12,6 +12,7 @@
     "bootstrap": "^5.0.2",
     "cheerio": "^1.0.0-rc.10",
     "firebase": "^8.7.1",
+    "firebase-admin": "^9.11.0",
     "firebaseui": "^4.8.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",

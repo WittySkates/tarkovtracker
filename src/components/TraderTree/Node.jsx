@@ -1,6 +1,6 @@
 /** @module Node */
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./styles/tree.scss";
 import ToggleButton from "../ToggleButton/ToggleButton";
 import Checkbox from "../Checkbox/Checkbox";
@@ -15,11 +15,26 @@ const Node = props => {
     database,
     uid,
   } = props;
+  const [isChecked, setIsChecked] = useState(false);
+
+  const nodeRef = database.ref(
+    `users/${uid}/completedQuests/${nodeDatum.name}`
+  );
+
+  useEffect(() => {
+    nodeRef.on("value", snapshot => {
+      const data = snapshot.val();
+      if (data !== null && data !== undefined) setIsChecked(data);
+    });
+  }, [nodeRef]);
 
   const updateDatabase = () => {
     if (uid) {
-      database.ref("users/" + uid).update({
-        completedQuest: nodeDatum.name,
+      const prev = [];
+      if (!isChecked) {
+      }
+      database.ref(`users/${uid}/completedQuests`).update({
+        [nodeDatum.name]: !isChecked,
       });
     }
   };
@@ -32,7 +47,12 @@ const Node = props => {
           <div className={`node-container ${traderName}`}>
             <p>{nodeDatum.name}</p>
             {nodeDatum.attributes?.Objectives.length > 0 && (
-              <Checkbox onChange={() => updateDatabase()} />
+              <Checkbox
+                isChecked={isChecked}
+                onChange={() => {
+                  updateDatabase();
+                }}
+              />
             )}
             {nodeDatum.children.length > 0 && (
               <ToggleButton

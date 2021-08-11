@@ -19,7 +19,7 @@ const useCheckboxStyles = makeStyles(() => ({
 }));
 
 const Checkbox = props => {
-  const { label, onChange } = props;
+  const { label, onChange, isChecked } = props;
   const checkboxClasses = useCheckboxStyles();
   const labelClasses = uselabelStyles();
   return (
@@ -31,6 +31,7 @@ const Checkbox = props => {
       control={
         <MUICheckbox
           className="checkbox-component"
+          checked={isChecked}
           onChange={onChange}
           classes={checkboxClasses}
         />

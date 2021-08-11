@@ -1,12 +1,15 @@
 /** @module scraper */
-import firebase from "firebase";
+import admin from "firebase-admin";
 import _ from "lodash";
 import axios from "axios";
 import cheerio from "cheerio";
-import config from "../config.js";
+import { adminConfig } from "../config.js";
 
-firebase.initializeApp(config);
-const database = firebase.database();
+admin.initializeApp({
+  credential: admin.credential.cert(adminConfig),
+  databaseURL: "https://trackingtarkov-default-rtdb.firebaseio.com",
+});
+const database = admin.database();
 
 const getPriorNext = async (res, trader, title, link) => {
   try {
@@ -186,7 +189,7 @@ const push = async () => {
   database.ref().child("traderTree").set(traderTreeString);
 
   setTimeout(() => {
-    firebase.app().delete();
+    admin.app().delete();
   }, timeout);
 };
 push();
