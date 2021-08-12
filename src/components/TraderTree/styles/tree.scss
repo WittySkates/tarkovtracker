@@ -5,7 +5,12 @@
 }
 
 .node-obj {
-  cursor: default;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  &:active {
+    cursor: grabbing;
+  }
 }
 
 .node__root > circle {
@@ -50,7 +55,9 @@
 
 .node-container {
   cursor: default;
-
+  &:active {
+    cursor: grabbing;
+  }
   height: 200px;
   align-items: center;
   border-radius: 10px;
@@ -80,11 +87,12 @@
 }
 
 .link-icon {
-  width: 50px;
+  width: 60px;
   position: absolute;
   right: 15px;
-  bottom: 15px;
-  fill: transparent;
-  stroke-width: 1;
+  top: 132px;
+  fill: rgba(0, 0, 0, 0.8);
+  stroke-width: 3;
+  // stroke: #000000cc;
   cursor: pointer;
 }

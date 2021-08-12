@@ -18,3 +18,26 @@ export const HyperLinkIcon = ({ className, onClick }) => (
     </g>
   </svg>
 );
+
+export const PopoutIcon = ({ className, onClick }) => (
+  <svg
+    className={className}
+    onClick={onClick}
+    xmlns="http://www.w3.org/2000/svg"
+    data-name="Layer 1"
+    viewBox="0 0 100 125"
+    x="0px"
+    y="0px"
+  >
+    <g data-name="Group">
+      <path
+        data-name="Path"
+        d="M88.7,12.7v-.4h-.1l-.6-.6H65.1a2,2,0,0,0,0,4H81.9L42.6,54.6a2,2,0,1,0,2.8,2.8L84.8,18.1V34.9a2,2,0,0,0,4,0V13.2a2,2,0,0,0,0-.4Z"
+      />
+      <path
+        data-name="Path"
+        d="M21.2,88.8H68.6a10,10,0,0,0,10-10V50.5a2,2,0,0,0-4,0V78.8a6,6,0,0,1-6,6H21.2a6,6,0,0,1-6-6V31.4a6,6,0,0,1,6-6H49.5a2,2,0,0,0,0-4H21.2a10,10,0,0,0-10,10V78.8A10,10,0,0,0,21.2,88.8Z"
+      />
+    </g>
+  </svg>
+);

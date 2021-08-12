@@ -4,10 +4,12 @@ import React, { useState, useEffect } from "react";
 import "./styles/tree.scss";
 import ToggleButton from "../ToggleButton/ToggleButton";
 import Checkbox from "../Checkbox/Checkbox";
-import { HyperLinkIcon } from "../Icons/Icons";
+import SignInPopup from "../Popups/SignInPopup";
+import { PopoutIcon } from "../Icons/Icons";
 import { getAllPreviousQuests } from "./utils/treeUtils";
+import QuestPopup from "../Popups/QuestPopup";
 
-const Node = (props) => {
+const Node = props => {
   const {
     nodeDatum,
     toggleNode,
@@ -17,13 +19,20 @@ const Node = (props) => {
     uid,
   } = props;
   const [isChecked, setIsChecked] = useState(false);
+  const [isSignInDialogOpen, setIsSignInDialogOpen] = useState(false);
+  const [isQuestDialogOpen, setIsQuestDialogOpen] = useState(false);
 
   const nodeRef = database.ref(
     `users/${uid}/completedQuests/${nodeDatum.name}`
   );
 
   useEffect(() => {
-    nodeRef.on("value", (snapshot) => {
+    if (uid && isSignInDialogOpen) setIsSignInDialogOpen(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uid]);
+
+  useEffect(() => {
+    nodeRef.on("value", snapshot => {
       const data = snapshot.val();
       if (data !== null && data !== undefined) setIsChecked(data);
     });
@@ -45,8 +54,6 @@ const Node = (props) => {
   return (
     <>
       <g>
-        {/* `foreignObject` requires width & height to be explicitly set. */}
-
         <foreignObject className="node-obj" {...foreignObjectProps}>
           <div className={`node-container ${traderName}`}>
             <p>{nodeDatum.name}</p>
@@ -54,6 +61,9 @@ const Node = (props) => {
               <Checkbox
                 isChecked={isChecked}
                 onChange={() => {
+                  if (!uid) {
+                    setIsSignInDialogOpen(true);
+                  }
                   updateDatabase();
                 }}
               />
@@ -66,11 +76,21 @@ const Node = (props) => {
               />
             )}
             {nodeDatum?.attributes?.link && (
-              <HyperLinkIcon
-                onClick={() => window.open(nodeDatum?.attributes?.link)}
+              <PopoutIcon
+                onClick={() => setIsQuestDialogOpen(true)}
                 className="link-icon"
               />
             )}
+            <QuestPopup
+              title={nodeDatum.name}
+              text="hello world"
+              isOpen={isQuestDialogOpen}
+              handleClose={() => setIsQuestDialogOpen(false)}
+            />
+            <SignInPopup
+              isOpen={isSignInDialogOpen}
+              handleClose={() => setIsSignInDialogOpen(false)}
+            />
           </div>
         </foreignObject>
       </g>

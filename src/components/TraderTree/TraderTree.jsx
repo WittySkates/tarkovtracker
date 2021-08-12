@@ -10,7 +10,7 @@ import { useCenteredTree } from "./utils/helpers";
 
 import "./styles/tree.scss";
 
-const TraderTree = (props) => {
+const TraderTree = props => {
   const [translate, containerRef] = useCenteredTree();
   const [userId, setUserId] = useState("");
   const { data } = props;
@@ -24,7 +24,7 @@ const TraderTree = (props) => {
 
   const database = firebase.database();
   const auth = firebase.auth();
-  auth.onAuthStateChanged((user) => setUserId(user?.uid));
+  auth.onAuthStateChanged(user => setUserId(user?.uid));
 
   return (
     <div className="tree-container" ref={containerRef}>
@@ -33,7 +33,7 @@ const TraderTree = (props) => {
           key={data.name}
           data={data}
           translate={translate}
-          renderCustomNodeElement={(nodeProps) => (
+          renderCustomNodeElement={nodeProps => (
             <Node
               {...nodeProps}
               foreignObjectProps={foreignObjectProps}

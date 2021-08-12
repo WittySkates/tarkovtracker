@@ -83,25 +83,22 @@ const Auth = () => {
   }
   if (user) {
     return (
-      <>
-        <Button
-          variant="outline-danger"
-          onClick={() => {
-            setValue("user", null);
-            auth.signOut();
-          }}
-        >
-          Sign Out
-        </Button>
-      </>
+      <Button
+        className="tarkov-auth-signout"
+        variant="outline-danger"
+        onClick={() => {
+          setValue("user", null);
+          auth.signOut();
+        }}
+      >
+        Sign Out
+      </Button>
     );
   }
   return (
-    <>
-      <Button variant="primary" onClick={() => SignIn(setValue)}>
-        Sign In With Google
-      </Button>
-    </>
+    <Button variant="primary" onClick={() => SignIn(setValue)}>
+      Sign In With Google
+    </Button>
   );
 };
 
