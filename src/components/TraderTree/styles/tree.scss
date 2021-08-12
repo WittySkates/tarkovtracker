@@ -96,3 +96,29 @@
   // stroke: #000000cc;
   cursor: pointer;
 }
+
+.checkall-icon {
+  width: 60px;
+  position: absolute;
+  right: 15px;
+  top: 132px;
+  fill: rgba(0, 0, 0, 0.8);
+  stroke-width: 0;
+  // stroke: #000000cc;
+  cursor: pointer;
+}
+
+.uncheckall-icon {
+  width: 50px;
+  position: absolute;
+  left: 15px;
+  top: 137px;
+  fill: rgba(0, 0, 0, 0.8);
+  stroke-width: 1;
+  // stroke: #000000cc;
+  cursor: pointer;
+}
+
+.disabled {
+  fill: rgba(0, 0, 0, 0.2);
+}

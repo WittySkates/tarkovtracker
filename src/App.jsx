@@ -8,7 +8,7 @@ import "./App.scss";
 const database = firebase.database();
 
 const App = () => {
-  const weekInMS = 604800000;
+  const dayInMS = 86400000;
   const [traderTrees, setTraderTrees] = useState("");
   const [traderNames, setTraderNames] = useState([]);
   const [traderQuests, setTraderQuests] = useState({});
@@ -19,26 +19,26 @@ const App = () => {
       if (
         !localStorage.getItem("tarkov-tree") ||
         !localStorage.getItem("tarkov-traderQuests") ||
-        Date.now() - Number(localStorage.getItem("tarkov-time")) > weekInMS
+        Date.now() - Number(localStorage.getItem("tarkov-time")) > 3 * dayInMS
       ) {
         localStorage.setItem("tarkov-time", Date.now().toString(10));
         await database
           .ref("traderTree")
           .get()
-          .then(snapshot => {
+          .then((snapshot) => {
             if (snapshot.exists()) {
               localStorage.setItem("tarkov-tree", snapshot.val());
             } else {
               return null;
             }
           })
-          .catch(error => {
+          .catch((error) => {
             console.log("Erroring getting trader tree" + error);
           });
         await database
           .ref("traderQuests")
           .get()
-          .then(snapshot => {
+          .then((snapshot) => {
             if (snapshot.exists()) {
               localStorage.setItem(
                 "tarkov-traderQuests",
@@ -48,7 +48,7 @@ const App = () => {
               return null;
             }
           })
-          .catch(error => {
+          .catch((error) => {
             console.log("Erroring getting trader quests" + error);
           });
       }
@@ -71,7 +71,10 @@ const App = () => {
         currentTrader={currentTrader}
         setCurrentTrader={setCurrentTrader}
       />
-      <TraderTree data={traderTrees[currentTrader]} />
+      <TraderTree
+        traderData={traderTrees[currentTrader]}
+        trader={traderNames[currentTrader]}
+      />
     </>
   );
 };
