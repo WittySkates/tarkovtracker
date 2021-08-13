@@ -8,6 +8,9 @@
   background-color: $tarkov-white;
   border: none;
   border-radius: 150px 150px 0 0;
+  &:hover {
+    background-color: #bbbbbb;
+  }
   svg {
     height: 30px;
     width: 30px;

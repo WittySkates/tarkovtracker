@@ -11,7 +11,9 @@ const uselabelStyles = makeStyles(() => ({
 }));
 
 const useCheckboxStyles = makeStyles(() => ({
-  root: { "&:hover": { backgroundColor: "transparent" } },
+  root: {
+    "&:hover": { backgroundColor: "transparent", color: "rgba(0,0,0,0.7)" },
+  },
   checked: {
     color: "rgba(0,0,0,0.8) !important",
     "&:hover": { backgroundColor: "transparent !important" },
