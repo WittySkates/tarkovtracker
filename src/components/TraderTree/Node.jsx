@@ -11,7 +11,7 @@ import QuestPopup from "../Popups/QuestPopup";
 import QuestCount from "../QuestCount/QuestCount";
 import _ from "lodash";
 
-const Node = props => {
+const Node = (props) => {
   const {
     nodeDatum,
     toggleNode,
@@ -35,7 +35,7 @@ const Node = props => {
   }, [uid]);
 
   useEffect(() => {
-    nodeRef.on("value", snapshot => {
+    nodeRef.on("value", (snapshot) => {
       const data = snapshot.val();
       if (data !== null && data !== undefined) {
         setIsChecked(data);
@@ -57,7 +57,11 @@ const Node = props => {
       });
     }
   };
-  const checkAllQuests = bool => {
+  const checkAllQuests = (bool) => {
+    if (!uid) {
+      setIsSignInDialogOpen(true);
+      return;
+    }
     const quests = JSON.parse(localStorage.getItem("tarkov-traderQuests"));
     // const traderQuests1 = quests[traderName]["Quests"];
     const traderQuests = Object.keys(quests[traderName]["Quests"]);
