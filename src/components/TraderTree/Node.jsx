@@ -11,7 +11,7 @@ import QuestPopup from "../Popups/QuestPopup";
 import QuestCount from "../QuestCount/QuestCount";
 import _ from "lodash";
 
-const Node = (props) => {
+const Node = props => {
   const {
     nodeDatum,
     toggleNode,
@@ -36,13 +36,14 @@ const Node = (props) => {
 
   useEffect(() => {
     if (uid) {
-      nodeRef.on("value", (snapshot) => {
+      nodeRef.on("value", snapshot => {
         const data = snapshot.val();
         if (data !== null && data !== undefined) {
           setIsChecked(data);
         }
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nodeRef]);
 
   const updateDatabase = () => {
@@ -59,7 +60,7 @@ const Node = (props) => {
       });
     }
   };
-  const checkAllQuests = (bool) => {
+  const checkAllQuests = bool => {
     if (!uid) {
       setIsSignInDialogOpen(true);
       return;
