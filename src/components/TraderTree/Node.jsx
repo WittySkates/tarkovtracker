@@ -35,12 +35,13 @@ const Node = props => {
   }, [uid]);
 
   useEffect(() => {
-    nodeRef.on("value", snapshot => {
-      const data = snapshot.val();
-      if (data !== null && data !== undefined) {
-        setIsChecked(data);
-      }
-    });
+    if (uid)
+      nodeRef.on("value", snapshot => {
+        const data = snapshot.val();
+        if (data !== null && data !== undefined) {
+          setIsChecked(data);
+        }
+      });
   }, [nodeRef]);
 
   const updateDatabase = () => {
