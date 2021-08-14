@@ -76,15 +76,14 @@ const QuestPopup = ({
           Objectives
           <br />
           <ul>
-            {data.attributes?.Objectives.map(obj => (
+            {data.attributes?.Objectives.map((obj) => (
               <li key={obj}>{obj}</li>
             ))}
           </ul>
-          <br />
           Rewards
           <br />
           <ul>
-            {data.attributes?.Rewards.map(rew => (
+            {data.attributes?.Rewards.map((rew) => (
               <li key={rew}>{rew}</li>
             ))}
           </ul>
