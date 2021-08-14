@@ -35,13 +35,15 @@ const Node = props => {
   }, [uid]);
 
   useEffect(() => {
-    if (uid)
+    if (uid) {
       nodeRef.on("value", snapshot => {
         const data = snapshot.val();
         if (data !== null && data !== undefined) {
           setIsChecked(data);
         }
       });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nodeRef]);
 
   const updateDatabase = () => {
@@ -59,6 +61,10 @@ const Node = props => {
     }
   };
   const checkAllQuests = bool => {
+    if (!uid) {
+      setIsSignInDialogOpen(true);
+      return;
+    }
     const quests = JSON.parse(localStorage.getItem("tarkov-traderQuests"));
     // const traderQuests1 = quests[traderName]["Quests"];
     const traderQuests = Object.keys(quests[traderName]["Quests"]);
