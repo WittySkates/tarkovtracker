@@ -5,9 +5,9 @@
 }
 
 .node-obj {
-  cursor: grab;
-  cursor: -moz-grab;
-  cursor: -webkit-grab;
+  // cursor: grab;
+  // cursor: -moz-grab;
+  // cursor: -webkit-grab;
   &:active {
     cursor: grabbing;
   }
@@ -79,14 +79,14 @@
   stroke-width: 2px;
 }
 
-.checkbox {
+.node-checkbox {
   width: fit-content;
   position: absolute;
   top: 122px;
   left: 12px;
 }
 
-.link-icon {
+.popup-icon {
   width: 60px;
   position: absolute;
   right: 15px;
@@ -105,10 +105,13 @@
   position: absolute;
   right: 15px;
   top: 132px;
-  fill: rgba(0, 0, 0, 0.8);
+  fill: rgba(0, 0, 0, 0.52);
   stroke-width: 0;
   // stroke: #000000cc;
   cursor: pointer;
+  &:hover {
+    fill: rgba(0, 0, 0, 0.8);
+  }
 }
 
 .uncheckall-icon {
@@ -116,10 +119,13 @@
   position: absolute;
   left: 15px;
   top: 137px;
-  fill: rgba(0, 0, 0, 0.8);
+  fill: rgba(0, 0, 0, 0.52);
   stroke-width: 1;
   // stroke: #000000cc;
   cursor: pointer;
+  &:hover {
+    fill: rgba(0, 0, 0, 0.8);
+  }
 }
 
 .disabled {

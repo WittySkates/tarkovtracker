@@ -11,7 +11,7 @@ import QuestPopup from "../Popups/QuestPopup";
 import QuestCount from "../QuestCount/QuestCount";
 import _ from "lodash";
 
-const Node = (props) => {
+const Node = props => {
   const {
     nodeDatum,
     toggleNode,
@@ -35,7 +35,7 @@ const Node = (props) => {
   }, [uid]);
 
   useEffect(() => {
-    nodeRef.on("value", (snapshot) => {
+    nodeRef.on("value", snapshot => {
       const data = snapshot.val();
       if (data !== null && data !== undefined) {
         setIsChecked(data);
@@ -57,7 +57,7 @@ const Node = (props) => {
       });
     }
   };
-  const checkAllQuests = (bool) => {
+  const checkAllQuests = bool => {
     const quests = JSON.parse(localStorage.getItem("tarkov-traderQuests"));
     // const traderQuests1 = quests[traderName]["Quests"];
     const traderQuests = Object.keys(quests[traderName]["Quests"]);
@@ -66,6 +66,13 @@ const Node = (props) => {
     database
       .ref(`users/${uid}/completedQuests/${traderName}`)
       .update(allQuestsTrue);
+  };
+
+  const checkboxOnChange = () => {
+    if (!uid) {
+      setIsSignInDialogOpen(true);
+    }
+    updateDatabase();
   };
 
   return (
@@ -91,13 +98,9 @@ const Node = (props) => {
             )}
             {nodeDatum.attributes?.Objectives.length > 0 && (
               <Checkbox
+                className="node-checkbox"
                 isChecked={isChecked}
-                onChange={() => {
-                  if (!uid) {
-                    setIsSignInDialogOpen(true);
-                  }
-                  updateDatabase();
-                }}
+                onChange={checkboxOnChange}
               />
             )}
             {nodeDatum.children.length > 0 && (
@@ -110,12 +113,13 @@ const Node = (props) => {
             {nodeDatum?.attributes?.link && (
               <PopoutIcon
                 onClick={() => setIsQuestDialogOpen(true)}
-                className="link-icon"
+                className="popup-icon"
               />
             )}
             <QuestPopup
-              title={nodeDatum.name}
-              text="hello world"
+              checkboxOnChange={checkboxOnChange}
+              isChecked={isChecked}
+              data={nodeDatum}
               isOpen={isQuestDialogOpen}
               handleClose={() => setIsQuestDialogOpen(false)}
             />

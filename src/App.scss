@@ -10,3 +10,32 @@ body {
 #root {
   height: 100%;
 }
+
+.next-completed {
+  stroke: green !important;
+  stroke-width: 5;
+  z-index: 1000;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  // background: #f1f1f1;
+  background: #cecece;
+  // background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  // background: #888;
+  background: rgb(99, 99, 99);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  // background: #555;
+  background: rgb(73, 73, 73);
+}

@@ -21,12 +21,12 @@ const useCheckboxStyles = makeStyles(() => ({
 }));
 
 const Checkbox = props => {
-  const { label, onChange, isChecked } = props;
+  const { label, onChange, isChecked, className } = props;
   const checkboxClasses = useCheckboxStyles();
   const labelClasses = uselabelStyles();
   return (
     <FormControlLabel
-      className="checkbox"
+      className={`checkbox ${className}`}
       label={label}
       labelPlacement="end"
       classes={labelClasses}
