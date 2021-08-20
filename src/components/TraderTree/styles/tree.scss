@@ -5,9 +5,9 @@
 }
 
 .node-obj {
-  // cursor: grab;
-  // cursor: -moz-grab;
-  // cursor: -webkit-grab;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
   &:active {
     cursor: grabbing;
   }
