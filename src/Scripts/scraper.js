@@ -187,6 +187,7 @@ const push = async () => {
   var timeout = 8000;
   database.ref().child("traderQuests").set(traderQuests);
   database.ref().child("traderTree").set(traderTreeString);
+
   setTimeout(() => {
     admin.app().delete();
   }, timeout);
