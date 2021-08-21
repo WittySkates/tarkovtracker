@@ -61,7 +61,6 @@ const App = () => {
       setTraderQuests(traderQuests);
     })();
   }, []);
-
   return (
     <>
       <TopNav />

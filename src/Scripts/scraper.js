@@ -68,7 +68,7 @@ const getUrls = async () => {
       _.set(res, title, { image });
     });
 
-    Object.keys(res).forEach(trader => {
+    Object.keys(res).forEach((trader) => {
       const path = `.${trader}-content > tbody > tr`;
       let title = "";
       $(path).each((_idx, el) => {
@@ -125,7 +125,7 @@ const getUrls = async () => {
   }
 };
 
-const findRoots = quests => {
+const findRoots = (quests) => {
   const roots = [];
   for (const [name, quest] of Object.entries(quests)) {
     if (quest.Prior === undefined || quest.Prior.length === 0) {
@@ -133,7 +133,7 @@ const findRoots = quests => {
     } else {
       let hasPrior = false;
 
-      quest.Prior.forEach(prior => {
+      quest.Prior.forEach((prior) => {
         if (typeof quests[prior] != "undefined") {
           hasPrior = true;
         }
@@ -146,10 +146,12 @@ const findRoots = quests => {
   return roots;
 };
 
+// getTree returns the children
+
 // () -> () -> () -> () -> ***
 const getTree = (tree, roots, quests) => {
-  _.forEach(roots, questName => {
-    if (!quests[questName]?.Next) {
+  _.forEach(roots, (questName) => {
+    if (!quests[questName]) {
       return;
     }
     const entry = {
@@ -167,10 +169,10 @@ const getTree = (tree, roots, quests) => {
   });
 };
 
-const generateTraderTree = traderQuests => {
+const generateTraderTree = (traderQuests) => {
   const allTraderTrees = [];
   const traders = Object.keys(traderQuests);
-  traders.forEach(trader => {
+  traders.forEach((trader) => {
     const roots = findRoots(traderQuests[trader].Quests);
     const tree = [];
     getTree(tree, roots, traderQuests[trader].Quests);
