@@ -146,8 +146,6 @@ const findRoots = (quests) => {
   return roots;
 };
 
-// getTree returns the children
-
 // () -> () -> () -> () -> ***
 const getTree = (tree, roots, quests) => {
   _.forEach(roots, (questName) => {
