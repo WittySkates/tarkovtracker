@@ -71,19 +71,19 @@ const getUrls = async () => {
     Object.keys(res).forEach((trader) => {
       const path = `.${trader}-content > tbody > tr`;
       let title = "";
-      $(path).each((_idx, el) => {
+      $(path).each((_idx, tr) => {
         if (_idx === 0 || _idx === 1) {
           return;
         }
-        const tds = $(el).children();
-        $(tds).each((_idx, el) => {
-          const text = $(el).text().replace(/\n+/g, "");
+        const tds = $(tr).children();
+        $(tds).each((_idx, td) => {
+          const text = $(td).text().replace(/\n+/g, "");
           switch (_idx) {
             case 0:
               title = text;
               const link =
-                "https://escapefromtarkov.fandom.com/" +
-                $(el).children().attr("href");
+                "https://escapefromtarkov.fandom.com" +
+                $(td).find("a").attr("href");
               _.set(res, `${trader}.Quests.${title}`, {});
               _.set(res, `${trader}.Quests.${title}.Name`, title);
               _.set(res, `${trader}.Quests.${title}.Link`, link);
@@ -97,17 +97,17 @@ const getUrls = async () => {
               break;
             case 2:
               const objectives = [];
-              const lisOb = $(el).children().children();
-              $(lisOb).each((_idx, el) => {
-                objectives.push($(el).text().replace(/\n+/g, ""));
+              const lisOb = $(td).children().children();
+              $(lisOb).each((_idx, obj) => {
+                objectives.push($(obj).text().replace(/\n+/g, ""));
               });
               _.set(res, `${trader}.Quests.${title}.Objectives`, objectives);
               break;
             case 3:
               const rewards = [];
-              const lisRe = $(el).children().children();
-              $(lisRe).each((_idx, el) => {
-                rewards.push($(el).text().replace(/\n+/g, ""));
+              const lisRe = $(td).children().children();
+              $(lisRe).each((_idx, rew) => {
+                rewards.push($(rew).text().replace(/\n+/g, ""));
               });
               _.set(res, `${trader}.Quests.${title}.Rewards`, rewards);
               // _.set(res, `${trader}.Quests.${title}.isCompleted`, false);
