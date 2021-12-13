@@ -41,6 +41,7 @@ const Auth = () => {
           uid: user.uid,
           name: user.displayName,
           email: user.email,
+          creationTime: user.metadata.creationTime
         });
       })
       .catch(error => {
