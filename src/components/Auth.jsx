@@ -12,7 +12,6 @@ import Button from "react-bootstrap/Button";
 
 // Hooks / Context
 import { useAuthState } from "react-firebase-hooks/auth";
-import useTarkovContext from "../hooks/useTarkovContext";
 
 // CSS
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -23,9 +22,8 @@ const Auth = () => {
   const database = firebase.database();
   const provider = new firebase.auth.GoogleAuthProvider();
   const [user, loading, error] = useAuthState(auth);
-  const { setValue } = useTarkovContext();
 
-  const SignIn = setValue => {
+  const SignIn = () => {
     auth
       .signInWithPopup(provider)
       .then(result => {
@@ -35,7 +33,6 @@ const Auth = () => {
         let token = credential.accessToken;
         // The signed-in user info.
         let user = result.user;
-        setValue("user", user);
 
         database.ref("users/" + user.uid).update({
           uid: user.uid,
@@ -52,19 +49,6 @@ const Auth = () => {
         let email = error.email;
         // The firebase.auth.AuthCredential type that was used.
         let credential = error.credential;
-      });
-    database
-      .ref("traderTree")
-      .get()
-      .then(snapshot => {
-        if (snapshot.exists()) {
-          setValue("traderNames", Object.keys(snapshot.val()));
-        } else {
-          console.log("traderTree does not exist in the database");
-        }
-      })
-      .catch(error => {
-        console.log("Erroring getting traderTree" + error);
       });
   };
   if (error) {
@@ -88,7 +72,6 @@ const Auth = () => {
         className="tarkov-auth-signout"
         variant="outline-danger"
         onClick={() => {
-          setValue("user", null);
           auth.signOut();
         }}
       >
@@ -97,7 +80,7 @@ const Auth = () => {
     );
   }
   return (
-    <Button variant="primary" onClick={() => SignIn(setValue)}>
+    <Button variant="primary" onClick={() => SignIn()}>
       Sign In With Google
     </Button>
   );
