@@ -11,7 +11,7 @@ import { getLinkClasses } from "./utils/treeUtils";
 
 import "./styles/tree.scss";
 
-const TraderTree = (props) => {
+const TraderTree = props => {
   const { traderData, trader } = props;
 
   const [translate, containerRef] = useCenteredTree();
@@ -24,25 +24,23 @@ const TraderTree = (props) => {
     width: nodeSize.x,
     height: nodeSize.y,
     x: -200,
-    y: -115,
+    y: -115
   };
 
   const database = firebase.database();
   const auth = firebase.auth();
-  auth.onAuthStateChanged((user) => {
+  auth.onAuthStateChanged(user => {
     setUserId(user?.uid);
   });
-
   const nodeRef = database.ref(`users/${userId}/completedQuests/${trader}`);
 
   useEffect(() => {
     if (userId) {
-      nodeRef.on("value", (snapshot) => {
+      nodeRef.on("value", snapshot => {
         const res = snapshot.val();
-        console.log(trader);
         let traderCount = 0;
         if (res != null) {
-          Object.keys(res).forEach((quest) => {
+          Object.keys(res).forEach(quest => {
             if (res[quest]) {
               traderCount = traderCount + 1;
             }
@@ -62,7 +60,7 @@ const TraderTree = (props) => {
           key={trader}
           data={traderData}
           translate={translate}
-          renderCustomNodeElement={(nodeProps) => (
+          renderCustomNodeElement={nodeProps => (
             <Node
               {...nodeProps}
               foreignObjectProps={foreignObjectProps}

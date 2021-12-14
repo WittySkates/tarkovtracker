@@ -72,7 +72,10 @@ const App = () => {
         currentTrader={currentTrader}
         setCurrentTrader={setCurrentTrader}
       />
-      <TraderTree traderData={traderTrees[currentTrader]} trader={traderNames[currentTrader]} />
+      <TraderTree
+        traderData={traderTrees[currentTrader]}
+        trader={traderNames[currentTrader]?.name}
+      />
     </>
   );
 };

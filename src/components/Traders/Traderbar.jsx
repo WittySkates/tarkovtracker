@@ -10,14 +10,14 @@ const Traderbar = props => {
   return (
     <div className="traderbar">
       {traderNames &&
-        traderNames.map((name, index) => (
+        traderNames.map((el, index) => (
           <TraderButton
             className={currentTrader === index && "selected"}
-            key={name}
+            key={el.name}
             index={index}
-            traderName={name}
+            traderName={el.name}
             onClick={() => setCurrentTrader(index)}
-            imageLink={traderQuests[name]?.image}
+            imageLink={traderQuests[el.name]?.image}
             // imageLink={traderTrees[index]}
             tabIndex={index}
           />
