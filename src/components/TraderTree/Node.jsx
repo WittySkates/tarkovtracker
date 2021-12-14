@@ -12,22 +12,12 @@ import QuestCount from "../QuestCount/QuestCount";
 import _ from "lodash";
 
 const Node = props => {
-  const {
-    nodeDatum,
-    toggleNode,
-    foreignObjectProps,
-    traderName,
-    database,
-    uid,
-    doneCount,
-  } = props;
+  const { nodeDatum, toggleNode, foreignObjectProps, traderName, database, uid, doneCount } = props;
   const [isChecked, setIsChecked] = useState(false);
   const [isSignInDialogOpen, setIsSignInDialogOpen] = useState(false);
   const [isQuestDialogOpen, setIsQuestDialogOpen] = useState(false);
 
-  const nodeRef = database.ref(
-    `users/${uid}/completedQuests/${traderName}/${nodeDatum.name}`
-  );
+  const nodeRef = database.ref(`users/${uid}/completedQuests/${traderName}/${nodeDatum.name}`);
 
   useEffect(() => {
     if (uid && isSignInDialogOpen) setIsSignInDialogOpen(false);
@@ -51,12 +41,10 @@ const Node = props => {
       const priors = {};
       getAllPreviousQuests(nodeDatum.name, traderName, priors);
       if (!isChecked) {
-        database
-          .ref(`users/${uid}/completedQuests/${traderName}`)
-          .update(priors);
+        database.ref(`users/${uid}/completedQuests/${traderName}`).update(priors);
       }
       database.ref(`users/${uid}/completedQuests/${traderName}`).update({
-        [nodeDatum.name]: !isChecked,
+        [nodeDatum.name]: !isChecked
       });
     }
   };
@@ -70,9 +58,7 @@ const Node = props => {
     const traderQuests = Object.keys(quests[traderName]["Quests"]);
     const trueArray = Array(traderQuests.length).fill(bool);
     const allQuestsTrue = _.zipObject(traderQuests, trueArray);
-    database
-      .ref(`users/${uid}/completedQuests/${traderName}`)
-      .update(allQuestsTrue);
+    database.ref(`users/${uid}/completedQuests/${traderName}`).update(allQuestsTrue);
   };
 
   const checkboxOnChange = () => {
@@ -87,8 +73,8 @@ const Node = props => {
       <g>
         <foreignObject className="node-obj" {...foreignObjectProps}>
           <div className={`node-container ${traderName}`}>
-            <p>{nodeDatum.name}</p>
-            {nodeDatum.name === traderName && (
+            <p>{nodeDatum?.name}</p>
+            {nodeDatum?.name === traderName && (
               <>
                 <QuestCount count={doneCount} trader={traderName} />
                 <CheckAllIcon
@@ -103,14 +89,14 @@ const Node = props => {
                 />
               </>
             )}
-            {nodeDatum.attributes?.Objectives.length > 0 && (
+            {nodeDatum?.attributes?.Objectives?.length > 0 && (
               <Checkbox
                 className="node-checkbox"
                 isChecked={isChecked}
                 onChange={checkboxOnChange}
               />
             )}
-            {nodeDatum.children.length > 0 && (
+            {nodeDatum?.children?.length > 0 && (
               <ToggleButton
                 onClick={toggleNode}
                 isCollapsed={nodeDatum.__rd3t.collapsed}
@@ -118,10 +104,7 @@ const Node = props => {
               />
             )}
             {nodeDatum?.attributes?.link && (
-              <PopoutIcon
-                onClick={() => setIsQuestDialogOpen(true)}
-                className="popup-icon"
-              />
+              <PopoutIcon onClick={() => setIsQuestDialogOpen(true)} className="popup-icon" />
             )}
             <QuestPopup
               checkboxOnChange={checkboxOnChange}

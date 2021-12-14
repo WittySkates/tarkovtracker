@@ -7,7 +7,7 @@ import { adminConfig } from "../config.js";
 
 admin.initializeApp({
   credential: admin.credential.cert(adminConfig),
-  databaseURL: "https://trackingtarkov-default-rtdb.firebaseio.com",
+  databaseURL: "https://trackingtarkov-default-rtdb.firebaseio.com"
 });
 const database = admin.database();
 
@@ -53,9 +53,7 @@ const getPriorNext = async (res, trader, title, link) => {
 
 const getUrls = async () => {
   try {
-    const { data } = await axios.get(
-      "https://escapefromtarkov.fandom.com/wiki/Quests"
-    );
+    const { data } = await axios.get("https://escapefromtarkov.fandom.com/wiki/Quests");
     const $ = cheerio.load(data);
     const res = {};
     let promises = [];
@@ -68,7 +66,7 @@ const getUrls = async () => {
       _.set(res, title, { image });
     });
 
-    Object.keys(res).forEach((trader) => {
+    Object.keys(res).forEach(trader => {
       const path = `.${trader}-content > tbody > tr`;
       let title = "";
       $(path).each((_idx, tr) => {
@@ -81,9 +79,7 @@ const getUrls = async () => {
           switch (_idx) {
             case 0:
               title = text;
-              const link =
-                "https://escapefromtarkov.fandom.com" +
-                $(td).find("a").attr("href");
+              const link = "https://escapefromtarkov.fandom.com" + $(td).find("a").attr("href");
               _.set(res, `${trader}.Quests.${title}`, {});
               _.set(res, `${trader}.Quests.${title}.Name`, title);
               _.set(res, `${trader}.Quests.${title}.Link`, link);
@@ -125,7 +121,7 @@ const getUrls = async () => {
   }
 };
 
-const findRoots = (quests) => {
+const findRoots = quests => {
   const roots = [];
   for (const [name, quest] of Object.entries(quests)) {
     if (quest.Prior === undefined || quest.Prior.length === 0) {
@@ -133,7 +129,7 @@ const findRoots = (quests) => {
     } else {
       let hasPrior = false;
 
-      quest.Prior.forEach((prior) => {
+      quest.Prior.forEach(prior => {
         if (typeof quests[prior] != "undefined") {
           hasPrior = true;
         }
@@ -148,7 +144,7 @@ const findRoots = (quests) => {
 
 // () -> () -> () -> () -> ***
 const getTree = (tree, roots, quests) => {
-  _.forEach(roots, (questName) => {
+  _.forEach(roots, questName => {
     if (!quests[questName]) {
       return;
     }
@@ -158,19 +154,19 @@ const getTree = (tree, roots, quests) => {
         Objectives: quests[questName].Objectives,
         Rewards: quests[questName].Rewards,
         type: quests[questName].Type,
-        link: quests[questName].Link,
+        link: quests[questName].Link
       },
-      children: [],
+      children: []
     };
     getTree(entry.children, quests[questName].Next, quests);
     tree.push(entry);
   });
 };
 
-const generateTraderTree = (traderQuests) => {
+const generateTraderTree = traderQuests => {
   const allTraderTrees = [];
   const traders = Object.keys(traderQuests);
-  traders.forEach((trader) => {
+  traders.forEach(trader => {
     const roots = findRoots(traderQuests[trader].Quests);
     const tree = [];
     getTree(tree, roots, traderQuests[trader].Quests);
@@ -184,7 +180,7 @@ const push = async () => {
   const traderQuests = await getUrls();
   const traderTree = generateTraderTree(traderQuests);
   const traderTreeString = JSON.stringify(traderTree);
-  var timeout = 8000;
+  var timeout = 12000;
   database.ref().child("traderQuests").set(traderQuests);
   database.ref().child("traderTree").set(traderTreeString);
 

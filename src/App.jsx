@@ -25,39 +25,40 @@ const App = () => {
         await database
           .ref("traderTree")
           .get()
-          .then((snapshot) => {
+          .then(snapshot => {
             if (snapshot.exists()) {
               localStorage.setItem("tarkov-tree", snapshot.val());
             } else {
               return null;
             }
           })
-          .catch((error) => {
+          .catch(error => {
             console.log("Erroring getting trader tree" + error);
           });
         await database
           .ref("traderQuests")
           .get()
-          .then((snapshot) => {
+          .then(snapshot => {
             if (snapshot.exists()) {
-              localStorage.setItem(
-                "tarkov-traderQuests",
-                JSON.stringify(snapshot.val())
-              );
+              localStorage.setItem("tarkov-traderQuests", JSON.stringify(snapshot.val()));
             } else {
               return null;
             }
           })
-          .catch((error) => {
+          .catch(error => {
             console.log("Erroring getting trader quests" + error);
           });
       }
-      const traderQuests = JSON.parse(
-        localStorage.getItem("tarkov-traderQuests")
-      );
+      const traderQuests = JSON.parse(localStorage.getItem("tarkov-traderQuests"));
       const trees = JSON.parse(localStorage.getItem("tarkov-tree"));
       setTraderTrees(trees);
-      setTraderNames(_.reduce(trees, (acc, entry) => [...acc, entry.name], []));
+      setTraderNames(
+        _.reduce(
+          trees,
+          (acc, entry) => [...acc, { name: entry.name, attributes: entry.attributes }],
+          []
+        )
+      );
       setTraderQuests(traderQuests);
     })();
   }, []);
@@ -67,13 +68,11 @@ const App = () => {
       <Traderbar
         traderNames={traderNames}
         traderQuests={traderQuests}
+        traderTrees={traderTrees}
         currentTrader={currentTrader}
         setCurrentTrader={setCurrentTrader}
       />
-      <TraderTree
-        traderData={traderTrees[currentTrader]}
-        trader={traderNames[currentTrader]}
-      />
+      <TraderTree traderData={traderTrees[currentTrader]} trader={traderNames[currentTrader]} />
     </>
   );
 };

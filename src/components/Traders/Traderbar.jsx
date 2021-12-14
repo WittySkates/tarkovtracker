@@ -6,7 +6,7 @@ import TraderButton from "./TraderButton";
 import "./styles/traderbar.scss";
 
 const Traderbar = props => {
-  const { traderNames, traderQuests, currentTrader, setCurrentTrader } = props;
+  const { traderNames, traderQuests, currentTrader, setCurrentTrader, traderTrees } = props;
   return (
     <div className="traderbar">
       {traderNames &&
@@ -18,6 +18,7 @@ const Traderbar = props => {
             traderName={name}
             onClick={() => setCurrentTrader(index)}
             imageLink={traderQuests[name]?.image}
+            // imageLink={traderTrees[index]}
             tabIndex={index}
           />
         ))}
