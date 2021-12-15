@@ -6,8 +6,8 @@ import cheerio from "cheerio";
 import { firebaseConfig, firebaseConfigDev, adminConfig, adminConfigDev } from "../config.js";
 
 admin.initializeApp({
-  credential: admin.credential.cert(adminConfig),
-  databaseURL: firebaseConfig.databaseURL
+  credential: admin.credential.cert(adminConfigDev),
+  databaseURL: firebaseConfigDev.databaseURL
 });
 const database = admin.database();
 
@@ -197,7 +197,7 @@ const generateTraderTree = traderQuests => {
   return allTraderTrees;
 };
 
-const push = async () => {
+const updateTraderData = async () => {
   let traderQuestsDatabase = {};
   await database
     .ref("traderQuests")
@@ -219,7 +219,6 @@ const push = async () => {
 
   const traderQuests = await getUrls();
   if (_.isEqual(traderQuests, traderQuestsDatabase)) {
-    admin.app().delete();
     return;
   }
 
@@ -229,6 +228,26 @@ const push = async () => {
 
   await database.ref("traderQuests").set(traderQuests);
   await database.ref("traderTree").set(traderTreeString);
-  admin.app().delete();
 };
-push();
+
+const updateUserCount = async () => {
+  let userCount;
+  await database
+    .ref("users")
+    .get()
+    .then(snapshot => {
+      if (snapshot.exists()) {
+        userCount = Object.keys(snapshot.val()).length;
+      } else {
+        return null;
+      }
+    })
+    .catch(error => {
+      console.log("Erroring getting trader quests" + error);
+    });
+  await database.ref("userCount").set(userCount);
+};
+
+await updateTraderData();
+await updateUserCount();
+admin.app().delete();
