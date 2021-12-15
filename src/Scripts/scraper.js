@@ -189,7 +189,24 @@ const generateTraderTree = (traderQuests) => {
 		const roots = findRoots(traderQuests[trader].Quests);
 		const tree = [];
 		getTree(tree, roots, traderQuests[trader].Quests);
-		allTraderTrees.push({ name: trader, children: tree });
+
+		const quests = traderQuests[trader].Quests;
+		for (const quest in quests) {
+			delete quests[quest].Objectives;
+			delete quests[quest].Rewards;
+			delete quests[quest].Type;
+			delete quests[quest].Link;
+			delete quests[quest].Name;
+		}
+
+		allTraderTrees.push({
+			name: trader,
+			attributes: {
+				Quests: quests,
+				image: traderQuests[trader].image,
+			},
+			children: tree,
+		});
 		// _.set(allTraderTrees, trader, tree);
 	});
 	return allTraderTrees;
