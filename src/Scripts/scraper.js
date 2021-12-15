@@ -11,8 +11,8 @@ import {
 } from "../config.js";
 
 admin.initializeApp({
-	credential: admin.credential.cert(adminConfig),
-	databaseURL: firebaseConfig.databaseURL,
+	credential: admin.credential.cert(adminConfigDev),
+	databaseURL: firebaseConfigDev.databaseURL,
 });
 const database = admin.database();
 
