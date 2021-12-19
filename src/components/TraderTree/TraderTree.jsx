@@ -64,7 +64,7 @@ const TraderTree = props => {
             <Node
               {...nodeProps}
               foreignObjectProps={foreignObjectProps}
-              traderData={traderData}
+              traderQuests={traderData.attributes.Quests}
               traderName={trader}
               database={database}
               uid={userId}

@@ -16,7 +16,7 @@ const Node = props => {
     nodeDatum,
     toggleNode,
     foreignObjectProps,
-    traderData,
+    traderQuests,
     traderName,
     database,
     uid,
@@ -48,7 +48,7 @@ const Node = props => {
   const updateDatabase = () => {
     if (uid) {
       const priors = {};
-      getAllPreviousQuests(nodeDatum.name, traderData, priors);
+      getAllPreviousQuests(nodeDatum.name, traderQuests, priors);
       if (!isChecked) {
         database.ref(`users/${uid}/completedQuests/${traderName}`).update(priors);
       }
@@ -62,7 +62,7 @@ const Node = props => {
       setIsSignInDialogOpen(true);
       return;
     }
-    const quests = Object.keys(traderData.attributes.Quests);
+    const quests = Object.keys(traderQuests);
     const trueArray = Array(quests.length).fill(bool);
     const allQuestsTrue = _.zipObject(quests, trueArray);
     database.ref(`users/${uid}/completedQuests/${traderName}`).update(allQuestsTrue);
@@ -83,7 +83,7 @@ const Node = props => {
             <p>{nodeDatum?.name}</p>
             {nodeDatum?.name === traderName && (
               <>
-                <QuestCount traderData={traderData} count={doneCount} />
+                <QuestCount traderQuests={traderQuests} count={doneCount} />
                 <CheckAllIcon
                   className="checkall-icon"
                   onClick={() => {

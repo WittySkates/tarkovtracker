@@ -1,12 +1,12 @@
 import _ from "lodash";
 
-export const getAllPreviousQuests = (questName, traderData, priors) => {
-  const currentQuest = traderData.attributes.Quests[questName];
+export const getAllPreviousQuests = (questName, traderQuests, priors) => {
+  const currentQuest = traderQuests[questName];
   if (currentQuest?.Prior) {
     currentQuest.Prior.forEach(quest => {
-      if (traderData.attributes.Quests[quest]) {
+      if (traderQuests[quest]) {
         _.set(priors, quest, true);
-        getAllPreviousQuests(quest, traderData, priors);
+        getAllPreviousQuests(quest, traderQuests, priors);
       }
     });
   } else {

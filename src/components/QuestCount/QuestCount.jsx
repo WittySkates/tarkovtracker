@@ -3,8 +3,8 @@
 import React from "react";
 import "./styles/questcount.scss";
 
-const QuestCount = ({ traderData, count }) => {
-  const totalCount = Object.keys(traderData.attributes.Quests).length;
+const QuestCount = ({ traderQuests, count }) => {
+  const totalCount = Object.keys(traderQuests).length;
   return <div>{`${count}/${totalCount}`}</div>;
 };
 
