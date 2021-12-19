@@ -3,10 +3,9 @@
 import React from "react";
 import "./styles/questcount.scss";
 
-const QuestCount = ({ traderIndex, count }) => {
-	const tree = JSON.parse(localStorage.getItem("tarkov-tree"));
-	const totalCount = Object.keys(tree[traderIndex].attributes.Quests).length;
-	return <div>{`${count}/${totalCount}`}</div>;
+const QuestCount = ({ traderData, count }) => {
+  const totalCount = Object.keys(traderData.attributes.Quests).length;
+  return <div>{`${count}/${totalCount}`}</div>;
 };
 
 export default QuestCount;

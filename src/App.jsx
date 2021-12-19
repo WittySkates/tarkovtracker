@@ -72,7 +72,6 @@ const App = () => {
       <TraderTree
         traderData={traderTrees[currentTrader]}
         trader={traderNames[currentTrader]?.name}
-        traderIndex={currentTrader}
       />
     </>
   );
