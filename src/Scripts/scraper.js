@@ -6,8 +6,8 @@ import cheerio from "cheerio";
 import { firebaseConfig, firebaseConfigDev, adminConfig, adminConfigDev } from "../config.js";
 
 admin.initializeApp({
-  credential: admin.credential.cert(adminConfigDev),
-  databaseURL: firebaseConfigDev.databaseURL
+  credential: admin.credential.cert(adminConfig),
+  databaseURL: firebaseConfig.databaseURL
 });
 const database = admin.database();
 
