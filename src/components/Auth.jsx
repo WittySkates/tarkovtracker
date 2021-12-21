@@ -15,7 +15,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 // CSS
 import "bootstrap/dist/css/bootstrap.min.css";
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfigDev);
 
 const Auth = () => {
   const auth = firebase.auth();
