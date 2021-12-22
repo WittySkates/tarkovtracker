@@ -6,6 +6,7 @@ import "firebase/database";
 import "firebase/auth";
 import Tree from "react-d3-tree";
 import Node from "./Node";
+import SessionExpired from "../Popups/SessionExpired";
 import { useCenteredTree } from "./utils/helpers";
 import { getLinkClasses } from "./utils/treeUtils";
 
@@ -13,10 +14,10 @@ import "./styles/tree.scss";
 
 const TraderTree = props => {
   const { traderData, trader } = props;
-
   const [translate, containerRef] = useCenteredTree();
   const [userId, setUserId] = useState("");
   const [doneCount, setDoneCount] = useState("");
+  const [isSessionDialogOpen, setIsSessionDialogOpen] = useState(false);
   const completedQuests = useRef({});
 
   const nodeSize = { x: 400, y: 375 };
@@ -29,11 +30,27 @@ const TraderTree = props => {
 
   const database = firebase.database();
   const auth = firebase.auth();
+
+  const dayInMilli = 86400000;
+
   auth.onAuthStateChanged(user => {
+    if (user) {
+      setTimeout(() => {
+        auth.signOut();
+        setTimeout(() => {
+          setIsSessionDialogOpen(true);
+        }, 500);
+      }, dayInMilli);
+    }
     setUserId(user?.uid);
   });
-  const userTraderRef = database.ref(`users/${userId}/completedQuests/${trader}`);
 
+  useEffect(() => {
+    if (userId && isSessionDialogOpen) setIsSessionDialogOpen(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]);
+
+  const userTraderRef = database.ref(`users/${userId}/completedQuests/${trader}`);
   useEffect(() => {
     if (userId) {
       userTraderRef.on("value", snapshot => {
@@ -52,7 +69,6 @@ const TraderTree = props => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userTraderRef]);
-
   return (
     <div className="tree-container" ref={containerRef}>
       {traderData && (
@@ -84,6 +100,11 @@ const TraderTree = props => {
           enableLegacyTransitions="True"
         />
       )}
+      <SessionExpired
+        isOpen={isSessionDialogOpen}
+        handleClose={() => setIsSessionDialogOpen(false)}
+      />
+      ;
     </div>
   );
 };

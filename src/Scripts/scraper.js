@@ -230,24 +230,5 @@ const updateTraderData = async () => {
   await database.ref("traderTree").set(traderTreeString);
 };
 
-const updateUserCount = async () => {
-  let userCount;
-  await database
-    .ref("users")
-    .get()
-    .then(snapshot => {
-      if (snapshot.exists()) {
-        userCount = Object.keys(snapshot.val()).length;
-      } else {
-        return null;
-      }
-    })
-    .catch(error => {
-      console.log("Erroring getting trader quests" + error);
-    });
-  await database.ref("userCount").set(userCount);
-};
-
 await updateTraderData();
-await updateUserCount();
 admin.app().delete();
