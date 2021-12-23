@@ -31,16 +31,17 @@ const TraderTree = props => {
   const database = firebase.database();
   const auth = firebase.auth();
 
-  const dayInMilli = 86400000;
+  const hourInMilli = 3600000;
 
   auth.onAuthStateChanged(user => {
     if (user) {
+      console.log("One hour to timeout");
       setTimeout(() => {
         auth.signOut();
         setTimeout(() => {
           setIsSessionDialogOpen(true);
         }, 500);
-      }, dayInMilli);
+      }, hourInMilli * 6);
     }
     setUserId(user?.uid);
   });
