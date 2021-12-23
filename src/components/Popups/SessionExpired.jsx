@@ -10,7 +10,6 @@ import {
   makeStyles
 } from "@material-ui/core";
 import Button from "react-bootstrap/Button";
-import Auth from "../Auth";
 
 import "./styles/sessionpopup.scss";
 
@@ -29,12 +28,11 @@ const SessionExpired = ({ isOpen, handleClose }) => {
       <DialogTitle className="sessionpopup">Your session has expired</DialogTitle>
       <DialogContent className="sessionpopup">
         <DialogContentText className="sessionpopup">
-          {`To keep using the site, please sign back in`}
+          {`To keep using the site, please reconnect`}
         </DialogContentText>
       </DialogContent>
       <DialogActions className="sessionpopup">
-        <Button onClick={handleClose}>Cancel</Button>
-        <Auth />
+        <Button onClick={handleClose}>Reconnect</Button>
       </DialogActions>
     </Dialog>
   );

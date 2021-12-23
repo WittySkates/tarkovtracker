@@ -6,7 +6,6 @@ import "firebase/database";
 import "firebase/auth";
 import Tree from "react-d3-tree";
 import Node from "./Node";
-import SessionExpired from "../Popups/SessionExpired";
 import { useCenteredTree } from "./utils/helpers";
 import { getLinkClasses } from "./utils/treeUtils";
 
@@ -17,8 +16,9 @@ const TraderTree = props => {
   const [translate, containerRef] = useCenteredTree();
   const [userId, setUserId] = useState("");
   const [doneCount, setDoneCount] = useState("");
-  const [isSessionDialogOpen, setIsSessionDialogOpen] = useState(false);
   const completedQuests = useRef({});
+  const autoTimeout = useRef();
+  const isTimedOut = useRef(false);
 
   const nodeSize = { x: 400, y: 375 };
   const foreignObjectProps = {
@@ -31,25 +31,42 @@ const TraderTree = props => {
   const database = firebase.database();
   const auth = firebase.auth();
 
+  if (isTimedOut.current) {
+    firebase.database().goOnline();
+    isTimedOut.current = false;
+  }
   const hourInMilli = 3600000;
+
+  // useEffect(() => {
+  //   if (userId) {
+  //     console.log("timeout");
+  //     setTimeout(() => {
+  //       auth.signOut();
+  //       setTimeout(() => {
+  //         setIsSessionDialogOpen(true);
+  //       }, 500);
+  //     }, hourInMilli * 6);
+  //   }
+  // }, [userId]);
+
+  const timeoutFunction = () => {
+    if (autoTimeout.current) {
+      clearTimeout(autoTimeout.current);
+    }
+    autoTimeout.current = setTimeout(() => {
+      setTimeout(() => {
+        firebase.database().goOffline();
+        isTimedOut.current = true;
+      }, 500);
+    }, hourInMilli);
+  };
 
   auth.onAuthStateChanged(user => {
     if (user) {
-      console.log("One hour to timeout");
-      setTimeout(() => {
-        auth.signOut();
-        setTimeout(() => {
-          setIsSessionDialogOpen(true);
-        }, 500);
-      }, hourInMilli * 6);
+      timeoutFunction();
     }
     setUserId(user?.uid);
   });
-
-  useEffect(() => {
-    if (userId && isSessionDialogOpen) setIsSessionDialogOpen(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId]);
 
   const userTraderRef = database.ref(`users/${userId}/completedQuests/${trader}`);
   useEffect(() => {
@@ -101,10 +118,6 @@ const TraderTree = props => {
           enableLegacyTransitions="True"
         />
       )}
-      <SessionExpired
-        isOpen={isSessionDialogOpen}
-        handleClose={() => setIsSessionDialogOpen(false)}
-      />
       ;
     </div>
   );
