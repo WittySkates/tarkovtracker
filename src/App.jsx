@@ -82,10 +82,10 @@ const App = () => {
                 />
               </>
             }
-          ></Route>
-          {/* <Route path="/quest_items"></Route>
-          <Route path="/ammo_chart"></Route> */}
-          <Route path="attributions" element={<Attributions />}></Route>
+          />
+          {/* <Route path="/quest_items"/>
+          <Route path="/ammo_chart"/> */}
+          <Route path="attributions" element={<Attributions />} />
         </Routes>
       </Router>
     </>
