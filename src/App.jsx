@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import _ from "lodash";
 import firebase from "firebase/app";
 import "firebase/database";
@@ -63,8 +63,8 @@ const App = () => {
 
   return (
     <>
-      <TopNav />
       <Router>
+        <TopNav />
         <Routes>
           <Route
             path="/"
