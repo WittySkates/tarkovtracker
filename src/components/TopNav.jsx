@@ -11,13 +11,13 @@ const TopNav = () => {
   return (
     <>
       <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
-        <Navbar.Brand href="/quest_tree" style={{ paddingLeft: "10px" }}>
+        <Navbar.Brand href="/" style={{ paddingLeft: "10px" }}>
           Tracking Tarkov
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <NavLink href="/quest_tree">Quest Tree</NavLink>
+            <NavLink href="/">Quest Tree</NavLink>
             {/* <NavLink href="/quest_items">Quest Items</NavLink>
             <NavLink href="/ammo_chart">Ammo Chart</NavLink> */}
           </Nav>

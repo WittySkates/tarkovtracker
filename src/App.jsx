@@ -67,7 +67,7 @@ const App = () => {
       <Router>
         <Routes>
           <Route
-            path="/quest_tree"
+            path="/"
             element={
               <>
                 <Traderbar
@@ -85,7 +85,7 @@ const App = () => {
           ></Route>
           {/* <Route path="/quest_items"></Route>
           <Route path="/ammo_chart"></Route> */}
-          <Route path="/attributions" element={<Attributions />}></Route>
+          <Route path="attributions" element={<Attributions />}></Route>
         </Routes>
       </Router>
     </>
