@@ -7,6 +7,7 @@ import TopNav from "./TopNav";
 import Traderbar from "./Traders/Traderbar";
 import TraderButton from "./Traders/TraderButton";
 import TraderTree from "./TraderTree/TraderTree";
+import Attributions from "./Attributions/Attributions";
 
 export {
   Auth,
@@ -18,4 +19,5 @@ export {
   Traderbar,
   TraderButton,
   TraderTree,
+  Attributions
 };

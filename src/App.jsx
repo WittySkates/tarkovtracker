@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import _ from "lodash";
 import firebase from "firebase/app";
 import "firebase/database";
-import { TopNav, TraderTree, Traderbar } from "./components";
+import { TopNav, TraderTree, Traderbar, Attributions } from "./components";
 import "./App.scss";
 
 const database = firebase.database();
@@ -63,16 +64,30 @@ const App = () => {
   return (
     <>
       <TopNav />
-      <Traderbar
-        traderNames={traderNames}
-        traderTrees={traderTrees}
-        currentTrader={currentTrader}
-        setCurrentTrader={setCurrentTrader}
-      />
-      <TraderTree
-        traderData={traderTrees[currentTrader]}
-        trader={traderNames[currentTrader]?.name}
-      />
+      <Router>
+        <Routes>
+          <Route
+            path="/quest_tree"
+            element={
+              <>
+                <Traderbar
+                  traderNames={traderNames}
+                  traderTrees={traderTrees}
+                  currentTrader={currentTrader}
+                  setCurrentTrader={setCurrentTrader}
+                />
+                <TraderTree
+                  traderData={traderTrees[currentTrader]}
+                  trader={traderNames[currentTrader]?.name}
+                />
+              </>
+            }
+          ></Route>
+          {/* <Route path="/quest_items"></Route>
+          <Route path="/ammo_chart"></Route> */}
+          <Route path="/attributions" element={<Attributions />}></Route>
+        </Routes>
+      </Router>
     </>
   );
 };

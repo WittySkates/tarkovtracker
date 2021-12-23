@@ -1,4 +1,4 @@
-/** @module SignInPopup */
+/** @module SessionExpired */
 
 import React from "react";
 import {

@@ -35,36 +35,24 @@ const TraderTree = props => {
     firebase.database().goOnline();
     isTimedOut.current = false;
   }
+
   const hourInMilli = 3600000;
-
-  // useEffect(() => {
-  //   if (userId) {
-  //     console.log("timeout");
-  //     setTimeout(() => {
-  //       auth.signOut();
-  //       setTimeout(() => {
-  //         setIsSessionDialogOpen(true);
-  //       }, 500);
-  //     }, hourInMilli * 6);
-  //   }
-  // }, [userId]);
-
   const timeoutFunction = () => {
     if (autoTimeout.current) {
       clearTimeout(autoTimeout.current);
     }
     autoTimeout.current = setTimeout(() => {
       setTimeout(() => {
+        console.log("Timed out for inactivity");
         firebase.database().goOffline();
         isTimedOut.current = true;
       }, 500);
     }, hourInMilli);
   };
 
+  timeoutFunction();
+
   auth.onAuthStateChanged(user => {
-    if (user) {
-      timeoutFunction();
-    }
     setUserId(user?.uid);
   });
 
