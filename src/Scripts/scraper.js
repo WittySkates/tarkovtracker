@@ -230,5 +230,7 @@ const updateTraderData = async () => {
   await database.ref("traderTree").set(traderTreeString);
 };
 
-await updateTraderData();
-admin.app().delete();
+(async () => {
+  await updateTraderData();
+  admin.app().delete();
+})();
