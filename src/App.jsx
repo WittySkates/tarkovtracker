@@ -1,65 +1,73 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import _ from "lodash";
-import firebase from "firebase/app";
-import "firebase/database";
 import { TopNav, TraderTree, Traderbar, Attributions } from "./components";
+import { basicRealtimeApiCall, auth, database } from "./utils/firebase";
+import { getAllTruthyValues } from "./utils/common";
+import _ from "lodash";
+
 import "./App.scss";
 
-const database = firebase.database();
-
 const App = () => {
+  const [uid, setUid] = useState("");
   const [traderTrees, setTraderTrees] = useState({});
-  const [traderNames, setTraderNames] = useState([]);
+  const [traderInfo, setTraderInfo] = useState([]);
   const [currentTrader, setCurrentTrader] = useState(0);
+  const [completedQuests, setCompletedQuests] = useState({});
+  const testHolder = useRef({});
+
+  auth.onAuthStateChanged(user => {
+    // if (user?.uid !== uid) {
+    setUid(user?.uid);
+    // }
+  });
 
   useEffect(() => {
     (async () => {
-      let lastUpdated;
-      await database
-        .ref("traderQuests/lastUpdated")
-        .get()
-        .then(snapshot => {
-          if (snapshot.exists()) {
-            lastUpdated = snapshot.val();
-          } else {
-            return null;
-          }
-        })
-        .catch(error => {
-          console.log("Erroring getting lastUpdated" + error);
-        });
+      let lastUpdated = (await basicRealtimeApiCall("traderQuests/lastUpdated")).data;
+      let tree = localStorage.getItem("tarkov-tree");
       if (
         !localStorage.getItem("tarkov-time") ||
         localStorage.getItem("tarkov-time") !== lastUpdated.toString()
       ) {
         localStorage.setItem("tarkov-time", lastUpdated);
-        await database
-          .ref("traderTree")
-          .get()
-          .then(snapshot => {
-            if (snapshot.exists()) {
-              localStorage.setItem("tarkov-tree", snapshot.val());
-            } else {
-              return null;
-            }
-          })
-          .catch(error => {
-            console.log("Erroring getting trader tree" + error);
-          });
+        tree = (await basicRealtimeApiCall("traderTree")).data;
+        localStorage.setItem("tarkov-tree", tree);
       }
-
-      const traderTrees = JSON.parse(localStorage.getItem("tarkov-tree"));
+      const traderTrees = JSON.parse(tree);
       setTraderTrees(traderTrees);
-
-      const traderNames = _.reduce(
+      const traderInfo = _.reduce(
         traderTrees,
-        (acc, entry) => [...acc, { name: entry.name, attributes: entry.attributes }],
+        (acc, entry) => [
+          ...acc,
+          { name: entry.name, image: entry.attributes.image, quests: entry.attributes.Quests }
+        ],
         []
       );
-      setTraderNames(traderNames);
+      setTraderInfo(traderInfo);
     })();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (uid) {
+        let traderQuests = (await basicRealtimeApiCall(`users/${uid}/completedQuests`)).data;
+        const traders = Object.keys(traderQuests);
+        traders.forEach(trader => {
+          const completedQuestsRes = getAllTruthyValues(traderQuests[trader]);
+          _.set(testHolder.current, trader, completedQuestsRes);
+        });
+        setCompletedQuests(testHolder.current);
+
+        database.ref(`users/${uid}/completedQuests`).on("child_changed", snapshot => {
+          const trader = snapshot.key;
+          const quests = snapshot.val();
+          const completedQuestsRes = getAllTruthyValues(quests);
+          _.set(testHolder.current, trader, completedQuestsRes);
+          setCompletedQuests({ ...testHolder.current, [trader]: completedQuestsRes });
+        });
+      }
+    })();
+  }, [uid]);
 
   return (
     <>
@@ -71,15 +79,21 @@ const App = () => {
             element={
               <>
                 <Traderbar
-                  traderNames={traderNames}
-                  traderTrees={traderTrees}
+                  traderInfo={traderInfo}
                   currentTrader={currentTrader}
                   setCurrentTrader={setCurrentTrader}
+                  completedQuests={completedQuests}
                 />
-                <TraderTree
-                  traderData={traderTrees[currentTrader]}
-                  trader={traderNames[currentTrader]?.name}
-                />
+                {traderInfo?.[currentTrader]?.name ? (
+                  <TraderTree
+                    traderData={traderTrees[currentTrader]}
+                    trader={traderInfo[currentTrader].name}
+                    completedQuestsTrader={completedQuests[traderInfo[currentTrader]?.name]}
+                    uid={uid}
+                  />
+                ) : (
+                  <p>...Loading</p>
+                )}
               </>
             }
           />

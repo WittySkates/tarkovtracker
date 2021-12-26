@@ -1,9 +1,7 @@
 /** @module TraderTree */
 
-import React, { useState, useEffect, useRef } from "react";
-import firebase from "firebase/app";
-import "firebase/database";
-import "firebase/auth";
+import React, { useRef } from "react";
+import { database } from "../../utils/firebase";
 import Tree from "react-d3-tree";
 import Node from "./Node";
 import { useCenteredTree } from "./utils/helpers";
@@ -12,11 +10,8 @@ import { getLinkClasses } from "./utils/treeUtils";
 import "./styles/tree.scss";
 
 const TraderTree = props => {
-  const { traderData, trader } = props;
+  const { traderData, trader, uid, completedQuestsTrader } = props;
   const [translate, containerRef] = useCenteredTree();
-  const [userId, setUserId] = useState("");
-  const [doneCount, setDoneCount] = useState("");
-  const completedQuests = useRef({});
   const autoTimeout = useRef();
   const isTimedOut = useRef(false);
 
@@ -28,11 +23,8 @@ const TraderTree = props => {
     y: -115
   };
 
-  const database = firebase.database();
-  const auth = firebase.auth();
-
   if (isTimedOut.current) {
-    firebase.database().goOnline();
+    database.goOnline();
     isTimedOut.current = false;
   }
 
@@ -44,7 +36,7 @@ const TraderTree = props => {
     autoTimeout.current = setTimeout(() => {
       setTimeout(() => {
         console.log("Timed out for inactivity");
-        firebase.database().goOffline();
+        database.goOffline();
         isTimedOut.current = true;
       }, 500);
     }, hourInMilli);
@@ -52,29 +44,6 @@ const TraderTree = props => {
 
   timeoutFunction();
 
-  auth.onAuthStateChanged(user => {
-    setUserId(user?.uid);
-  });
-
-  const userTraderRef = database.ref(`users/${userId}/completedQuests/${trader}`);
-  useEffect(() => {
-    if (userId) {
-      userTraderRef.on("value", snapshot => {
-        const res = snapshot.val();
-        let traderCount = 0;
-        if (res != null) {
-          Object.keys(res).forEach(quest => {
-            if (res[quest]) {
-              traderCount = traderCount + 1;
-            }
-          });
-        }
-        completedQuests.current = res;
-        setDoneCount(traderCount);
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userTraderRef]);
   return (
     <div className="tree-container" ref={containerRef}>
       {traderData && (
@@ -89,12 +58,12 @@ const TraderTree = props => {
               traderQuests={traderData.attributes.Quests}
               traderName={trader}
               database={database}
-              uid={userId}
-              doneCount={doneCount}
+              uid={uid}
+              doneCount={Object.keys(completedQuestsTrader ?? {}).length}
             />
           )}
           pathClassFunc={(node, orientation) => {
-            return getLinkClasses(node, orientation, completedQuests.current);
+            return getLinkClasses(node, orientation, completedQuestsTrader);
           }}
           nodeSize={nodeSize}
           orientation="vertical"
