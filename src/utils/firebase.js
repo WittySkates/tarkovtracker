@@ -3,7 +3,7 @@ import "firebase/auth";
 import "firebase/database";
 import { firebaseConfig, firebaseConfigDev } from "../config";
 
-const dev = true;
+const dev = false;
 
 if (dev) {
   firebase.initializeApp(firebaseConfigDev);
