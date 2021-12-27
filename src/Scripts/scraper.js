@@ -249,10 +249,10 @@ const updateTraderData = async () => {
   }
 
   const traderQuests = await getUrls();
-  // if (_.isEqual(traderQuests, traderQuestsDatabase)) {
-  //   console.log("Data was the same, did not update");
-  //   return;
-  // }
+  if (_.isEqual(traderQuests, traderQuestsDatabase)) {
+    console.log("Data was the same, did not update");
+    return;
+  }
 
   const traderTree = generateTraderTree(traderQuests);
   const traderTreeString = JSON.stringify(traderTree);
