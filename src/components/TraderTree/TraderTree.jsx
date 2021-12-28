@@ -15,12 +15,12 @@ const TraderTree = props => {
   const autoTimeout = useRef();
   const isTimedOut = useRef(false);
 
-  const nodeSize = { x: 400, y: 375 };
+  const nodeSize = { x: 420, y: 300 };
   const foreignObjectProps = {
     width: nodeSize.x,
     height: nodeSize.y,
-    x: -200,
-    y: -115
+    x: -210,
+    y: -75
   };
 
   if (isTimedOut.current) {

@@ -20,6 +20,7 @@ export const getLinkClasses = (node, orientation, completedQuests) => {
       data: { name: targetName }
     }
   } = node;
+  const questName = _.camelCase(targetName);
   // if (targetName === "Polikhim hobo") {
   //   console.log(completedQuests);
   //   console.log(targetName);
@@ -27,5 +28,5 @@ export const getLinkClasses = (node, orientation, completedQuests) => {
   //   console.log(completedQuests?.[targetName] ? "next-completed" : "");
   // }
 
-  return completedQuests?.[targetName] ? "next-completed" : "";
+  return completedQuests?.[questName] ? "next-completed" : "";
 };

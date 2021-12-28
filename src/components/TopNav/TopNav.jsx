@@ -3,11 +3,11 @@
 import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import Auth from "./Auth";
+import Auth from "../Auth";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { NavLink } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import "./topnav.scss";
+import "./styles/topnav.scss";
 
 const TopNav = () => {
   let navigate = useNavigate();

@@ -3,7 +3,7 @@ import Auth from "./Auth";
 import Checkbox from "./Checkbox/Checkbox";
 import SignInPopup from "./Popups/SignInPopup";
 import ToggleButton from "./ToggleButton/ToggleButton";
-import TopNav from "./TopNav";
+import TopNav from "./TopNav/TopNav";
 import Traderbar from "./Traders/Traderbar";
 import TraderButton from "./Traders/TraderButton";
 import TraderTree from "./TraderTree/TraderTree";

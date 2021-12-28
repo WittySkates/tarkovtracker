@@ -6,6 +6,7 @@ import { getAllTruthyValues } from "./utils/common";
 import _ from "lodash";
 
 import "./App.scss";
+import Discord from "./components/Discord/Discord";
 
 const App = () => {
   const [uid, setUid] = useState("");
@@ -33,6 +34,7 @@ const App = () => {
         tree = (await basicRealtimeApiCall("traderTree")).data;
         localStorage.setItem("tarkov-tree", tree);
       }
+      console.log(JSON.parse(tree), tree);
       const traderTrees = JSON.parse(tree);
       setTraderTrees(traderTrees);
       const traderInfo = _.reduce(
@@ -50,7 +52,7 @@ const App = () => {
   useEffect(() => {
     (async () => {
       if (uid) {
-        let traderQuests = (await basicRealtimeApiCall(`users/${uid}/completedQuests`)).data;
+        let traderQuests = (await basicRealtimeApiCall(`users/${uid}/completedQuests`))?.data ?? {};
         const traders = Object.keys(traderQuests);
         traders.forEach(trader => {
           const completedQuestsRes = getAllTruthyValues(traderQuests[trader]);
@@ -102,6 +104,7 @@ const App = () => {
           <Route path="attributions" element={<Attributions />} />
         </Routes>
       </Router>
+      <Discord />
     </>
   );
 };
