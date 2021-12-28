@@ -25,17 +25,17 @@ const App = () => {
   useEffect(() => {
     (async () => {
       let lastUpdated = (await basicRealtimeApiCall("traderQuests/lastUpdated")).data;
-      let tree = localStorage.getItem("tarkov-tree");
+      let trees = localStorage.getItem("traderTrees");
       if (
-        !localStorage.getItem("tarkov-time") ||
-        localStorage.getItem("tarkov-time") !== lastUpdated.toString()
+        !localStorage.getItem("tarkovTime") ||
+        !localStorage.getItem("traderTrees") ||
+        localStorage.getItem("tarkovTime") !== lastUpdated.toString()
       ) {
-        localStorage.setItem("tarkov-time", lastUpdated);
-        tree = (await basicRealtimeApiCall("traderTree")).data;
-        localStorage.setItem("tarkov-tree", tree);
+        localStorage.setItem("tarkovTime", lastUpdated);
+        trees = (await basicRealtimeApiCall("traderTrees")).data;
+        localStorage.setItem("traderTrees", trees);
       }
-      console.log(JSON.parse(tree), tree);
-      const traderTrees = JSON.parse(tree);
+      const traderTrees = JSON.parse(trees);
       setTraderTrees(traderTrees);
       const traderInfo = _.reduce(
         traderTrees,

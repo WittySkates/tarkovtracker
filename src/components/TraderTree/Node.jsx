@@ -25,9 +25,10 @@ const Node = props => {
   const [isChecked, setIsChecked] = useState(false);
   const [isSignInDialogOpen, setIsSignInDialogOpen] = useState(false);
   const [isQuestDialogOpen, setIsQuestDialogOpen] = useState(false);
-  const questName = _.camelCase(nodeDatum.name);
 
-  const nodeRef = database.ref(`users/${uid}/completedQuests/${traderName}/${questName}`);
+  const nodeRef = database.ref(
+    `users/${uid}/completedQuests/${traderName}/${nodeDatum.attributes.id}`
+  );
 
   useEffect(() => {
     if (uid && isSignInDialogOpen) setIsSignInDialogOpen(false);
@@ -49,12 +50,12 @@ const Node = props => {
   const updateDatabase = () => {
     if (uid) {
       const priors = {};
-      getAllPreviousQuests(questName, traderQuests, priors);
+      getAllPreviousQuests(nodeDatum.attributes.id, traderQuests, priors);
       if (!isChecked) {
         database.ref(`users/${uid}/completedQuests/${traderName}`).update(priors);
       }
       database.ref(`users/${uid}/completedQuests/${traderName}`).update({
-        [questName]: !isChecked
+        [nodeDatum.attributes.id]: !isChecked
       });
     }
   };
@@ -101,7 +102,7 @@ const Node = props => {
             d="M33.125 186.625V186.875H33.375H64.625H64.875V186.625V155.375V155.125H64.625H33.375H33.125V155.375V186.625ZM33.375 152.5H64.625C65.3875 152.5 66.1188 152.803 66.6579 153.342C67.1971 153.881 67.5 154.613 67.5 155.375V186.625C67.5 187.387 67.1971 188.119 66.6579 188.658C66.1188 189.197 65.3875 189.5 64.625 189.5H33.375C32.6125 189.5 31.8812 189.197 31.3421 188.658C30.8029 188.119 30.5 187.387 30.5 186.625V155.375C30.5 154.613 30.8029 153.881 31.3421 153.342C31.8812 152.803 32.6125 152.5 33.375 152.5Z"
             fill="black"
             stroke="black"
-            stroke-width="0.5"
+            strokeWidth="0.5"
           />
         )}
         <rect

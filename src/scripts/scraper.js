@@ -157,7 +157,7 @@ const findRoots = quests => {
 };
 
 // () -> () -> () -> () -> ***
-const getTree = (tree, roots, validate, quests) => {
+const generateTraderTree = (tree, roots, validate, quests) => {
   _.forEach(roots, questName => {
     if (!quests[questName]) {
       return;
@@ -169,11 +169,12 @@ const getTree = (tree, roots, validate, quests) => {
         Rewards: quests[questName].Rewards,
         type: quests[questName].Type,
         link: quests[questName].Link,
-        noPriorNext: false
+        noPriorNext: false,
+        id: questName
       },
       children: []
     };
-    getTree(entry.children, quests[questName].Next, validate, quests);
+    generateTraderTree(entry.children, quests[questName].Next, validate, quests);
     validate.push(questName);
     tree.push(entry);
   });
@@ -189,7 +190,8 @@ const fixDiff = (validate, allquestsNames, quests, tree) => {
         Rewards: quests[questName].Rewards,
         type: quests[questName].Type,
         link: quests[questName].Link,
-        noPriorNext: true
+        noPriorNext: true,
+        id: questName
       },
       children: []
     };
@@ -197,14 +199,14 @@ const fixDiff = (validate, allquestsNames, quests, tree) => {
   });
 };
 
-const generateTraderTree = traderQuests => {
+const generateAllTraderTrees = traderQuests => {
   const allTraderTrees = [];
   const traders = Object.keys(traderQuests);
   traders.forEach(trader => {
     const roots = findRoots(traderQuests[trader].Quests);
     const tree = [];
     const validate = [];
-    getTree(tree, roots, validate, traderQuests[trader].Quests);
+    generateTraderTree(tree, roots, validate, traderQuests[trader].Quests);
     fixDiff(validate, Object.keys(traderQuests[trader].Quests), traderQuests[trader].Quests, tree);
     const quests = _.cloneDeep(traderQuests[trader].Quests);
     for (const quest in quests) {
@@ -254,12 +256,12 @@ const updateTraderData = async () => {
     return;
   }
 
-  const traderTree = generateTraderTree(traderQuests);
-  const traderTreeString = JSON.stringify(traderTree);
+  const traderTrees = generateAllTraderTrees(traderQuests);
+  const traderTreesString = JSON.stringify(traderTrees);
   _.set(traderQuests, "lastUpdated", Date.now());
 
   await database.ref("traderQuests").set(traderQuests);
-  await database.ref("traderTree").set(traderTreeString);
+  await database.ref("traderTrees").set(traderTreesString);
 };
 
 await updateTraderData();
