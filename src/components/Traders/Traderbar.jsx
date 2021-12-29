@@ -2,7 +2,7 @@
 
 import React from "react";
 import TraderButton from "./TraderButton";
-
+import { getDoneCount } from "../../utils/common";
 import "./styles/traderbar.scss";
 
 const Traderbar = props => {
@@ -20,7 +20,7 @@ const Traderbar = props => {
             imageLink={el.image}
             tabIndex={index}
             totalCount={Object.keys(traderInfo[index].quests).length}
-            doneCount={Object.keys(completedQuests?.[el?.name] ?? {}).length}
+            doneCount={getDoneCount(completedQuests?.[el?.name] ?? {}, el?.quests ?? {})}
           />
         ))}
     </div>

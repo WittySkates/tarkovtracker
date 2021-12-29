@@ -4,6 +4,8 @@ import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Auth from "../Auth";
+import Discord from "../Discord/Discord";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import { NavLink } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -28,9 +30,11 @@ const TopNav = () => {
             <NavLink to="/ammo_chart">Ammo Chart</NavLink> */}
           </Nav>
           <Nav style={{ paddingRight: "10px" }}>
-            <NavLink className="me-3 navLink" onClick={() => navigate("/attributions")}>
+            <NavLink className="me-2 navLink" onClick={() => navigate("/attributions")}>
               Attributions
             </NavLink>
+            <Discord />
+
             <Auth />
           </Nav>
         </Navbar.Collapse>

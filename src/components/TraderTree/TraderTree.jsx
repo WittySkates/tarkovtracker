@@ -6,7 +6,7 @@ import Tree from "react-d3-tree";
 import Node from "./Node";
 import { useCenteredTree } from "./utils/helpers";
 import { getLinkClasses } from "./utils/treeUtils";
-
+import { getDoneCount } from "../../utils/common";
 import "./styles/tree.scss";
 
 const TraderTree = props => {
@@ -59,7 +59,10 @@ const TraderTree = props => {
               traderName={trader}
               database={database}
               uid={uid}
-              doneCount={Object.keys(completedQuestsTrader ?? {}).length}
+              doneCount={getDoneCount(
+                completedQuestsTrader ?? {},
+                traderData?.attributes?.Quests ?? {}
+              )}
             />
           )}
           pathClassFunc={(node, orientation) => {

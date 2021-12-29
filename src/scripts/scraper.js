@@ -3,9 +3,7 @@ import admin from "firebase-admin";
 import _ from "lodash";
 import axios from "axios";
 import cheerio from "cheerio";
-import { firebaseConfig, firebaseConfigDev, adminConfig, adminConfigDev } from "../config.js";
-
-const dev = true;
+import { firebaseConfig, firebaseConfigDev, adminConfig, adminConfigDev, dev } from "../config.js";
 
 if (dev) {
   admin.initializeApp({

@@ -1,9 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
-import { firebaseConfig, firebaseConfigDev } from "../config";
-
-const dev = true;
+import { firebaseConfig, firebaseConfigDev, dev } from "../config";
 
 if (dev) {
   firebase.initializeApp(firebaseConfigDev);

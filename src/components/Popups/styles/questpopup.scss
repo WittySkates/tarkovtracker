@@ -6,28 +6,18 @@
   // padding: 20px;
 }
 
-.header-wrapper {
+.header {
   display: flex;
-  justify-content: space-between;
-  .header {
-    display: flex;
-    justify-content: space-between;
-    h2 {
-      padding-right: 24px;
+  h2 {
+    padding-right: 24px;
+    text-decoration: underline;
+    text-decoration-color: $tarkov-brown;
+    &:hover {
+      text-decoration-color: #b6afa0;
     }
   }
 }
 
-.link-icon {
-  width: 35px;
-  fill: transparent;
-  stroke-width: 1;
-  stroke: $text-color;
-  cursor: pointer;
-  &:hover {
-    stroke: rgba(214, 214, 214, 0.7);
-  }
-}
 .questpopup-checkbox {
   margin-top: 6px;
   width: 30px;

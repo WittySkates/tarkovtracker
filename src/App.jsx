@@ -6,7 +6,6 @@ import { getAllTruthyValues } from "./utils/common";
 import _ from "lodash";
 
 import "./App.scss";
-import Discord from "./components/Discord/Discord";
 
 const App = () => {
   const [uid, setUid] = useState("");
@@ -17,12 +16,14 @@ const App = () => {
   const testHolder = useRef({});
 
   auth.onAuthStateChanged(user => {
-    // if (user?.uid !== uid) {
-    setUid(user?.uid);
-    // }
+    if (user?.uid !== uid) {
+      setUid(user?.uid);
+    }
   });
 
   useEffect(() => {
+    localStorage.removeItem("tarkov-time");
+    localStorage.removeItem("tarkov-tree");
     (async () => {
       let lastUpdated = (await basicRealtimeApiCall("traderQuests/lastUpdated")).data;
       let trees = localStorage.getItem("traderTrees");
@@ -60,13 +61,15 @@ const App = () => {
         });
         setCompletedQuests(testHolder.current);
 
-        database.ref(`users/${uid}/completedQuests`).on("child_changed", snapshot => {
+        const snapshotCallback = snapshot => {
           const trader = snapshot.key;
           const quests = snapshot.val();
           const completedQuestsRes = getAllTruthyValues(quests);
           _.set(testHolder.current, trader, completedQuestsRes);
           setCompletedQuests({ ...testHolder.current, [trader]: completedQuestsRes });
-        });
+        };
+        database.ref(`users/${uid}/completedQuests`).on("child_changed", snapshotCallback);
+        database.ref(`users/${uid}/completedQuests`).on("child_added", snapshotCallback);
       }
     })();
   }, [uid]);
@@ -104,7 +107,6 @@ const App = () => {
           <Route path="attributions" element={<Attributions />} />
         </Routes>
       </Router>
-      <Discord />
     </>
   );
 };

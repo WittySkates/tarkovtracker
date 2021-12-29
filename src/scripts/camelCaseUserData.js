@@ -1,9 +1,7 @@
 /** @module camelCaseUserData */
 import admin from "firebase-admin";
 import _ from "lodash";
-import { firebaseConfig, firebaseConfigDev, adminConfig, adminConfigDev } from "../config.js";
-
-const dev = true;
+import { firebaseConfig, firebaseConfigDev, adminConfig, adminConfigDev, dev } from "../config.js";
 
 if (dev) {
   admin.initializeApp({
