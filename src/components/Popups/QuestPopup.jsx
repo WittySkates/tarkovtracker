@@ -39,6 +39,14 @@ const QuestPopup = ({ isOpen, handleClose, data, checkboxOnChange, isChecked }) 
         }
       </DialogTitle>
       <DialogContent className="questpopup">
+        {data?.attributes?.noPriorNext && (
+          <>
+            <div className="issue">
+              There may be an issue with this quest's ordering which is provided by the Wiki.
+            </div>
+            <br />
+          </>
+        )}
         Type: {data.attributes?.type}
         <br />
         <br />
