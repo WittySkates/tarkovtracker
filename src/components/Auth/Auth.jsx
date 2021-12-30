@@ -1,11 +1,11 @@
 /** @module Auth */
 
 import React from "react";
-import { SignIn, auth } from "../utils/firebase";
+import { SignIn, auth } from "../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Button from "react-bootstrap/Button";
-
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./styles/auth.scss";
 
 const Auth = () => {
   const [user, loading, error] = useAuthState(auth);
@@ -39,7 +39,7 @@ const Auth = () => {
     );
   }
   return (
-    <Button variant="primary" onClick={() => SignIn()}>
+    <Button className="signin" onClick={() => SignIn()}>
       Sign In With Google
     </Button>
   );

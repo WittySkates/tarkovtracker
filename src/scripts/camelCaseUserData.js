@@ -36,8 +36,8 @@ const camelCaseUserData = async () => {
     }
     Object.entries(userData.completedQuests).forEach(([traderName, traderData]) => {
       Object.entries(traderData).forEach(async ([questName, questData]) => {
-        userSnapshot[userName].completedQuests[traderName][_.camelCase(questName)] = questData;
         if (questName !== _.camelCase(questName)) {
+          userSnapshot[userName].completedQuests[traderName][_.camelCase(questName)] = questData;
           delete userSnapshot[userName].completedQuests[traderName][questName];
         }
       });

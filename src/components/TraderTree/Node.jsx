@@ -84,10 +84,10 @@ const Node = props => {
         {/* Name of node */}
         <foreignObject
           style={{ fill: "none" }}
-          width={foreignObjectProps.width - 40}
-          height={foreignObjectProps.height - 180}
-          x="20"
-          y="10"
+          width={foreignObjectProps.width - 50}
+          height={foreignObjectProps.height - 150}
+          x="25"
+          y="15"
         >
           <div className="node-title">
             <p>{nodeDatum?.name}</p>

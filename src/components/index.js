@@ -1,5 +1,5 @@
 import * as Icons from "./Icons/Icons";
-import Auth from "./Auth";
+import Auth from "./Auth/Auth";
 import Checkbox from "./Checkbox/Checkbox";
 import SignInPopup from "./Popups/SignInPopup";
 import ToggleButton from "./ToggleButton/ToggleButton";

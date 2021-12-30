@@ -3,7 +3,7 @@
 import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import Auth from "../Auth";
+import Auth from "../Auth/Auth";
 import Discord from "../Discord/Discord";
 
 import "bootstrap/dist/css/bootstrap.min.css";
