@@ -24,7 +24,7 @@ const QuestPopup = ({ isOpen, handleClose, data, checkboxOnChange, isChecked }) 
     <Dialog classes={dialogClasses} open={isOpen} onClose={handleClose}>
       <DialogTitle className="questpopup">
         {
-          <div className="header">
+          <div className="quespopup-header">
             <a href={data.attributes?.link} target="_blank" rel="noreferrer">
               <h2>{data.name}</h2>
             </a>
