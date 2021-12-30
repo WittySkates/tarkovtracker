@@ -34,7 +34,7 @@ const getPriorNext = async (res, trader, title, link) => {
         const lisPr = $(el).children();
         $(lisPr).each((_idx, el) => {
           if ($(el).is("a")) {
-            prior.push(_.camelCase($(el).text()));
+            prior.push(_.camelCase($(el).text().replace("(quest)", "")));
           }
         });
         if (prior.length > 0) {
@@ -49,7 +49,7 @@ const getPriorNext = async (res, trader, title, link) => {
         const li = $(el).children();
         $(li).each((_idx, el) => {
           if ($(el).is("a")) {
-            next.push(_.camelCase($(el).text()));
+            next.push(_.camelCase($(el).text().replace("(quest)", "")));
           }
         });
         if (next.length > 0) {
