@@ -5,6 +5,7 @@ import "./styles/questcount.scss";
 
 const QuestCount = ({ traderQuests, count }) => {
   const totalCount = Object.keys(traderQuests).length;
+
   return <div>{`${count}/${totalCount}`}</div>;
 };
 

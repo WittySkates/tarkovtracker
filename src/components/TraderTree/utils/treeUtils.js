@@ -20,9 +20,13 @@ export const getLinkClasses = (node, orientation, completedQuests) => {
       data: { name: targetName }
     }
   } = node;
-  // console.log(completedQuests);
-  // console.log(targetName);
-  // console.log(completedQuests?.[targetName]);
+  const questName = _.camelCase(targetName);
+  // if (targetName === "Polikhim hobo") {
+  //   console.log(completedQuests);
+  //   console.log(targetName);
+  //   console.log(completedQuests?.[targetName]);
+  //   console.log(completedQuests?.[targetName] ? "next-completed" : "");
+  // }
 
-  return completedQuests?.[targetName] ? "next-completed" : "";
+  return completedQuests?.[questName] ? "next-completed" : "";
 };

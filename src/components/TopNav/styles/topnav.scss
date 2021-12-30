@@ -1,0 +1,14 @@
+@import "../../../colors.scss";
+
+.navBar {
+  color: $tarkov-brown;
+  background-color: #1f1f21;
+}
+.navBrand {
+  padding-left: 10px;
+  cursor: pointer;
+}
+
+.navLink {
+  // color: $text-accent !important;
+}

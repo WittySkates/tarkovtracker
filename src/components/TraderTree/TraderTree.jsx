@@ -1,57 +1,48 @@
 /** @module TraderTree */
 
-import React, { useState, useEffect, useRef } from "react";
-import firebase from "firebase/app";
-import "firebase/database";
-import "firebase/auth";
+import React, { useRef } from "react";
+import { database } from "../../utils/firebase";
 import Tree from "react-d3-tree";
 import Node from "./Node";
 import { useCenteredTree } from "./utils/helpers";
 import { getLinkClasses } from "./utils/treeUtils";
-
+import { getDoneCount } from "../../utils/common";
 import "./styles/tree.scss";
 
 const TraderTree = props => {
-  const { traderData, trader } = props;
-
+  const { traderData, trader, uid, completedQuestsTrader } = props;
   const [translate, containerRef] = useCenteredTree();
-  const [userId, setUserId] = useState("");
-  const [doneCount, setDoneCount] = useState("");
-  const completedQuests = useRef({});
+  const autoTimeout = useRef();
+  const isTimedOut = useRef(false);
 
-  const nodeSize = { x: 400, y: 375 };
+  const nodeSize = { x: 420, y: 300 };
   const foreignObjectProps = {
     width: nodeSize.x,
     height: nodeSize.y,
-    x: -200,
-    y: -115
+    x: -210,
+    y: -75
   };
 
-  const database = firebase.database();
-  const auth = firebase.auth();
-  auth.onAuthStateChanged(user => {
-    setUserId(user?.uid);
-  });
-  const userTraderRef = database.ref(`users/${userId}/completedQuests/${trader}`);
+  if (isTimedOut.current) {
+    database.goOnline();
+    isTimedOut.current = false;
+  }
 
-  useEffect(() => {
-    if (userId) {
-      userTraderRef.on("value", snapshot => {
-        const res = snapshot.val();
-        let traderCount = 0;
-        if (res != null) {
-          Object.keys(res).forEach(quest => {
-            if (res[quest]) {
-              traderCount = traderCount + 1;
-            }
-          });
-        }
-        completedQuests.current = res;
-        setDoneCount(traderCount);
-      });
+  const hourInMilli = 3600000;
+  const timeoutFunction = () => {
+    if (autoTimeout.current) {
+      clearTimeout(autoTimeout.current);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userTraderRef]);
+    autoTimeout.current = setTimeout(() => {
+      setTimeout(() => {
+        console.log("Timed out for inactivity");
+        database.goOffline();
+        isTimedOut.current = true;
+      }, 500);
+    }, hourInMilli);
+  };
+
+  timeoutFunction();
 
   return (
     <div className="tree-container" ref={containerRef}>
@@ -67,12 +58,15 @@ const TraderTree = props => {
               traderQuests={traderData.attributes.Quests}
               traderName={trader}
               database={database}
-              uid={userId}
-              doneCount={doneCount}
+              uid={uid}
+              doneCount={getDoneCount(
+                completedQuestsTrader ?? {},
+                traderData?.attributes?.Quests ?? {}
+              )}
             />
           )}
           pathClassFunc={(node, orientation) => {
-            return getLinkClasses(node, orientation, completedQuests.current);
+            return getLinkClasses(node, orientation, completedQuestsTrader);
           }}
           nodeSize={nodeSize}
           orientation="vertical"
@@ -84,6 +78,7 @@ const TraderTree = props => {
           enableLegacyTransitions="True"
         />
       )}
+      ;
     </div>
   );
 };

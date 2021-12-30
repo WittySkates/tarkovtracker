@@ -7,18 +7,18 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  makeStyles,
+  makeStyles
 } from "@material-ui/core";
 import Button from "react-bootstrap/Button";
-import Auth from "../Auth";
+import Auth from "../Auth/Auth";
 
 import "./styles/signinpopup.scss";
 
 const useStyles = makeStyles(() => {
   return {
     paper: {
-      backgroundColor: "transparent",
-    },
+      backgroundColor: "transparent"
+    }
   };
 });
 
@@ -26,9 +26,7 @@ const SignInPopup = ({ isOpen, handleClose }) => {
   const dialogClasses = useStyles();
   return (
     <Dialog classes={dialogClasses} open={isOpen} onClose={handleClose}>
-      <DialogTitle className="signinpopup">
-        Sign in to use this feature
-      </DialogTitle>
+      <DialogTitle className="signinpopup">Sign in to use this feature</DialogTitle>
       <DialogContent className="signinpopup">
         <DialogContentText className="signinpopup">
           {`Signing in allows you to save data across devices and use all features`}

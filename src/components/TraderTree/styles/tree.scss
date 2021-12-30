@@ -4,6 +4,11 @@
   height: 100%;
 }
 
+.node-title {
+  font-size: 34px;
+  text-align: center;
+}
+
 .node-obj {
   cursor: grab;
   cursor: -moz-grab;
@@ -11,6 +16,7 @@
   &:active {
     cursor: grabbing;
   }
+  color: $tarkov-white;
 }
 
 .node__root > circle {
@@ -29,105 +35,41 @@
 
 //Node Stuff
 .Prapor {
-  background-color: #806543;
+  fill: $prapor;
 }
 .Therapist {
-  background-color: #973b5a;
+  fill: $therapist;
 }
 .Skier {
-  background-color: #965c1f;
+  fill: $skier;
 }
 .Peacekeeper {
-  background-color: #355c7d;
+  fill: $peacekeeper;
 }
 .Mechanic {
-  background-color: #7e1919;
+  fill: $mechanic;
 }
 .Ragman {
-  background-color: #6c5b7b;
+  fill: $ragman;
 }
 .Jaeger {
-  background-color: #3f704d;
+  fill: $jaeger;
 }
 .Fence {
-  background-color: #363636;
+  fill: $fence;
 }
 
-.node-container {
-  cursor: default;
-  &:active {
-    cursor: grabbing;
-  }
-  height: 200px;
-  align-items: center;
-  border-radius: 10px;
-  text-align: center;
-  font-size: 35px;
-  position: relative;
-  margin: 10px;
-  color: rgb(235, 235, 235);
-  padding: 10px;
-}
-
-.toggle-button {
-  position: absolute;
-  top: 80%;
-  left: 39.6%;
-}
 .rd3t-link {
   stroke: white !important;
   stroke-width: 2px;
 }
 
-.node-checkbox {
-  width: fit-content;
-  position: absolute;
-  top: 122px;
-  left: 12px;
-}
-
-.popup-icon {
-  width: 60px;
-  position: absolute;
-  right: 15px;
-  top: 132px;
-  fill: rgba(0, 0, 0, 0.52);
-  stroke-width: 4;
-  stroke: rgba(0, 0, 0, 0.3);
+.information-icon,
+.checkbox-icon {
   cursor: pointer;
-  &:hover {
-    stroke: rgba(0, 0, 0, 0.52);
-  }
 }
 
-.checkall-icon {
-  width: 60px;
-  position: absolute;
-  right: 15px;
-  top: 132px;
-  fill: rgba(0, 0, 0, 0.52);
-  stroke-width: 0;
-  // stroke: #000000cc;
-  cursor: pointer;
-  &:hover {
-    fill: rgba(0, 0, 0, 0.8);
-  }
-}
-
-.uncheckall-icon {
-  width: 50px;
-  position: absolute;
-  left: 15px;
-  top: 137px;
-  fill: rgba(0, 0, 0, 0.52);
-  stroke-width: 1;
-  // stroke: #000000cc;
-  cursor: pointer;
-  &:hover {
-    fill: rgba(0, 0, 0, 0.8);
-  }
-}
-
-.disabled {
-  fill: rgba(0, 0, 0, 0.2);
+.info-path-red {
+  stroke: #eed202;
+  fill: #eed202;
 }
