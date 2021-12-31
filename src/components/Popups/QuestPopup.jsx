@@ -64,6 +64,9 @@ const QuestPopup = ({ isOpen, handleClose, data, checkboxOnChange, isChecked }) 
             <li key={rew}>{rew}</li>
           ))}
         </ul>
+        Required for Kappa:{" "}
+        {data.attributes?.kappa === undefined ? "Unknown" : data.attributes?.kappa ? "Yes" : "No"}
+        <br />
         <br />
       </DialogContent>
     </Dialog>
