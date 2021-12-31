@@ -9,6 +9,24 @@
   text-align: center;
 }
 
+.kappa {
+  font-size: 25px;
+  text-align: center;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: black;
+}
+
+.red {
+  background-color: #bb0000;
+}
+
+.yellow {
+  background-color: #eed202;
+  color: black;
+  font-weight: bold;
+}
+
 .node-obj {
   cursor: grab;
   cursor: -moz-grab;
@@ -69,7 +87,9 @@
   cursor: pointer;
 }
 
-.info-path-red {
-  stroke: #eed202;
-  fill: #eed202;
+.info-path-yellow {
+  // stroke: #eed202;
+  // fill: #eed202;
+  // stroke: #751414;
+  // fill: #751414;
 }

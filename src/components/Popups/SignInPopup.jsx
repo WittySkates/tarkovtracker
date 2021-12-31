@@ -26,10 +26,14 @@ const SignInPopup = ({ isOpen, handleClose }) => {
   const dialogClasses = useStyles();
   return (
     <Dialog classes={dialogClasses} open={isOpen} onClose={handleClose}>
-      <DialogTitle className="signinpopup">Sign in to use this feature</DialogTitle>
+      <DialogTitle className="signinpopup">
+        <h2>Sign in to use this feature</h2>
+      </DialogTitle>
       <DialogContent className="signinpopup">
         <DialogContentText className="signinpopup">
-          {`Signing in allows you to save data across devices and use all features`}
+          <div className="signinpopup">
+            Signing in allows you to save data across devices and use all features{" "}
+          </div>
         </DialogContentText>
       </DialogContent>
       <DialogActions className="signinpopup">

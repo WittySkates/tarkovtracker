@@ -178,21 +178,21 @@ const Node = props => {
             />
             {/* Info icon paths and hitbox */}
             <path
-              className={nodeDatum?.attributes?.noPriorNext ? "info-path-red" : ""}
+              className={nodeDatum?.attributes?.noPriorNext ? "info-path-yellow" : ""}
               d="M366.312 180.375V180.625H366.562H371V183.25H359V180.625H363.438H363.688V180.375V171V170.75H363.438H360.562V168.125H366.312V180.375Z"
               fill="black"
               stroke="black"
               strokeWidth="0.5"
             />
             <path
-              className={nodeDatum?.attributes?.noPriorNext ? "info-path-red" : ""}
+              className={nodeDatum?.attributes?.noPriorNext ? "info-path-yellow" : ""}
               d="M363.837 159.103C364.181 158.873 364.586 158.75 365 158.75C365.555 158.75 366.088 158.971 366.481 159.363C366.873 159.756 367.094 160.288 367.094 160.844C367.094 161.258 366.971 161.663 366.741 162.007C366.511 162.351 366.184 162.62 365.801 162.778C365.419 162.937 364.998 162.978 364.592 162.897C364.185 162.816 363.812 162.617 363.519 162.324C363.227 162.031 363.027 161.658 362.946 161.252C362.866 160.846 362.907 160.425 363.066 160.043C363.224 159.66 363.492 159.333 363.837 159.103Z"
               fill="black"
               stroke="black"
               strokeWidth="0.5"
             />
             <path
-              className={nodeDatum?.attributes?.noPriorNext ? "info-path-red" : ""}
+              className={nodeDatum?.attributes?.noPriorNext ? "info-path-yellow" : ""}
               d="M365 192.625C360.723 192.625 356.542 191.357 352.986 188.981C349.43 186.604 346.658 183.227 345.021 179.276C343.384 175.324 342.956 170.976 343.791 166.781C344.625 162.586 346.685 158.733 349.709 155.709C352.733 152.685 356.586 150.625 360.781 149.791C364.976 148.956 369.324 149.384 373.276 151.021C377.227 152.658 380.604 155.43 382.981 158.986C385.357 162.542 386.625 166.723 386.625 171C386.625 176.735 384.347 182.236 380.291 186.291C376.236 190.347 370.735 192.625 365 192.625ZM365 152C361.242 152 357.569 153.114 354.444 155.202C351.32 157.29 348.884 160.257 347.446 163.729C346.008 167.201 345.632 171.021 346.365 174.707C347.098 178.392 348.908 181.778 351.565 184.435C354.222 187.092 357.608 188.902 361.293 189.635C364.979 190.368 368.799 189.992 372.271 188.554C375.743 187.116 378.71 184.68 380.798 181.556C382.886 178.431 384 174.758 384 171C384 165.961 381.998 161.128 378.435 157.565C374.872 154.002 370.039 152 365 152Z"
               fill="black"
               stroke="black"
@@ -208,6 +208,24 @@ const Node = props => {
               stroke="transparent"
               onClick={() => setIsQuestDialogOpen(true)}
             />
+
+            {!nodeDatum?.attributes?.kappa && (
+              <foreignObject
+                style={{ fill: "none" }}
+                width={foreignObjectProps.width - 260}
+                height={50}
+                x="130"
+                y="150"
+              >
+                <div
+                  className={`kappa ${
+                    nodeDatum.attributes?.kappa === undefined ? "yellow" : "red"
+                  }`}
+                >
+                  Kappa: {nodeDatum.attributes?.kappa === undefined ? "??? " : "No"}
+                </div>
+              </foreignObject>
+            )}
           </>
         )}
       </svg>

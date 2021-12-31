@@ -24,7 +24,7 @@ const QuestPopup = ({ isOpen, handleClose, data, checkboxOnChange, isChecked }) 
     <Dialog classes={dialogClasses} open={isOpen} onClose={handleClose}>
       <DialogTitle className="questpopup">
         {
-          <div className="header">
+          <div className="quespopup-header">
             <a href={data.attributes?.link} target="_blank" rel="noreferrer">
               <h2>{data.name}</h2>
             </a>
@@ -64,6 +64,9 @@ const QuestPopup = ({ isOpen, handleClose, data, checkboxOnChange, isChecked }) 
             <li key={rew}>{rew}</li>
           ))}
         </ul>
+        Required for Kappa:{" "}
+        {data.attributes?.kappa === undefined ? "Unknown" : data.attributes?.kappa ? "Yes" : "No"}
+        <br />
         <br />
       </DialogContent>
     </Dialog>

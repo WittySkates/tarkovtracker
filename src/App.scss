@@ -8,11 +8,14 @@
   font-display: swap;
 }
 
+* {
+  font-family: "Bender";
+}
+
 body {
   background-color: $back-color;
   height: 100vh;
   overflow: hidden;
-  font-family: "Bender";
 }
 
 #root {

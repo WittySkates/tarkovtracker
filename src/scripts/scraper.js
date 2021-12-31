@@ -25,6 +25,20 @@ const getPriorNext = async (res, trader, title, link) => {
     const $ = cheerio.load(data);
     const prior = [];
     const next = [];
+    $(".va-infobox-label").each((_idx, el) => {
+      if (
+        $(el)
+          .text()
+          .match(/(Required forKappa)(.*)/gs)
+      ) {
+        let kappa = $(el).next("td").next("td").text();
+        if (kappa === "Yes") {
+          _.set(res, `${trader}.Quests.${title}.Kappa`, true);
+        } else if (kappa === "No") {
+          _.set(res, `${trader}.Quests.${title}.Kappa`, false);
+        }
+      }
+    });
     $(".va-infobox-content").each((_idx, el) => {
       if (
         $(el)
@@ -34,7 +48,7 @@ const getPriorNext = async (res, trader, title, link) => {
         const lisPr = $(el).children();
         $(lisPr).each((_idx, el) => {
           if ($(el).is("a")) {
-            prior.push(_.camelCase($(el).text()));
+            prior.push(_.camelCase($(el).text().replace("(quest)", "")));
           }
         });
         if (prior.length > 0) {
@@ -49,7 +63,7 @@ const getPriorNext = async (res, trader, title, link) => {
         const li = $(el).children();
         $(li).each((_idx, el) => {
           if ($(el).is("a")) {
-            next.push(_.camelCase($(el).text()));
+            next.push(_.camelCase($(el).text().replace("(quest)", "")));
           }
         });
         if (next.length > 0) {
@@ -167,6 +181,7 @@ const generateTraderTree = (tree, roots, validate, quests) => {
         Rewards: quests[questName].Rewards,
         type: quests[questName].Type,
         link: quests[questName].Link,
+        kappa: quests[questName].Kappa,
         noPriorNext: false,
         id: questName
       },
@@ -188,6 +203,7 @@ const fixDiff = (validate, allquestsNames, quests, tree) => {
         Rewards: quests[questName].Rewards,
         type: quests[questName].Type,
         link: quests[questName].Link,
+        kappa: quests[questName].Kappa,
         noPriorNext: true,
         id: questName
       },
@@ -213,6 +229,7 @@ const generateAllTraderTrees = traderQuests => {
       delete quests[quest].Type;
       delete quests[quest].Link;
       delete quests[quest].Name;
+      delete quests[quest].Kappa;
     }
 
     allTraderTrees.push({
