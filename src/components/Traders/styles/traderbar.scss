@@ -76,33 +76,39 @@
   color: $tarkov-brown;
 }
 
-.circular-chart {
-  position: absolute;
-  vertical-align: center;
+.trader-icon > svg {
+  transform: rotate(-90deg);
 }
-
-// .circle-bg {
-//   fill: none;
-//   stroke: $nav-color;
-//   stroke-width: 2.5; //3.8
-// }
 
 .circle {
   fill: none;
-  stroke-width: 1.8; //2.8
-  stroke-linecap: round;
-  animation: progress 1s ease-out forwards;
-}
-
-@keyframes progress {
-  0% {
-    stroke-dasharray: 0 100;
-  }
-}
-
-.circular-chart .circle {
   stroke: $tarkov-brown;
+  stroke-width: 4; //2.8
+  stroke-linecap: round;
+  // animation: progress 1s ease-out forwards;
 }
+
+// @keyframes progress {
+//   0% {
+//     stroke-dasharray: 0 100;
+//   }
+// }
+
+// .percent {
+//   fill: none;
+//   stroke: $tarkov-brown;
+//   stroke-width: 4;
+//   stroke-linecap: round;
+//   stroke-dasharray: 100;
+//   // animation: loading 1s ease-out forwards;
+// }
+
+// @keyframes loading {
+//   from {
+//     stroke-dashoffset: 100;
+//   }
+// }
+
 .finished {
   stroke: green !important;
 }

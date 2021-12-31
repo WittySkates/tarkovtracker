@@ -15,21 +15,27 @@ const TraderButton = ({ traderName, imageLink, onClick, className, totalCount, d
       ) : (
         <Spinner className="loading-spinner" animation="border" />
       )}
-      <svg viewBox="0 0 36 36" className="circular-chart">
-        {/* <path
-          className="circle-bg"
-          d="M18 2.0845
-          a 15.9155 15.9155 0 0 1 0 31.831
-          a 15.9155 15.9155 0 0 1 0 -31.831"
-        /> */}
-        <path
+      <svg height="100%" width="100%" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <circle
           className={`circle ${ratio === 100 ? "finished" : ""}`}
           strokeDasharray={`${ratio}, 100`}
-          d="M18 2.0845
-          a 15.9155 15.9155 0 0 1 0 31.831
-          a 15.9155 15.9155 0 0 1 0 -31.831"
+          cx="60"
+          cy="60"
+          r="53 "
+          pathLength="100"
         />
       </svg>
+      {/* Another way to draw the percentage circle. Does not have dot at 0% */}
+      {/* <svg height="100%" width="100%" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <circle
+          className={`percent ${ratio === 100 ? "finished" : ""}`}
+          strokeDashoffset={100 - ratio}
+          cx="60"
+          cy="60"
+          r="54"
+          pathLength="100"
+        />
+      </svg> */}
     </div>
   );
 };
