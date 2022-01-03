@@ -6,24 +6,46 @@
 
 .node-title {
   font-size: 34px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.done-count {
+  font-size: 34px;
   text-align: center;
 }
 
 .kappa {
-  font-size: 25px;
+  height: 60px;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  border-radius: 10px;
-  border-style: solid;
-  border-color: black;
+  border-radius: 0 0 19.5px 19.5px;
+  border-top: 4px dashed white;
+  background-color: $back-color;
+  white-space: pre;
 }
 
-.red {
-  background-color: #bb0000;
+.green {
+  display: inline;
+  color: green;
+  font-weight: bold;
 }
 
 .yellow {
-  background-color: #eed202;
-  color: black;
+  display: inline;
+  color: #eed202;
+  font-weight: bold;
+}
+
+.red {
+  display: inline;
+  color: #d0342c;
   font-weight: bold;
 }
 
@@ -52,29 +74,41 @@
 }
 
 //Node Stuff
+.all-nodes {
+  stroke-width: 7px;
+}
+
 .Prapor {
   fill: $prapor;
+  stroke: $prapor;
 }
 .Therapist {
   fill: $therapist;
+  stroke: $therapist;
 }
 .Skier {
   fill: $skier;
+  stroke: $skier;
 }
 .Peacekeeper {
   fill: $peacekeeper;
+  stroke: $peacekeeper;
 }
 .Mechanic {
   fill: $mechanic;
+  stroke: $mechanic;
 }
 .Ragman {
   fill: $ragman;
+  stroke: $ragman;
 }
 .Jaeger {
   fill: $jaeger;
+  stroke: $jaeger;
 }
 .Fence {
   fill: $fence;
+  stroke: $fence;
 }
 
 .rd3t-link {
