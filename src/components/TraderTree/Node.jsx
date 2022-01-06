@@ -8,42 +8,33 @@ import _ from "lodash";
 import "./styles/tree.scss";
 
 const Node = props => {
-  const { nodeDatum, foreignObjectProps, traderQuests, traderName, database, uid, doneCount } =
-    props;
-  const [isChecked, setIsChecked] = useState(false);
+  const {
+    nodeDatum,
+    foreignObjectProps,
+    traderQuests,
+    traderName,
+    database,
+    uid,
+    doneCount,
+    questState
+  } = props;
   const [isSignInDialogOpen, setIsSignInDialogOpen] = useState(false);
   const [isQuestDialogOpen, setIsQuestDialogOpen] = useState(false);
-
-  const nodeRef = database.ref(
-    `users/${uid}/completedQuests/${traderName}/${nodeDatum.attributes.id}`
-  );
 
   useEffect(() => {
     if (uid && isSignInDialogOpen) setIsSignInDialogOpen(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uid]);
 
-  useEffect(() => {
-    if (uid) {
-      nodeRef.on("value", snapshot => {
-        const data = snapshot.val();
-        if (data !== null && data !== undefined) {
-          setIsChecked(data);
-        }
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nodeRef]);
-
   const updateDatabase = () => {
     if (uid) {
       const priors = {};
       getAllPreviousQuests(nodeDatum.attributes.id, traderQuests, priors);
-      if (!isChecked) {
+      if (!questState) {
         database.ref(`users/${uid}/completedQuests/${traderName}`).update(priors);
       }
       database.ref(`users/${uid}/completedQuests/${traderName}`).update({
-        [nodeDatum.attributes.id]: !isChecked
+        [nodeDatum.attributes.id]: !questState
       });
     }
   };
@@ -193,7 +184,7 @@ const Node = props => {
             </foreignObject>
 
             {/* Checkbox icon paths and hitbox */}
-            {isChecked ? (
+            {questState ? (
               <svg height="48" width="48" viewBox="0 0 24 24" x="20" y="167">
                 <path
                   fill="white"
@@ -246,7 +237,7 @@ const Node = props => {
       </svg>
       <QuestPopup
         checkboxOnChange={checkboxOnChange}
-        isChecked={isChecked}
+        isChecked={questState}
         data={nodeDatum}
         isOpen={isQuestDialogOpen}
         handleClose={() => setIsQuestDialogOpen(false)}
