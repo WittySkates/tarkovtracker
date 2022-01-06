@@ -5,7 +5,7 @@ import "./styles/attributions.scss";
 
 const Attributions = () => {
   return (
-    <>
+    <div className="scrollable">
       <div className="credits">
         <h2>Quest Information</h2>
         <p>
@@ -33,7 +33,7 @@ const Attributions = () => {
         </a>
         .
       </div>
-    </>
+    </div>
   );
 };
 
