@@ -3,8 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { TopNav, TraderTree, Traderbar, Attributions } from "./components";
 import { basicRealtimeApiCall, auth, database } from "./utils/firebase";
 import { getAllTruthyValues } from "./utils/common";
-import { useDispatch } from "react-redux";
-import { setCompletedQuests } from "./redux/slices/completedQuestsSlice";
 import _ from "lodash";
 
 import "./App.scss";
@@ -14,7 +12,8 @@ const App = () => {
   const [traderTrees, setTraderTrees] = useState({});
   const [traderInfo, setTraderInfo] = useState([]);
   const [currentTrader, setCurrentTrader] = useState(0);
-  const dispatch = useDispatch();
+  const [completedQuests, setCompletedQuests] = useState({});
+  const testHolder = useRef({});
 
   auth.onAuthStateChanged(user => {
     if (user?.uid !== uid) {
@@ -54,11 +53,20 @@ const App = () => {
   useEffect(() => {
     (async () => {
       if (uid) {
+        let traderQuests = (await basicRealtimeApiCall(`users/${uid}/completedQuests`))?.data ?? {};
+        const traders = Object.keys(traderQuests);
+        traders.forEach(trader => {
+          const completedQuestsRes = getAllTruthyValues(traderQuests[trader]);
+          _.set(testHolder.current, trader, completedQuestsRes);
+        });
+        setCompletedQuests(testHolder.current);
+
         const snapshotCallback = snapshot => {
           const trader = snapshot.key;
           const quests = snapshot.val();
           const completedQuestsRes = getAllTruthyValues(quests);
-          dispatch(setCompletedQuests({ trader, completedQuestsRes }));
+          _.set(testHolder.current, trader, completedQuestsRes);
+          setCompletedQuests({ ...testHolder.current, [trader]: completedQuestsRes });
         };
         database.ref(`users/${uid}/completedQuests`).on("child_changed", snapshotCallback);
         database.ref(`users/${uid}/completedQuests`).on("child_added", snapshotCallback);
@@ -67,36 +75,39 @@ const App = () => {
   }, [uid]);
 
   return (
-    <Router>
-      <TopNav />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Traderbar
-                traderInfo={traderInfo}
-                currentTrader={currentTrader}
-                setCurrentTrader={setCurrentTrader}
-              />
-              {traderInfo?.[currentTrader]?.name ? (
-                <TraderTree
-                  traderData={traderTrees[currentTrader]}
-                  trader={traderInfo[currentTrader].name}
-                  uid={uid}
+    <>
+      <Router>
+        <TopNav />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Traderbar
+                  traderInfo={traderInfo}
+                  currentTrader={currentTrader}
+                  setCurrentTrader={setCurrentTrader}
+                  completedQuests={completedQuests}
                 />
-              ) : (
-                <p>...Loading</p>
-              )}
-            </>
-          }
-        />
-        {/* <Route path="/quest_items"/>
-          <Route path="/ammo_chart"/> 
-          <Route path="/maps"/>*/}
-        <Route path="attributions" element={<Attributions />} />
-      </Routes>
-    </Router>
+                {traderInfo?.[currentTrader]?.name ? (
+                  <TraderTree
+                    traderData={traderTrees[currentTrader]}
+                    trader={traderInfo[currentTrader].name}
+                    completedQuestsTrader={completedQuests[traderInfo[currentTrader]?.name]}
+                    uid={uid}
+                  />
+                ) : (
+                  <p>...Loading</p>
+                )}
+              </>
+            }
+          />
+          {/* <Route path="/quest_items"/>
+          <Route path="/ammo_chart"/> */}
+          <Route path="attributions" element={<Attributions />} />
+        </Routes>
+      </Router>
+    </>
   );
 };
 
