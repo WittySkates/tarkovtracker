@@ -77,7 +77,7 @@ const TraderTree = props => {
           branchNodeClassName="node__branch"
           leafNodeClassName="node__leaf"
           pathFunc="diagonal"
-          zoom="0.4"
+          zoom="0.35"
           enableLegacyTransitions="True"
         />
       )}
