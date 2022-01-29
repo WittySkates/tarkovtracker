@@ -8,6 +8,8 @@ import Traderbar from "./Traders/Traderbar";
 import TraderButton from "./Traders/TraderButton";
 import TraderTree from "./TraderTree/TraderTree";
 import Attributions from "./Attributions/Attributions";
+import Maps from "./Maps/Maps";
+import AmmoChart from "./AmmoChart/AmmoChart";
 
 export {
   Auth,
@@ -19,5 +21,7 @@ export {
   Traderbar,
   TraderButton,
   TraderTree,
-  Attributions
+  Attributions,
+  Maps,
+  AmmoChart
 };

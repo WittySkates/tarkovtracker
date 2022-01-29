@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { TopNav, TraderTree, Traderbar, Attributions } from "./components";
+import { TopNav, TraderTree, Traderbar, Attributions, Maps, AmmoChart } from "./components";
 import { basicRealtimeApiCall, auth, database } from "./utils/firebase";
 import { getAllTruthyValues } from "./utils/common";
 import { useDispatch } from "react-redux";
@@ -91,9 +91,9 @@ const App = () => {
             </>
           }
         />
-        {/* <Route path="/quest_items"/>
-          <Route path="/ammo_chart"/> 
-          <Route path="/maps"/>*/}
+        {/* <Route path="quest_items"/> */}
+        <Route path="ammo_chart" element={<AmmoChart />} />
+        <Route path="maps" element={<Maps />} />
         <Route path="attributions" element={<Attributions />} />
       </Routes>
     </Router>

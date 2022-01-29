@@ -9,7 +9,6 @@ import "./styles/traderbar.scss";
 const mapStateToProps = state => {
   return { completedQuests: state.completedQuests.value };
 };
-
 const Traderbar = props => {
   const { traderInfo, currentTrader, setCurrentTrader, completedQuests } = props;
   return (
