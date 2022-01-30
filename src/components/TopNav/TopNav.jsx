@@ -29,7 +29,7 @@ const TopNav = () => {
             <NavLink className="navLink" onClick={() => navigate("/maps")}>
               Maps
             </NavLink>
-            <NavLink className="navLink" onClick={() => navigate("/ammo_chart")}>
+            <NavLink className="navLink" onClick={() => navigate("/ammo")}>
               Ammo Chart
             </NavLink>
           </Nav>

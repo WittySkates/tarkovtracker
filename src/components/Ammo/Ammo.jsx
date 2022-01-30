@@ -1,12 +1,12 @@
-/** @module AmmoChart */
+/** @module Ammo */
 
 import React from "react";
-import "./styles/ammochart.scss";
+import "./styles/ammo.scss";
 
-const AmmoChart = () => {
+const Ammo = () => {
   return (
-    <div className="scrollable">
-      <table className="ammoTable" id="trkballtable">
+    <div className="scrollable" style={{ marginLeft: "20%" }}>
+      <table class="wikitable sortable jquery-tablesorter" id="trkballtable">
         <thead>
           <tr>
             <th colspan="8"></th>
@@ -4025,4 +4025,4 @@ const AmmoChart = () => {
   );
 };
 
-export default AmmoChart;
+export default Ammo;

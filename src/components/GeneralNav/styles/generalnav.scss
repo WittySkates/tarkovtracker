@@ -1,0 +1,19 @@
+@import "../../../colors.scss";
+
+.generalNav {
+  background-color: $nav-color;
+  height: auto;
+  width: 50%;
+  color: $tarov-brown-highlight;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  .navElement {
+    padding: 8px;
+    cursor: pointer;
+  }
+}
