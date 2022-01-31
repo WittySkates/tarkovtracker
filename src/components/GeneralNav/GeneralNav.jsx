@@ -22,17 +22,18 @@ const GeneralNav = props => {
     const navContainerRect = document.getElementById(navContainer).getBoundingClientRect();
     const navElementRect = document.getElementById(selectedValue).getBoundingClientRect();
     const sliderTranslateHorizontal =
-      ((navContainerRect.right + navContainerRect.left) / 2 -
-        (navElementRect.right + navElementRect.left) / 2) *
-      -1;
+      (navElementRect.right + navElementRect.left) / 2 -
+      (navContainerRect.right + navContainerRect.left) / 2;
+
     const sliderTranslateVertical =
-      ((navContainerRect.bottom + navContainerRect.top) / 2 -
-        (navElementRect.bottom + navElementRect.top) / 2) *
-      -1;
-    const navSlider = document.getElementById(`${id}navSlider`);
+      (navElementRect.bottom + navElementRect.top) / 2 -
+      (navContainerRect.bottom + navContainerRect.top) / 2;
+
+    const navSlider = document.getElementById(`${id}Slider`);
     !animate
       ? (navSlider.style.transition = "all 0s")
       : (navSlider.style.transition = "transform 0.5s, width 0.3s");
+
     navSlider.style.transform = `translate(${sliderTranslateHorizontal}px, ${
       sliderTranslateVertical + 12
     }px)`;
@@ -53,7 +54,7 @@ const GeneralNav = props => {
           {map}
         </div>
       ))}
-      <div id={`${id}navSlider`} />
+      <div className="generalSlider" id={`${id}Slider`} />
     </div>
   );
 };
