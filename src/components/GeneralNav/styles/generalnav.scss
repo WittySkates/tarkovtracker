@@ -1,24 +1,22 @@
 @import "../../../colors.scss";
 
 .generalNav {
-  background-color: $nav-color;
   height: auto;
-  width: 50%;
+  background-color: $nav-color;
   color: $tarov-brown-highlight;
-  margin-left: auto;
-  margin-right: auto;
   border-radius: 10px;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: space-around;
   align-items: center;
   .navElement {
     padding: 8px;
-    border-radius: 10px;
     cursor: pointer;
     &:hover,
     &.navSelected {
-      box-shadow: 0px 0px 2px 2px $tarkov-brown; //ffffff80
+      // border-bottom: 2px solid $tarov-brown-highlight;
+      // padding-bottom: 6px;
+      // transition: all;
     }
   }
 }

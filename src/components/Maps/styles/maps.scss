@@ -2,5 +2,48 @@
 
 .mapNav {
   margin-top: 15px;
+  min-width: 768px;
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
   width: 50%;
+}
+.navSlider {
+  position: absolute;
+  border-bottom: 3px solid $tarov-brown-highlight;
+  transform: translate(0px, 12px);
+  transition: transform 0.5s, width 0.3s;
+}
+
+.Customs.navSelected ~ .navSlider {
+  transform: translate(-335px, 12px);
+  width: 70px;
+}
+.Shoreline.navSelected ~ .navSlider {
+  transform: translate(-237px, 12px);
+  width: 75px;
+}
+.Factory.navSelected ~ .navSlider {
+  transform: translate(-140px, 12px);
+  width: 65px;
+}
+.Woods.navSelected ~ .navSlider {
+  transform: translate(-54px, 12px);
+  width: 55px;
+}
+.Reserve.navSelected ~ .navSlider {
+  transform: translate(34px, 12px);
+  width: 65px;
+}
+.Interchange.navSelected ~ .navSlider {
+  transform: translate(142px, 12px);
+  width: 95px;
+}
+.Lighthouse.navSelected ~ .navSlider {
+  transform: translate(259px, 12px);
+  width: 85px;
+}
+.Labs.navSelected ~ .navSlider {
+  transform: translate(352px, 12px);
+  width: 40px;
 }
