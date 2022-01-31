@@ -6,17 +6,11 @@
   color: $tarov-brown-highlight;
   border-radius: 10px;
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
   .navElement {
     padding: 8px;
     cursor: pointer;
-    &:hover,
-    &.navSelected {
-      // border-bottom: 2px solid $tarov-brown-highlight;
-      // padding-bottom: 6px;
-      // transition: all;
-    }
   }
 }

@@ -7,7 +7,6 @@ import "./styles/maps.scss";
 
 const Maps = () => {
   const [currentMap, setCurrentMap] = useState("Customs");
-  console.log(currentMap);
   return (
     <>
       <GeneralNav
@@ -21,7 +20,7 @@ const Maps = () => {
           "Lighthouse",
           "Labs"
         ]}
-        className="mapNav"
+        id="mapNav"
         setCurrentValue={setCurrentMap}
         currentValue={currentMap}
       />
