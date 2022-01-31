@@ -30,7 +30,7 @@ const TopNav = () => {
               Maps
             </NavLink>
             <NavLink className="navLink" onClick={() => navigate("/ammo")}>
-              Ammo Chart
+              Ammo
             </NavLink>
           </Nav>
           <Nav style={{ paddingRight: "10px" }}>

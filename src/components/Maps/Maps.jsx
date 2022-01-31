@@ -23,6 +23,7 @@ const Maps = () => {
         ]}
         className="mapNav"
         setCurrentValue={setCurrentMap}
+        currentValue={currentMap}
       />
       <Map currentMap={currentMap} />
     </>

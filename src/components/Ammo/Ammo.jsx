@@ -5,7 +5,7 @@ import "./styles/ammo.scss";
 
 const Ammo = () => {
   return (
-    <div className="scrollable" style={{ marginLeft: "20%" }}>
+    <div className="scrollable ammoTable" style={{ marginLeft: "20%" }}>
       <table class="wikitable sortable jquery-tablesorter" id="trkballtable">
         <thead>
           <tr>
