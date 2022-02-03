@@ -11,6 +11,8 @@ const tabsStyles = {
 };
 
 const tabStyles = {
+  fontFamily: "Bender",
+  fontWeight: 400,
   backgroundColor: colors.navColor,
   color: colors.tarovBrownHighlight,
   width: "0px",

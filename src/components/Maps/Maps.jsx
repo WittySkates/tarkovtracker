@@ -6,7 +6,7 @@ import MUINav from "../MUINav/MUINav";
 import "./styles/maps.scss";
 
 const Maps = () => {
-  const [currentMap, setCurrentMap] = useState("Customs");
+  const [currentLocation, setCurrentMap] = useState("Customs");
   return (
     <>
       <div className="mapNavContainer">
@@ -22,10 +22,10 @@ const Maps = () => {
             "Labs"
           ]}
           setCurrentValue={setCurrentMap}
-          currentValue={currentMap}
+          currentValue={currentLocation}
         />
       </div>
-      <Map currentMap={currentMap} />
+      <Map currentLocation={currentLocation} />
     </>
   );
 };
