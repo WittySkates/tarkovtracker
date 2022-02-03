@@ -1,11 +1,8 @@
 @import "../../../colors.scss";
 
-#mapNav {
-  margin-top: 15px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-}
-#mapNavSlider {
-  border-bottom: 3px solid $tarov-brown-highlight;
+.mapNavContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 15px;
 }

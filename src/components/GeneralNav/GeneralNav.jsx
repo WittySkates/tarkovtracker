@@ -7,15 +7,17 @@ const GeneralNav = props => {
   const { navArray, id, setCurrentValue, currentValue } = props;
 
   useEffect(() => {
+    window.addEventListener("resize", () => {
+      transformSelected(currentValue, id, false);
+    });
     transformSelected(currentValue, id, false);
   }, []);
 
   useEffect(() => {
-    transformSelected(currentValue, id, true);
-    window.removeEventListener("resize", () => transformSelected(currentValue, id, false));
     window.addEventListener("resize", () => {
       transformSelected(currentValue, id, false);
     });
+    transformSelected(currentValue, id, true);
   }, [currentValue]);
 
   const transformSelected = (selectedValue, navContainer, animate) => {
@@ -32,7 +34,7 @@ const GeneralNav = props => {
     const navSlider = document.getElementById(`${id}Slider`);
     !animate
       ? (navSlider.style.transition = "all 0s")
-      : (navSlider.style.transition = "transform 0.5s, width 0.3s");
+      : (navSlider.style.transition = "transform 0.5s, width 0.5s");
 
     navSlider.style.transform = `translate(${sliderTranslateHorizontal}px, ${
       sliderTranslateVertical + 12
@@ -47,8 +49,8 @@ const GeneralNav = props => {
           className={`navElement ${currentValue === map && "navSelected"}`}
           id={map}
           onClick={() => {
+            window.removeEventListener("resize", () => transformSelected(currentValue, id, false));
             setCurrentValue(map);
-            // transformSelected(map, id);
           }}
         >
           {map}
