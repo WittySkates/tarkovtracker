@@ -3,7 +3,7 @@
 .generalNav {
   height: auto;
   background-color: $nav-color;
-  color: $tarov-brown-highlight;
+  color: $tarkov-brown-highlight;
   border-radius: 10px;
   display: flex;
   flex-wrap: wrap;
@@ -17,5 +17,5 @@
 .generalSlider {
   position: absolute;
   transition: all 0s;
-  border-bottom: 3px solid $tarov-brown-highlight;
+  border-bottom: 3px solid $tarkov-brown-highlight;
 }

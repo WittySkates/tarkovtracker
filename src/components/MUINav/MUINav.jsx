@@ -6,19 +6,19 @@ import { colors } from "../../constants";
 import "./styles/muinav.scss";
 
 const tabsStyles = {
-  ".MuiTabs-indicator": { backgroundColor: colors.tarovBrownHighlight },
-  ".MuiTabs-scrollButtons": { color: colors.tarovBrownHighlight }
+  ".MuiTabs-indicator": { backgroundColor: colors.tarkovBrownHighlight },
+  ".MuiTabs-scrollButtons": { color: colors.tarkovBrownHighlight }
 };
 
 const tabStyles = {
   fontFamily: "Bender",
   fontWeight: 400,
   backgroundColor: colors.navColor,
-  color: colors.tarovBrownHighlight,
+  color: colors.tarkovBrownHighlight,
   width: "0px",
   minWidth: "120px",
   "&.Mui-selected": {
-    color: `${colors.tarovBrownHighlight}`,
+    color: `${colors.tarkovBrownHighlight}`,
     backgroundColor: `#ffffff25`
   }
 };
@@ -38,7 +38,7 @@ const MUINav = props => {
       sx={tabsStyles}
     >
       {navArray.map((map, index) => (
-        <Tab value={map} label={map} sx={tabStyles} />
+        <Tab value={map} label={map} sx={tabStyles} key={map} />
       ))}
     </Tabs>
   );

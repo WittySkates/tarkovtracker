@@ -21,6 +21,6 @@ const database = admin.database();
 await updateTraderData(database);
 
 //Call this for updating ammo chart data
-await updateAmmoChart(database);
+// await updateAmmoChart(database);
 
 admin.app().delete();

@@ -1,6 +1,8 @@
 /** @module Map */
 
 import React, { useEffect, useRef, useState } from "react";
+import Minature from "./MapTools/Minature";
+import Toolbar from "./MapTools/Toolbar";
 
 import customsJPG from "./mapimages/Customs/customs.jpg";
 import customsSVG from "./mapimages/Customs/Customs.svg";
@@ -58,28 +60,16 @@ const allMaps = {
   Labs: [{ map: labsMap, about: "3D" }]
 };
 
-const MapSelector = props => {
-  const { currentMap, setCurrentMap, locationMaps } = props;
-  const changeMap = newMap => {
-    setCurrentMap(newMap);
-  };
-  return (
-    <div className="miniContainer">
-      {locationMaps.map((mapData, index) => (
-        <div className={`miniMapElement ${currentMap === index && "selectedMap"}`}>
-          <img src={mapData.map} alt="NO MAP" onClick={() => changeMap(index)} />
-        </div>
-      ))}
-    </div>
-  );
-};
-
 const Map = props => {
   const { currentLocation } = props;
   const [currentMap, setCurrentMap] = useState(0);
   const [dimensions, setDimensions] = useState({ width: 500, height: 500 });
+  const mapContainerRef = useRef();
   const Viewer = useRef(null);
-  const ref = useRef();
+
+  const handleResize = () => {
+    setDimensions(mapContainerRef.current.getBoundingClientRect());
+  };
 
   useEffect(() => {
     Viewer.current.fitToViewer();
@@ -87,36 +77,42 @@ const Map = props => {
   }, [currentLocation]);
 
   useEffect(() => {
-    if (ref.current) {
-      setDimensions(ref.current.getBoundingClientRect());
+    if (mapContainerRef.current) {
+      setDimensions(mapContainerRef.current.getBoundingClientRect());
+      window.addEventListener("resize", handleResize);
     }
-  }, [ref]);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [mapContainerRef]);
 
   return (
-    <div className="mapContainer" ref={ref}>
+    <div className="mapContainer" ref={mapContainerRef}>
       <UncontrolledReactSVGPanZoom
         ref={Viewer}
-        width={dimensions.width - 100}
+        width={dimensions.width}
         height={dimensions.height}
         SVGBackground="transparent"
-        background={colors.navColor}
+        background={`transparent`} //colors.navColor
         onZoom={e => console.log("zoom")}
         onPan={e => console.log("pan")}
         onClick={event => console.log("click", event.x, event.y, event.originalEvent)}
         detectAutoPan={false}
         defaultTool="pan"
         customMiniature={props => (
-          <MapSelector
+          <Minature
+            {...props}
             currentMap={currentMap}
             setCurrentMap={setCurrentMap}
             locationMaps={allMaps[currentLocation]}
           />
         )}
+        customToolbar={props => <Toolbar {...props} />}
       >
-        <svg width={dimensions.width - 100} height={dimensions.height}>
+        <svg width={dimensions.width} height={dimensions.height}>
           <image
             href={allMaps[currentLocation][currentMap]?.map}
-            width={dimensions.width - 100}
+            width={dimensions.width}
             height={dimensions.height}
           />
         </svg>

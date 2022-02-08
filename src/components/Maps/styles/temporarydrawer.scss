@@ -1,0 +1,51 @@
+@import "../../../colors.scss";
+
+.drawerContentContainer {
+  .drawerCloseContainer {
+    height: 50px;
+    width: 20px;
+    top: calc(50% - 56px);
+    position: absolute;
+    z-index: 1000;
+    background-color: white;
+    border-radius: 0px 5px 5px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .drawerTopImage {
+    width: auto;
+    height: 54px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $back-color;
+    img {
+      width: auto;
+      height: 40px;
+    }
+  }
+  .locationSelector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    color: $tarkov-brown-highlight;
+    cursor: pointer;
+    .locationNames {
+      padding: 10px 20px 10px 20px;
+      width: auto;
+      height: auto;
+      border-radius: 5px;
+      font-size: 15px;
+      &.selectedLocation {
+        background-color: #24242469; // $nav-color;
+      }
+    }
+  }
+  .contentDivider {
+    height: 1px;
+    background-color: $tarkov-brown-highlight;
+    margin: 5px 10px 5px 10px;
+  }
+}

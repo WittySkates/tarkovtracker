@@ -8,7 +8,7 @@ export const colors = {
   tarkovEbony: "#212529",
   tarkovWhite: "#ebebeb",
   tarkovBrown: "#9a8866",
-  tarovBrownHighlight: "#b6a990",
+  tarkovBrownHighlight: "#b6a990",
   textColor: "#aeaeb0",
   backColor: "#0e0e0e",
   navColor: "#242424",
