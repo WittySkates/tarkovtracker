@@ -26,18 +26,18 @@ const TemporaryDrawer = props => {
 
   const drawerStyles = {
     ".MuiDrawer-paper": {
-      backgroundColor: colors.backColor,
       overflow: "visible",
       visibility: "visible !important",
-      marginTop: "56px"
+      marginTop: "56px",
+      border: "none"
     }
   };
 
-  const drawerWidth = 350;
+  const drawerWidth = 400;
 
   const drawerContent = (
     <div className="drawerContentContainer" style={{ width: drawerWidth }}>
-      <div className="drawerCloseContainer" style={{ left: drawerWidth + 1 }}>
+      <div className="drawerCloseContainer" style={{ left: drawerWidth }}>
         <IconButton onClick={() => toggleDrawer(!drawerState.open)}>
           {drawerState.open ? (
             <ArrowLeftIcon

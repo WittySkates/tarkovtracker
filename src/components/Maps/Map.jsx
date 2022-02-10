@@ -105,6 +105,7 @@ const Map = props => {
             currentMap={currentMap}
             setCurrentMap={setCurrentMap}
             locationMaps={allMaps[currentLocation]}
+            viewer={Viewer}
           />
         )}
         customToolbar={props => <Toolbar {...props} />}

@@ -74,7 +74,7 @@ const Toolbar = props => {
 
   return (
     <div style={style} role="toolbar">
-      <ToolbarButton
+      {/* <ToolbarButton
         toolbarPosition={position}
         active={tool === TOOL_NONE}
         activeColor={activeToolColor}
@@ -83,7 +83,7 @@ const Toolbar = props => {
         onClick={event => handleChangeTool(event, TOOL_NONE)}
       >
         <RoomIcon style={{ color: tool === TOOL_NONE ? "black" : "#00000093" }} />
-      </ToolbarButton>
+      </ToolbarButton> */}
 
       {/* <ToolbarButton
         toolbarPosition={position}

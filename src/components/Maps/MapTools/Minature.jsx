@@ -18,7 +18,8 @@ const MapSelector = props => {
     height: miniatureHeight,
     currentMap,
     setCurrentMap,
-    locationMaps
+    locationMaps,
+    viewer
   } = props;
 
   const style = {
@@ -36,6 +37,7 @@ const MapSelector = props => {
   };
 
   const changeMap = newMap => {
+    viewer.current.fitToViewer();
     setCurrentMap(newMap);
   };
   return (
