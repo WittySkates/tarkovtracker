@@ -29,9 +29,9 @@ const TopNav = () => {
             <NavLink className="navLink" onClick={() => navigate("/maps")}>
               Maps
             </NavLink>
-            {/* <NavLink className="navLink" onClick={() => navigate("/ammo")}>
+            <NavLink className="navLink" onClick={() => navigate("/ammo")}>
               Ammo
-            </NavLink> */}
+            </NavLink>
           </Nav>
           <Nav style={{ paddingRight: "10px" }}>
             <NavLink className="me-2 navLink" onClick={() => navigate("/attributions")}>

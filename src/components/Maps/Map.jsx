@@ -4,36 +4,27 @@ import React, { useEffect, useRef, useState } from "react";
 import Minature from "./MapTools/Minature";
 import Toolbar from "./MapTools/Toolbar";
 
-import customs from "./mapimages/Customs/customs.jpg";
-import customsGray from "./mapimages/Customs/customsGray.jpg";
+import customsJPG from "./mapimages/Customs/customs.jpg";
 import customsSVG from "./mapimages/Customs/Customs.svg";
 
-import shoreline from "./mapimages/Shoreline/shoreline.jpg";
-import shorelineSpawn from "./mapimages/Shoreline/shorelineSpawn.jpg";
+import shorelineJPG from "./mapimages/Shoreline/shoreline.jpg";
 import shorelineSVG from "./mapimages/Shoreline/Shoreline.svg";
 
-import factory from "./mapimages/Factory/factory.jpg";
+import factoryJPG from "./mapimages/Factory/factory.jpg";
 import factorySVG from "./mapimages/Factory/Factory.svg";
 
-import woods from "./mapimages/Woods/woods.jpg";
+import woodsJPG from "./mapimages/Woods/woods.jpg";
 import woodsSVG from "./mapimages/Woods/Woods.svg";
 
-import reserve from "./mapimages/Reserve/reserve.jpg";
-import reserveGray from "./mapimages/Reserve/reserveGray.jpg";
-import reserveKey from "./mapimages/Reserve/reserveKey.jpg";
+import reserveJPG from "./mapimages/Reserve/reserve.jpg";
 import reserveSVG from "./mapimages/Reserve/Reserve.svg";
 
 import interchangeJPG from "./mapimages/Interchange/interchange.jpg";
 import interchangeSVG from "./mapimages/Interchange/Interchange.svg";
 
-import lighthouse from "./mapimages/Lighthouse/lighthouse.jpg";
-import lighthouseRotated from "./mapimages/Lighthouse/lighthouseRotated.jpg";
-import lighthouseFlat from "./mapimages/Lighthouse/lighthouseFlat.jpg";
+import lighthouseMap from "./mapimages/Lighthouse/lighthouse.jpg";
 
-import labs from "./mapimages/Labs/labs.jpg";
-import labsExtract from "./mapimages/Labs/labsExtract.jpg";
-import labsHorizontal from "./mapimages/Labs/labsHorizontal.jpg";
-import labsVertical from "./mapimages/Labs/labsVertical.jpg";
+import labsMap from "./mapimages/Labs/labs.jpg";
 
 import { UncontrolledReactSVGPanZoom } from "react-svg-pan-zoom";
 import { colors } from "../../constants";
@@ -42,44 +33,31 @@ import "./styles/map.scss";
 
 const allMaps = {
   Customs: [
-    { map: customs, about: "3D" },
-    { map: customsGray, about: "3D" },
+    { map: customsJPG, about: "3D" },
     { map: customsSVG, about: "2D" }
   ],
   Shoreline: [
-    { map: shoreline, about: "3D" },
-    { map: shorelineSpawn, about: "3D" },
+    { map: shorelineJPG, about: "3D" },
     { map: shorelineSVG, about: "2D" }
   ],
   Factory: [
-    { map: factory, about: "3D" },
+    { map: factoryJPG, about: "3D" },
     { map: factorySVG, about: "2D" }
   ],
   Woods: [
-    { map: woods, about: "3D" },
+    { map: woodsJPG, about: "3D" },
     { map: woodsSVG, about: "2D" }
   ],
   Reserve: [
-    { map: reserve, about: "3D" },
-    { map: reserveGray, about: "3D" },
-    { map: reserveKey, about: "3D" },
+    { map: reserveJPG, about: "3D" },
     { map: reserveSVG, about: "2D" }
   ],
   Interchange: [
     { map: interchangeJPG, about: "3D" },
     { map: interchangeSVG, about: "2D" }
   ],
-  Lighthouse: [
-    { map: lighthouse, about: "3D" },
-    { map: lighthouseRotated, about: "3D" },
-    { map: lighthouseFlat, about: "3D" }
-  ],
-  Labs: [
-    { map: labs, about: "3D" },
-    { map: labsHorizontal, about: "3D" },
-    { map: labsVertical, about: "3D" },
-    { map: labsExtract, about: "3D" }
-  ]
+  Lighthouse: [{ map: lighthouseMap, about: "3D" }],
+  Labs: [{ map: labsMap, about: "3D" }]
 };
 
 const Map = props => {
