@@ -26,8 +26,12 @@ const TopNav = () => {
             <NavLink className="navLink" onClick={() => navigate("/")}>
               Quest Tree
             </NavLink>
-            {/* <NavLink to="/quest_items">Quest Items</NavLink>
-            <NavLink to="/ammo_chart">Ammo Chart</NavLink> */}
+            <NavLink className="navLink" onClick={() => navigate("/maps")}>
+              Maps
+            </NavLink>
+            {/* <NavLink className="navLink" onClick={() => navigate("/ammo")}>
+              Ammo
+            </NavLink> */}
           </Nav>
           <Nav style={{ paddingRight: "10px" }}>
             <NavLink className="me-2 navLink" onClick={() => navigate("/attributions")}>

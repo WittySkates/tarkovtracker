@@ -1,0 +1,21 @@
+@import "../../../colors.scss";
+
+.generalNav {
+  height: auto;
+  background-color: $nav-color;
+  color: $tarkov-brown-highlight;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  .navElement {
+    padding: 8px;
+    cursor: pointer;
+  }
+}
+.generalSlider {
+  position: absolute;
+  transition: all 0s;
+  border-bottom: 3px solid $tarkov-brown-highlight;
+}

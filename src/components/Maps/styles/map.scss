@@ -1,0 +1,29 @@
+@import "../../../colors.scss";
+
+.mapContainer {
+  position: relative;
+  height: calc(100% - 54px);
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
+}
+// .miniContainer {
+//   height: auto;
+//   display: flex;
+//   flex-wrap: wrap;
+//   width: 100%;
+//   gap: 10px;
+//   position: relative;
+//   .miniMapElement {
+//     height: auto;
+//     width: 10%;
+//     img {
+//       width: 100%;
+//     }
+//     &.selectedMap {
+//       box-shadow: 0px 0px 3px 3px $tarkov-brown; //ffffff80
+//     }
+//   }
+// }

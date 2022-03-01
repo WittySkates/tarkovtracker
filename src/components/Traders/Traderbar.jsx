@@ -3,8 +3,12 @@
 import React from "react";
 import TraderButton from "./TraderButton";
 import { getDoneCount } from "../../utils/common";
+import { connect } from "react-redux";
 import "./styles/traderbar.scss";
 
+const mapStateToProps = state => {
+  return { completedQuests: state.completedQuests.value };
+};
 const Traderbar = props => {
   const { traderInfo, currentTrader, setCurrentTrader, completedQuests } = props;
   return (
@@ -27,4 +31,4 @@ const Traderbar = props => {
   );
 };
 
-export default Traderbar;
+export default connect(mapStateToProps)(Traderbar);

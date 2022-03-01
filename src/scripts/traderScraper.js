@@ -1,23 +1,7 @@
 /** @module scraper */
-import admin from "firebase-admin";
 import _ from "lodash";
 import axios from "axios";
 import cheerio from "cheerio";
-import { firebaseConfig, firebaseConfigDev, adminConfig, adminConfigDev, dev } from "../config.js";
-
-if (dev) {
-  admin.initializeApp({
-    credential: admin.credential.cert(adminConfigDev),
-    databaseURL: firebaseConfigDev.databaseURL
-  });
-} else {
-  admin.initializeApp({
-    credential: admin.credential.cert(adminConfig),
-    databaseURL: firebaseConfig.databaseURL
-  });
-}
-
-const database = admin.database();
 
 const getPriorNext = async (res, trader, title, link) => {
   try {
@@ -245,7 +229,7 @@ const generateAllTraderTrees = traderQuests => {
   return allTraderTrees;
 };
 
-const updateTraderData = async () => {
+export const updateTraderData = async database => {
   let traderQuestsDatabase = {};
   await database
     .ref("traderQuests")
@@ -267,7 +251,7 @@ const updateTraderData = async () => {
 
   const traderQuests = await getUrls();
   if (_.isEqual(traderQuests, traderQuestsDatabase)) {
-    console.log("Data was the same, did not update");
+    console.log("Trader data was the same, did not update");
     return;
   }
 
@@ -278,6 +262,3 @@ const updateTraderData = async () => {
   await database.ref("traderQuests").set(traderQuests);
   await database.ref("traderTrees").set(traderTreesString);
 };
-
-await updateTraderData();
-admin.app().delete();

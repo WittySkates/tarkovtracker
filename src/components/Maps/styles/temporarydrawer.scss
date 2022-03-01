@@ -1,0 +1,64 @@
+@import "../../../colors.scss";
+
+.drawerContentContainer {
+  height: 100%;
+  width: 100%;
+
+  background-color: $back-color;
+  background-size: 8px 8px;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #b6a99010 0,
+    #b6a99010 2px,
+    $back-color 0,
+    $back-color 50%
+  );
+
+  .drawerCloseContainer {
+    height: 50px;
+    width: 20px;
+    top: calc(50% - 56px);
+    position: absolute;
+    z-index: 1000;
+    background-color: white;
+    border-radius: 0px 5px 5px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .drawerTopImage {
+    width: auto;
+    height: 54px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // background-color: $back-color;
+    img {
+      width: auto;
+      height: 40px;
+    }
+  }
+  .locationSelector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    color: $tarkov-brown-highlight;
+    cursor: pointer;
+    .locationNames {
+      padding: 10px 25px 10px 25px;
+      width: auto;
+      height: auto;
+      border-radius: 5px;
+      font-size: 15px;
+      &.selectedLocation {
+        background-color: #242424a1; // $nav-color;
+      }
+    }
+  }
+  .contentDivider {
+    height: 1px;
+    background-color: $tarkov-brown-highlight;
+    margin: 5px 10px 5px 10px;
+  }
+}
