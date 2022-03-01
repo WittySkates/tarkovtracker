@@ -7,15 +7,10 @@ import Node from "./Node";
 import { useCenteredTree } from "./utils/helpers";
 import { getLinkClasses } from "./utils/treeUtils";
 import { getDoneCount } from "../../utils/common";
-import { connect } from "react-redux";
 import "./styles/tree.scss";
 
-const mapStateToProps = (state, ownProps) => {
-  return { completedQuests: state.completedQuests.value[ownProps.trader] };
-};
-
 const TraderTree = props => {
-  const { traderData, trader, uid, completedQuests } = props;
+  const { traderData, trader, uid, completedQuestsTrader } = props;
   const [translate, containerRef] = useCenteredTree();
   const autoTimeout = useRef();
   const isTimedOut = useRef(false);
@@ -64,12 +59,14 @@ const TraderTree = props => {
               traderName={trader}
               database={database}
               uid={uid}
-              questState={completedQuests?.[nodeProps.nodeDatum.attributes.id] ?? false}
-              doneCount={getDoneCount(completedQuests ?? {}, traderData?.attributes?.Quests ?? {})}
+              doneCount={getDoneCount(
+                completedQuestsTrader ?? {},
+                traderData?.attributes?.Quests ?? {}
+              )}
             />
           )}
           pathClassFunc={(node, orientation) => {
-            return getLinkClasses(node, orientation, completedQuests);
+            return getLinkClasses(node, orientation, completedQuestsTrader);
           }}
           nodeSize={nodeSize}
           orientation="vertical"
@@ -77,7 +74,7 @@ const TraderTree = props => {
           branchNodeClassName="node__branch"
           leafNodeClassName="node__leaf"
           pathFunc="diagonal"
-          zoom="0.35"
+          zoom="0.4"
           enableLegacyTransitions="True"
         />
       )}
@@ -86,4 +83,4 @@ const TraderTree = props => {
   );
 };
 
-export default connect(mapStateToProps)(TraderTree);
+export default TraderTree;
