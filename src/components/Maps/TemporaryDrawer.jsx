@@ -1,6 +1,10 @@
 /** @module TemporaryDrawer */
 
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch } from 'react-redux'
+import { setDrawerState, setLocationState, setMapState } from "../../redux/slices/mapPageStateSlice";
+import { connect } from "react-redux";
+
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
@@ -9,19 +13,21 @@ import tarkovLogo from "./tarkovLogo.png";
 import { colors } from "../../constants";
 import "./styles/temporarydrawer.scss";
 
-const TemporaryDrawer = props => {
-  const { navArray, currentValue, setCurrentValue } = props;
+const mapStateToProps = state => {
+  return { drawerState: state.drawerState.drawer };
+};
 
-  const [drawerState, setDrawerState] = useState({
-    open: false
-  });
+const TemporaryDrawer = props => {
+  const { navArray, currentLocation, drawerState } = props;
+  const dispatch = useDispatch();
 
   const handleValueChange = newValue => {
-    setCurrentValue(newValue);
+    dispatch(setLocationState(newValue));
+    dispatch(setMapState(0));
   };
 
   const toggleDrawer = open => {
-    setDrawerState({ open: open });
+    dispatch(setDrawerState(open));
   };
 
   const drawerStyles = {
@@ -38,8 +44,8 @@ const TemporaryDrawer = props => {
   const drawerContent = (
     <div className="drawerContentContainer" style={{ width: drawerWidth }}>
       <div className="drawerCloseContainer" style={{ left: drawerWidth }}>
-        <IconButton onClick={() => toggleDrawer(!drawerState.open)}>
-          {drawerState.open ? (
+        <IconButton onClick={() => toggleDrawer(!drawerState)}>
+          {drawerState ? (
             <ArrowLeftIcon
               style={{ color: colors.backColor }} //style={{ color: colors.tarkovBrownHighlight, position: "absolute", left: 20, top: 20 }}
             />
@@ -57,7 +63,7 @@ const TemporaryDrawer = props => {
       <div className="locationSelector">
         {navArray.map(map => (
           <div
-            className={`locationNames ${map === currentValue && "selectedLocation"}`}
+            className={`locationNames ${map === currentLocation && "selectedLocation"}`}
             key={map}
             onClick={() => handleValueChange(map)}
           >
@@ -72,11 +78,11 @@ const TemporaryDrawer = props => {
 
   return (
     <div style={{ position: "absolute", zIndex: "1000" }}>
-      <Drawer variant="persistent" open={drawerState.open} sx={drawerStyles}>
+      <Drawer variant="persistent" open={drawerState} sx={drawerStyles}>
         {drawerContent}
       </Drawer>
     </div>
   );
 };
 
-export default TemporaryDrawer;
+export default connect(mapStateToProps)(TemporaryDrawer);

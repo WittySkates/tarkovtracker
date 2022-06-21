@@ -1,6 +1,8 @@
 /** @module Map */
 
 import React, { useEffect, useRef, useState } from "react";
+import { connect } from "react-redux";
+
 import Minature from "./MapTools/Minature";
 import Toolbar from "./MapTools/Toolbar";
 
@@ -39,6 +41,10 @@ import { UncontrolledReactSVGPanZoom } from "react-svg-pan-zoom";
 import { colors } from "../../constants";
 
 import "./styles/map.scss";
+
+const mapStateToProps = state => {
+  return { currentMap: state.drawerState.map };
+};
 
 const allMaps = {
   Customs: [
@@ -83,19 +89,17 @@ const allMaps = {
 };
 
 const Map = props => {
-  const { currentLocation } = props;
-  const [currentMap, setCurrentMap] = useState(0);
+  const { currentLocation, currentMap } = props;
   const [dimensions, setDimensions] = useState({ width: 500, height: 500 });
   const mapContainerRef = useRef();
   const Viewer = useRef(null);
-
+  
   const handleResize = () => {
     setDimensions(mapContainerRef.current.getBoundingClientRect());
   };
 
   useEffect(() => {
     Viewer.current.fitToViewer();
-    setCurrentMap(0);
   }, [currentLocation]);
 
   useEffect(() => {
@@ -125,7 +129,6 @@ const Map = props => {
           <Minature
             {...props}
             currentMap={currentMap}
-            setCurrentMap={setCurrentMap}
             locationMaps={allMaps[currentLocation]}
             viewer={Viewer}
           />
@@ -144,4 +147,4 @@ const Map = props => {
   );
 };
 
-export default Map;
+export default connect(mapStateToProps)(Map);

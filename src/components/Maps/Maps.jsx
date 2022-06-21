@@ -1,13 +1,18 @@
 /** @module Maps */
 
-import React, { useState } from "react";
+import React from "react";
+import { connect } from "react-redux";
 import Map from "./Map";
 import TemporaryDrawer from "./TemporaryDrawer";
 import MUINav from "../MUINav/MUINav";
 import "./styles/maps.scss";
 
-const Maps = () => {
-  const [currentLocation, setCurrentLocation] = useState("Customs");
+const mapStateToProps = state => {
+  return { currentLocation: state.drawerState.location };
+};
+
+const Maps = props => {
+  const {currentLocation} = props
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <TemporaryDrawer
@@ -21,8 +26,7 @@ const Maps = () => {
           "Lighthouse",
           "Labs"
         ]}
-        setCurrentValue={setCurrentLocation}
-        currentValue={currentLocation}
+        currentLocation={currentLocation}
       />
       {/* <div className="mapNavContainer">
         <MUINav
@@ -45,4 +49,4 @@ const Maps = () => {
   );
 };
 
-export default Maps;
+export default connect(mapStateToProps)(Maps);

@@ -1,10 +1,19 @@
 /** @module MapSelector */
 
 import React from "react";
+import { connect } from "react-redux";
+import { useDispatch } from 'react-redux'
+import { setMapState } from "../../../redux/slices/mapPageStateSlice";
+
 import PropTypes from "prop-types";
 import { POSITION_LEFT, POSITION_RIGHT } from "react-svg-pan-zoom";
 import MiniatureToggleButton from "./minatureutils/MinatureToggleButton";
 // import { colors } from "../../constants";
+
+const mapStateToProps = state => {
+  return { currentMap: state.drawerState.map };
+};
+
 
 const MapSelector = props => {
   const {
@@ -17,7 +26,6 @@ const MapSelector = props => {
     width: miniatureWidth,
     height: miniatureHeight,
     currentMap,
-    setCurrentMap,
     locationMaps,
     viewer
   } = props;
@@ -36,9 +44,11 @@ const MapSelector = props => {
     background
   };
 
+  const dispatch = useDispatch();
+
   const changeMap = newMap => {
     viewer.current.fitToViewer();
-    setCurrentMap(newMap);
+    dispatch(setMapState(newMap));
   };
   return (
     <div role="navigation" style={style} className="miniContainer">
@@ -84,4 +94,4 @@ MapSelector.defaultProps = {
   height: 80
 };
 
-export default MapSelector;
+export default connect(mapStateToProps)(MapSelector);
