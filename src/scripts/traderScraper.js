@@ -63,7 +63,9 @@ const getPriorNext = async (res, trader, title, link) => {
 
 const getUrls = async () => {
   try {
-    const { data } = await axios.get("https://escapefromtarkov.fandom.com/wiki/Quests");
+    const { data } = await axios.get(
+      "https://escapefromtarkov.fandom.com/wiki/Quests"
+    );
     const $ = cheerio.load(data);
     const res = {};
     let promises = [];
@@ -76,7 +78,7 @@ const getUrls = async () => {
       _.set(res, trader, { image });
     });
 
-    Object.keys(res).forEach(trader => {
+    Object.keys(res).forEach((trader) => {
       const path = `.${trader}-content > tbody > tr`;
       let title = "";
       $(path).each((_idx, tr) => {
@@ -89,7 +91,9 @@ const getUrls = async () => {
           switch (_idx) {
             case 0:
               title = _.camelCase(text);
-              const link = "https://escapefromtarkov.fandom.com" + $(td).find("a").attr("href");
+              const link =
+                "https://escapefromtarkov.fandom.com" +
+                $(td).find("a").attr("href");
               _.set(res, `${trader}.Quests.${title}`, {});
               _.set(res, `${trader}.Quests.${title}.Name`, text);
               _.set(res, `${trader}.Quests.${title}.Link`, link);
@@ -131,7 +135,7 @@ const getUrls = async () => {
   }
 };
 
-const findRoots = quests => {
+const findRoots = (quests) => {
   const roots = [];
   for (const [name, quest] of Object.entries(quests)) {
     if (quest.Prior === undefined || quest.Prior.length === 0) {
@@ -139,7 +143,7 @@ const findRoots = quests => {
     } else {
       let hasPrior = false;
 
-      quest.Prior.forEach(prior => {
+      quest.Prior.forEach((prior) => {
         if (typeof quests[prior] != "undefined") {
           hasPrior = true;
         }
@@ -154,7 +158,7 @@ const findRoots = quests => {
 
 // () -> () -> () -> () -> ***
 const generateTraderTree = (tree, roots, validate, quests) => {
-  _.forEach(roots, questName => {
+  _.forEach(roots, (questName) => {
     if (!quests[questName]) {
       return;
     }
@@ -167,19 +171,24 @@ const generateTraderTree = (tree, roots, validate, quests) => {
         link: quests[questName].Link,
         kappa: quests[questName].Kappa,
         noPriorNext: false,
-        id: questName
+        id: questName,
       },
-      children: []
+      children: [],
     };
-    generateTraderTree(entry.children, quests[questName].Next, validate, quests);
+    generateTraderTree(
+      entry.children,
+      quests[questName].Next,
+      validate,
+      quests
+    );
     validate.push(questName);
     tree.push(entry);
   });
 };
 
 const fixDiff = (validate, allquestsNames, quests, tree) => {
-  const difference = allquestsNames.filter(x => !validate.includes(x));
-  difference.forEach(questName => {
+  const difference = allquestsNames.filter((x) => !validate.includes(x));
+  difference.forEach((questName) => {
     const entry = {
       name: quests[questName].Name,
       attributes: {
@@ -189,23 +198,28 @@ const fixDiff = (validate, allquestsNames, quests, tree) => {
         link: quests[questName].Link,
         kappa: quests[questName].Kappa,
         noPriorNext: true,
-        id: questName
+        id: questName,
       },
-      children: []
+      children: [],
     };
     tree.push(entry);
   });
 };
 
-const generateAllTraderTrees = traderQuests => {
+const generateAllTraderTrees = (traderQuests) => {
   const allTraderTrees = [];
   const traders = Object.keys(traderQuests);
-  traders.forEach(trader => {
+  traders.forEach((trader) => {
     const roots = findRoots(traderQuests[trader].Quests);
     const tree = [];
     const validate = [];
     generateTraderTree(tree, roots, validate, traderQuests[trader].Quests);
-    fixDiff(validate, Object.keys(traderQuests[trader].Quests), traderQuests[trader].Quests, tree);
+    fixDiff(
+      validate,
+      Object.keys(traderQuests[trader].Quests),
+      traderQuests[trader].Quests,
+      tree
+    );
     const quests = _.cloneDeep(traderQuests[trader].Quests);
     for (const quest in quests) {
       delete quests[quest].Objectives;
@@ -220,28 +234,28 @@ const generateAllTraderTrees = traderQuests => {
       name: trader,
       attributes: {
         Quests: quests,
-        image: traderQuests[trader].image
+        image: traderQuests[trader].image,
       },
-      children: tree
+      children: tree,
     });
     // _.set(allTraderTrees, trader, tree);
   });
   return allTraderTrees;
 };
 
-export const updateTraderData = async database => {
+export const updateTraderData = async (database) => {
   let traderQuestsDatabase = {};
   await database
     .ref("traderQuests")
     .get()
-    .then(snapshot => {
+    .then((snapshot) => {
       if (snapshot.exists()) {
         traderQuestsDatabase = snapshot.val();
       } else {
         return null;
       }
     })
-    .catch(error => {
+    .catch((error) => {
       console.log("Erroring getting trader quests" + error);
     });
 

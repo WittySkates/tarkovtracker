@@ -2,10 +2,13 @@
 import _ from "lodash";
 import axios from "axios";
 import cheerio from "cheerio";
+improt;
 
 const getAmmoChart = async () => {
   try {
-    const { data } = await axios.get("https://escapefromtarkov.fandom.com/wiki/Ballistics");
+    const { data } = await axios.get(
+      "https://escapefromtarkov.fandom.com/wiki/Ballistics"
+    );
     const $ = cheerio.load(data);
     const res = {};
     let header = $("#trkballtable").next("thead");
@@ -17,19 +20,19 @@ const getAmmoChart = async () => {
   }
 };
 
-export const updateAmmoChart = async database => {
+export const updateAmmoChart = async (database) => {
   let ammoChartDatabase = {};
   await database
     .ref("ammoChart")
     .get()
-    .then(snapshot => {
+    .then((snapshot) => {
       if (snapshot.exists()) {
         ammoChartDatabase = snapshot.val();
       } else {
         return null;
       }
     })
-    .catch(error => {
+    .catch((error) => {
       console.log("Erroring getting ammo chart" + error);
     });
 
