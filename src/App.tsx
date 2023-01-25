@@ -53,9 +53,10 @@ const App = () => {
     useEffect(() => {
         getFirebaseData()
             .then(generateTraderGraphData)
+            // @ts-ignore
             .then(setTraderGraphData);
     }, []);
-
+    console.log(traderGraphData);
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />

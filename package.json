@@ -19,6 +19,7 @@
         "axios": "^1.2.2",
         "cheerio": "^1.0.0-rc.12",
         "dagre": "^0.8.5",
+        "elkjs": "^0.8.2",
         "firebase": "^9.15.0",
         "firebase-admin": "^9.11.0",
         "firebaseui": "^4.8.0",

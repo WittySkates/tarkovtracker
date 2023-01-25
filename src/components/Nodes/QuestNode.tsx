@@ -25,6 +25,8 @@ const QuestNode = ({ data }: IQuestNode) => {
     const [isQuestComplete, setIsQuestComplete] = useState<boolean>(false);
     const popoverAnchor = useRef<HTMLDivElement>(null);
 
+    console.log(data)
+
     useEffect(() => {
         if (!user) return;
 

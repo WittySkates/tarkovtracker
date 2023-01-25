@@ -13,6 +13,7 @@ import "reactflow/dist/style.css";
 import "./styles/quests.scss";
 import { database } from "../utils/firebase";
 import { goOffline, goOnline } from "firebase/database";
+import { ElkNode } from "elkjs";
 
 export interface IQuestProps {
     traderGraphData: TraderGraphData[];

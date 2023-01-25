@@ -1,5 +1,7 @@
 import { ConnectionLineType, Edge, Node } from "reactflow";
 import dagre from "dagre";
+import { ElkNode, ElkExtendedEdge } from "elkjs";
+import Elk from "elkjs/lib/elk.bundled.js";
 import _ from "lodash";
 
 export type Traders = Record<string, FirebaseTrader>;
@@ -52,6 +54,9 @@ export interface TraderGraphData {
     edges: QuestEdge[];
 }
 
+export const NODE_WIDTH = 200;
+export const NODE_HEIGHT = 100;
+
 const transformFirebaseTraderData = (
     firebasesTraderData: Traders
 ): TraderData[] => {
@@ -65,6 +70,52 @@ const transformFirebaseTraderData = (
         }
     );
     return data;
+};
+
+const generateElkNodes = (trader: TraderData): ElkNode[] => {
+    const nodes = Object.entries(trader.quests).map(
+        ([quest, data]) => {
+            return {
+                id: quest,
+                width: NODE_WIDTH,
+                height: NODE_HEIGHT,
+                data
+            };
+        }
+    );
+    return nodes;
+};
+
+const generateElkEdges = (trader: TraderData): ElkExtendedEdge[] => {
+    const questNames = new Set(Object.keys(trader.quests));
+    const edges = Object.entries(trader.quests).flatMap(
+        ([quest, data]) => {
+            if (!data.prior) return [];
+            return data.prior.reduce<ElkExtendedEdge[]>(
+                (result, prior) => {
+                    if (questNames.has(prior)) {
+                        result.push({
+                            id: `${quest}-${prior}`,
+                            sources: [quest],
+                            targets: [prior]
+                        });
+                    }
+                    return result;
+                },
+                []
+            );
+        }
+    );
+    return edges;
+};
+
+const generateElkGraph = (trader: TraderData): ElkNode => {
+    return {
+        id: "root",
+        layoutOptions: { "elk.algorithm": "layered" },
+        children: generateElkNodes(trader),
+        edges: generateElkEdges(trader)
+    };
 };
 
 const generateTraderNodes = (trader: TraderData): Node[] => {
@@ -101,6 +152,7 @@ const generateTraderEdges = (quests: Quests): QuestEdge[] => {
         Object.entries(quests),
         ([quest, data]) => {
             if (!data.prior) return false;
+            // @ts-ignore
             const priorQuests = data.prior.filter(priorQuest => {
                 return !!quests[priorQuest];
             });
@@ -151,23 +203,46 @@ const generateTraderGraphData = (
     const allTraderData = transformFirebaseTraderData(
         firebaseTraderData
     );
-    const allTraderQuestNodes: TraderGraphData[] = allTraderData.map(
-        (trader): TraderGraphData => {
-            const questNodes = generateTraderNodes(trader);
-            const questEdges = generateTraderEdges(trader.quests);
+    const allTraderQuestNodes: Promise<TraderGraphData>[] =
+        allTraderData.map(
+            async (trader): Promise<TraderGraphData> => {
+                const elk = new Elk();
+                const graph = await elk.layout(
+                    generateElkGraph(trader)
+                );
+                // const questNodes = generateTraderNodes(trader);
+                // const questEdges = generateTraderEdges(trader.quests);
 
-            return {
-                name: trader.name,
-                nodes: questNodes,
-                edges: questEdges
-            };
-        }
-    );
-    return allTraderQuestNodes;
+                const nodes =
+                    graph.children?.map(child => ({
+                        ...child,
+                        type: "questNode",
+                        data: {
+                            // @ts-ignore
+                            ...child.data,
+                            trader: trader.name
+                        },
+                        position: { x: child.x, y: child.y }
+                    })) ?? [];
+                const edges = graph.edges;
+                console.log({
+                    name: trader.name,
+                    // @ts-ignore
+                    nodes: nodes,
+                    // @ts-ignore
+                    edges: edges
+                });
+                return {
+                    name: trader.name,
+                    // @ts-ignore
+                    nodes: nodes,
+                    // @ts-ignore
+                    edges: edges
+                };
+            }
+        );
+    return Promise.all(allTraderQuestNodes);
 };
-
-const NODE_WIDTH = 200;
-const NODE_HEIGHT = 100;
 
 export const getLayoutedElements = ({
     nodes,
